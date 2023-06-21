@@ -32,15 +32,16 @@ const mAssetsAdditionalBases: { [tokenAddress: string]: Token[] } = {
 }
 const WETH_ONLY: ChainTokenList = {
   [1]: [WETH9[1]],
-  [3]: [WETH9[3]],
-  [4]: [WETH9[4]],
-  [5]: [WETH9[5]],
-  [42]: [WETH9[42]],
+  // Mod
+  [1337]: [WETH9[1337]],
 }
+
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [1]: [...WETH_ONLY[1], DAI, USDC, USDT, WBTC],
+  [1]: [...WETH_ONLY[1], DAI[1337], USDC[1], USDT[1], WBTC],
+  // Mod
+  [1337]: [...WETH_ONLY[1337], DAI[1337], USDC[1337], USDT[1337]],
 }
 export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {
   [1]: {
@@ -63,7 +64,7 @@ export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: To
  */
 export const CUSTOM_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {
   [1]: {
-    [AMPL.address]: [DAI, WETH9[1]],
+    [AMPL.address]: [DAI[1], WETH9[1]],
   },
 }
 
@@ -71,17 +72,15 @@ export const CUSTOM_BASES: { [chainId: number]: { [tokenAddress: string]: Token[
  * Shows up in the currency select for swap and add liquidity
  */
 export const COMMON_BASES: ChainCurrencyList = {
-  [1]: [Ether.onChain(1), DAI, USDC, USDT, WBTC, WETH9[1]],
-  [3]: [Ether.onChain(3), WETH9[3]],
-  [4]: [Ether.onChain(4), WETH9[4]],
-  [5]: [Ether.onChain(5), WETH9[5]],
-  [42]: [Ether.onChain(42), WETH9[42]],
+  [1]: [Ether.onChain(1), DAI[1], USDC[1], USDT[1], WBTC, WETH9[1]],
+  // Mod
+  [1337]: [Ether.onChain(1337), DAI[1337], USDC[1337], USDT[1337], WETH9[1337]],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
-  [1]: [...WETH_ONLY[1], DAI, USDC, USDT, WBTC],
+  [1]: [...WETH_ONLY[1], DAI[1], USDC[1], USDT[1], WBTC],
 }
 export const PINNED_PAIRS: { readonly [chainId: number]: [Token, Token][] } = {
   [1]: [
@@ -89,7 +88,7 @@ export const PINNED_PAIRS: { readonly [chainId: number]: [Token, Token][] } = {
       new Token(1, '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643', 8, 'cDAI', 'Compound Dai'),
       new Token(1, '0x39AA39c021dfbaE8faC545936693aC917d5E7563', 8, 'cUSDC', 'Compound USD Coin'),
     ],
-    [USDC, USDT],
-    [DAI, USDT],
+    [USDC[1], USDT[1]],
+    [DAI[1], USDT[1]],
   ],
 }

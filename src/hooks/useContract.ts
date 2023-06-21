@@ -5,10 +5,8 @@ import { abi as UNI_ABI } from '@uniswap/governance/build/Uni.json'
 import { abi as STAKING_REWARDS_ABI } from '@uniswap/liquidity-staker/build/StakingRewards.json'
 import { abi as MERKLE_DISTRIBUTOR_ABI } from '@uniswap/merkle-distributor/build/MerkleDistributor.json'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
-import { abi as V3PoolABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
-import { abi as QuoterABI } from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
-import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 
+import IUniswapV2Router02ABI from 'abis/IUniswapV2Router02.json'
 import ARGENT_WALLET_DETECTOR_ABI from 'abis/argent-wallet-detector.json'
 import ENS_PUBLIC_RESOLVER_ABI from 'abis/ens-public-resolver.json'
 import ENS_ABI from 'abis/ens-registrar.json'
@@ -22,7 +20,6 @@ import EIP_2612 from 'abis/eip_2612.json'
 
 import {
   NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
-  QUOTER_ADDRESSES,
   ARGENT_WALLET_DETECTOR_ADDRESS,
   GOVERNANCE_ADDRESS,
   MERKLE_DISTRIBUTOR_ADDRESS,
@@ -33,10 +30,17 @@ import {
 } from 'constants/addresses'
 import { abi as NFTPositionManagerABI } from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { useMemo } from 'react'
-import { Quoter, UniswapV3Pool } from 'types/v3'
 import { NonfungiblePositionManager } from 'types/v3/NonfungiblePositionManager'
 import { getContract } from 'utils'
-import { Erc20, ArgentWalletDetector, EnsPublicResolver, EnsRegistrar, Multicall2, Weth } from '../abis/types'
+import {
+  Erc20,
+  ArgentWalletDetector,
+  EnsPublicResolver,
+  EnsRegistrar,
+  Multicall2,
+  Weth,
+  IUniswapV2Router02,
+} from '../abis/types'
 import { UNI } from '../constants/tokens'
 import { useActiveWeb3React } from './web3'
 
@@ -97,7 +101,7 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 
 export function useV2RouterContract(): Contract | null {
-  return useContract(V2_ROUTER_ADDRESS, IUniswapV2Router02ABI, true)
+  return useContract<IUniswapV2Router02>(V2_ROUTER_ADDRESS, IUniswapV2Router02ABI, true) as IUniswapV2Router02
 }
 
 export function useMulticall2Contract() {

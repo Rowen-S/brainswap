@@ -302,9 +302,7 @@ export const StyledMenuButton = styled.button`
 
 const NETWORK_LABELS: { [chainId: number]: string } = {
   [4]: 'Rinkeby',
-  [3]: 'Ropsten',
-  [5]: 'Görli',
-  [42]: 'Kovan',
+  [1337]: 'Test',
 }
 
 export default function Header() {
@@ -312,6 +310,7 @@ export default function Header() {
   const { t } = useTranslation()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+
   // const [isDark] = useDarkModeManager()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
 

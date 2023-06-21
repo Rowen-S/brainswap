@@ -1,12 +1,12 @@
 import { Currency, CurrencyAmount, Price, Token } from '@uniswap/sdk-core'
 import { useMemo } from 'react'
-import { USDC } from '../constants/tokens'
+import { USDC_MAINNET } from '../constants/tokens'
 import { useV2TradeExactOut } from './useV2Trade'
 import { useActiveWeb3React } from './web3'
 
 // USDC amount used when calculating spot price for a given currency.
 // The amount is large enough to filter low liquidity pairs.
-const usdcCurrencyAmount = CurrencyAmount.fromRawAmount(USDC, 100_000e6)
+const usdcCurrencyAmount = CurrencyAmount.fromRawAmount(USDC_MAINNET, 100_000e6)
 
 /**
  * Returns the price in USDC of the input currency
@@ -36,14 +36,14 @@ export default function useUSDCPrice(currency?: Currency): Price<Currency, Token
     }
 
     // handle usdc
-    if (currency?.wrapped.equals(USDC)) {
-      return new Price(USDC, USDC, '1', '1')
+    if (currency?.wrapped.equals(USDC_MAINNET)) {
+      return new Price(USDC_MAINNET, USDC_MAINNET, '1', '1')
     }
 
     // use v2 price if available, v3 as fallback
     if (v2USDCTrade) {
       const { numerator, denominator } = v2USDCTrade.route.midPrice
-      return new Price(currency, USDC, denominator, numerator)
+      return new Price(currency, USDC_MAINNET, denominator, numerator)
     }
 
     return undefined

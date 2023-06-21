@@ -41,6 +41,7 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
+import { ethers } from 'ethers'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
@@ -130,7 +131,6 @@ export default function AddLiquidity({
 
   async function onAdd() {
     if (!chainId || !library || !account || !router) return
-
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
       return
@@ -141,14 +141,9 @@ export default function AddLiquidity({
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? ZERO_PERCENT : allowedSlippage)[0],
     }
 
-    let estimate,
-      method: (...args: any) => Promise<TransactionResponse>,
-      args: Array<string | string[] | number>,
-      value: BigNumber | null
+    let data: any, args: Array<string | string[] | number>, value: BigNumber | null
     if (currencyA.isNative || currencyB.isNative) {
       const tokenBIsETH = currencyB.isNative
-      estimate = router.estimateGas.addLiquidityETH
-      method = router.addLiquidityETH
       args = [
         (tokenBIsETH ? currencyA : currencyB)?.wrapped?.address ?? '', // token
         (tokenBIsETH ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
@@ -158,9 +153,8 @@ export default function AddLiquidity({
         deadline.toHexString(),
       ]
       value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).quotient.toString())
+      data = await router.populateTransaction.addLiquidityETH(...args)
     } else {
-      estimate = router.estimateGas.addLiquidity
-      method = router.addLiquidity
       args = [
         currencyA?.wrapped?.address ?? '',
         currencyB?.wrapped?.address ?? '',
@@ -172,37 +166,43 @@ export default function AddLiquidity({
         deadline.toHexString(),
       ]
       value = null
+      data = await router.populateTransaction.addLiquidity(...args)
     }
-
+    console.log('data', data)
     setAttemptingTxn(true)
-    await estimate(...args, value ? { value } : {})
+    await router['estimateGas']
+      .referAndCall(ethers.constants.AddressZero, data?.data)
       .then((estimatedGasLimit) =>
-        method(...args, {
-          ...(value ? { value } : {}),
-          gasLimit: calculateGasMargin(estimatedGasLimit),
-        }).then((response) => {
-          setAttemptingTxn(false)
-
-          addTransaction(response, {
-            summary:
-              'Add ' +
-              parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
-              ' ' +
-              currencies[Field.CURRENCY_A]?.symbol +
-              ' and ' +
-              parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
-              ' ' +
-              currencies[Field.CURRENCY_B]?.symbol,
+        router
+          .referAndCall(ethers.constants.AddressZero, data?.data, {
+            ...(value ? { value } : {}),
+            gasLimit: calculateGasMargin(estimatedGasLimit),
           })
+          .then((response: any) => {
+            setAttemptingTxn(false)
 
-          setTxHash(response.hash)
+            console.log(response)
 
-          ReactGA.event({
-            category: 'Liquidity',
-            action: 'Add',
-            label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
+            addTransaction(response, {
+              summary:
+                'Add ' +
+                parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
+                ' ' +
+                currencies[Field.CURRENCY_A]?.symbol +
+                ' and ' +
+                parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
+                ' ' +
+                currencies[Field.CURRENCY_B]?.symbol,
+            })
+
+            setTxHash(response.hash)
+
+            ReactGA.event({
+              category: 'Liquidity',
+              action: 'Add',
+              label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
+            })
           })
-        })
       )
       .catch((error) => {
         setAttemptingTxn(false)

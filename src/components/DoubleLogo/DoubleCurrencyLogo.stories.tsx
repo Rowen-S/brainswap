@@ -12,7 +12,7 @@ const Template: Story<DoubleCurrencyLogoProps> = (args) => <Component {...args} 
 
 export const DoubleCurrencyLogo = Template.bind({})
 DoubleCurrencyLogo.args = {
-  currency0: DAI,
+  currency0: DAI[1],
   currency1: WBTC,
   size: 220,
 }

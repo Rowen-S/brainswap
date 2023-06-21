@@ -1,8 +1,11 @@
 import { constructSameAddressMap } from '../utils/constructSameAddressMap'
 
 export const UNI_ADDRESS = constructSameAddressMap('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984')
-export const MULTICALL2_ADDRESSES = constructSameAddressMap('0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696')
-export const V2_ROUTER_ADDRESS = constructSameAddressMap('0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D')
+export const MULTICALL2_ADDRESSES = {
+  ...constructSameAddressMap('0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696'),
+  [1337]: '0xa5D7b84358B979949F850eDF77FcFDf5d5848602',
+}
+export const V2_ROUTER_ADDRESS = constructSameAddressMap('0x0a8746e1ab19888f5671511f538aaf0ca935d4a7')
 export const GOVERNANCE_ADDRESS = constructSameAddressMap('0x5e4be8Bc9637f0EAA1A755019e06A68ce081D58F')
 export const TIMELOCK_ADDRESS = constructSameAddressMap('0x1a9C8182C09F50C8318d769245beA52c32BE35BC')
 export const MERKLE_DISTRIBUTOR_ADDRESS: { [chainId: number]: string } = {
@@ -20,9 +23,9 @@ export const ENS_REGISTRAR_ADDRESSES = {
   [5]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   [4]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   [3]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
+  // Mod
+  [1337]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
 }
 export const SOCKS_CONTROLLER_ADDRESSES = {
   [1]: '0x65770b5283117639760beA3F867b69b3697a91dd',
 }
-export const SWAP_ROUTER_ADDRESSES = constructSameAddressMap('0xE592427A0AEce92De3Edee1F18E0157C05861564')
-export const V3_MIGRATOR_ADDRESSES = constructSameAddressMap('0xA5644E29708357803b5A882D272c41cC0dF92B34')

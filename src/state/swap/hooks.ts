@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useCurrency } from '../../hooks/Tokens'
 import useSwapSlippageTolerance from '../../hooks/useSwapSlippageTolerance'
-import { Version } from '../../hooks/useToggledVersion'
 import { useV2TradeExactIn, useV2TradeExactOut } from '../../hooks/useV2Trade'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
 import { isAddress } from '../../utils'
@@ -118,7 +117,7 @@ export function useDerivedSwapInfo(): {
   parsedAmount: CurrencyAmount<Currency> | undefined
   inputError?: string
   v2Trade: V2Trade<Currency, Currency, TradeType> | undefined
-  toggledTrade: V2Trade<Currency, Currency, TradeType> | V3Trade<Currency, Currency, TradeType> | undefined
+  toggledTrade: V2Trade<Currency, Currency, TradeType> | undefined
   allowedSlippage: Percent
 } {
   const { account } = useActiveWeb3React()

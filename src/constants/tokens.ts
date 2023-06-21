@@ -2,9 +2,9 @@ import { Token } from '@uniswap/sdk-core'
 import { UNI_ADDRESS } from './addresses'
 
 export const AMPL = new Token(1, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
-export const DAI = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
-export const USDC = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
-export const USDT = new Token(1, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
+export const DAI_MAINNET = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
+export const USDC_MAINNET = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
+export const USDT_MAINNET = new Token(1, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
 export const WBTC = new Token(1, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC')
 export const FEI = new Token(1, '0x956F47F50A910163D8BF957Cf5846D573E7f87CA', 18, 'FEI', 'Fei USD')
 export const TRIBE = new Token(1, '0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B', 18, 'TRIBE', 'Tribe')
@@ -24,8 +24,22 @@ export const UST = new Token(1, '0xa47c8bf37f92abed4a126bda807a7b7498661acd', 18
 export const MIR = new Token(1, '0x09a3ecafa817268f77be1283176b946c4ff2e608', 18, 'MIR', 'Wrapped MIR')
 export const UNI: { [chainId: number]: Token } = {
   [1]: new Token(1, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap'),
-  [4]: new Token(4, UNI_ADDRESS[4], 18, 'UNI', 'Uniswap'),
-  [3]: new Token(3, UNI_ADDRESS[3], 18, 'UNI', 'Uniswap'),
-  [5]: new Token(5, UNI_ADDRESS[5], 18, 'UNI', 'Uniswap'),
-  [42]: new Token(42, UNI_ADDRESS[42], 18, 'UNI', 'Uniswap'),
+}
+
+// Mod
+export const USDC: { [chainId: number]: Token } = {
+  [1]: USDC_MAINNET,
+  [1337]: new Token(1337, '0x9fa50cFB4F4F291453bcC91e01415A4d1F22E4d6', 6, 'USDC', 'USDCoin'),
+}
+
+// Mod
+export const USDT: { [chainId: number]: Token } = {
+  [1]: USDT_MAINNET,
+  [1337]: new Token(1337, '0xB49BA8BC92F4a86A89DCdf2a1D62993316DA92d1', 6, 'USDT', 'Tether USD'),
+}
+
+// Mod
+export const DAI: { [chainId: number]: Token } = {
+  [1]: DAI_MAINNET,
+  [1337]: new Token(1337, '0xE1afBC03310eb7076e8f81f11f4Af14c76A26056', 18, 'DAI', 'Dai Stablecoin'),
 }

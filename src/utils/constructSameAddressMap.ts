@@ -5,5 +5,6 @@ export function constructSameAddressMap<T extends string>(address: T): { [chainI
     [42]: address,
     [4]: address,
     [5]: address,
+    [1337]: address,
   }
 }
