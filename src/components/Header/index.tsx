@@ -195,12 +195,19 @@ const Title = styled.a`
   pointer-events: auto;
   justify-self: flex-start;
   margin-right: 12px;
+  text-decoration: none;
+  color: ${({ theme }) => theme.text1};
   ${({ theme }) => theme.mediaWidth.upToSmall`
     justify-self: center;
   `};
   :hover {
     cursor: pointer;
   }
+`
+
+const TitleText = styled.text`
+  font-size: 24px;
+  margin-left: 10px;
 `
 
 const UniIcon = styled.div`
@@ -302,7 +309,7 @@ export const StyledMenuButton = styled.button`
 
 const NETWORK_LABELS: { [chainId: number]: string } = {
   [4]: 'Rinkeby',
-  [1337]: 'Test',
+  [84531]: 'base-goerli',
 }
 
 export default function Header() {
@@ -336,6 +343,7 @@ export default function Header() {
           <UniIcon>
             <img width={'24px'} src={darkMode ? LogoDark : Logo} alt="logo" />
           </UniIcon>
+          <TitleText>Brainswap</TitleText>
         </Title>
       </HeaderRow>
       <HeaderLinks>

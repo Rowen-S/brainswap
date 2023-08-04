@@ -36,10 +36,10 @@ const PERMITTABLE_TOKENS: {
     [DAI[1].address]: { type: PermitType.ALLOWED, name: 'Dai Stablecoin', version: '1' },
     [UNI[1].address]: { type: PermitType.AMOUNT, name: 'Uniswap' },
   },
-  [1337]: {
-    [USDC[1337].address]: { type: PermitType.AMOUNT, name: 'USD Coin', version: '2' },
-    [USDT[1337].address]: { type: PermitType.AMOUNT, name: 'USDT Coin', version: '2' },
-    [DAI[1337].address]: { type: PermitType.ALLOWED, name: 'Dai Stablecoin', version: '1' },
+  [84531]: {
+    [USDC[84531].address]: { type: PermitType.AMOUNT, name: 'USD Coin', version: '2' },
+    [USDT[84531].address]: { type: PermitType.AMOUNT, name: 'USDT Coin', version: '2' },
+    [DAI[84531].address]: { type: PermitType.ALLOWED, name: 'Dai Stablecoin', version: '1' },
   },
 }
 

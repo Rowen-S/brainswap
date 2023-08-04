@@ -29,17 +29,17 @@ export const UNI: { [chainId: number]: Token } = {
 // Mod
 export const USDC: { [chainId: number]: Token } = {
   [1]: USDC_MAINNET,
-  [1337]: new Token(1337, '0x9fa50cFB4F4F291453bcC91e01415A4d1F22E4d6', 6, 'USDC', 'USDCoin'),
+  [84531]: new Token(84531, '0x2e9f75df8839ff192da27e977cd154fd1eae03cf', 6, 'USDC', 'USDCoin'),
 }
 
 // Mod
 export const USDT: { [chainId: number]: Token } = {
   [1]: USDT_MAINNET,
-  [1337]: new Token(1337, '0xB49BA8BC92F4a86A89DCdf2a1D62993316DA92d1', 6, 'USDT', 'Tether USD'),
+  [84531]: new Token(84531, '0xB49BA8BC92F4a86A89DCdf2a1D62993316DA92d1', 6, 'USDT', 'Tether USD'),
 }
 
 // Mod
 export const DAI: { [chainId: number]: Token } = {
   [1]: DAI_MAINNET,
-  [1337]: new Token(1337, '0xE1afBC03310eb7076e8f81f11f4Af14c76A26056', 18, 'DAI', 'Dai Stablecoin'),
+  [84531]: new Token(84531, '0xE1afBC03310eb7076e8f81f11f4Af14c76A26056', 18, 'DAI', 'Dai Stablecoin'),
 }

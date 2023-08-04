@@ -9,6 +9,8 @@ import styled, {
 import { useIsDarkMode } from '../state/user/hooks'
 import { Colors } from './styled'
 
+import GlobalBg from 'assets/images/global-backaround.png'
+
 export * from './components'
 
 export const MEDIA_WIDTHS = {
@@ -47,9 +49,9 @@ export function colors(darkMode: boolean): Colors {
     text5: darkMode ? '#2C2F36' : '#EDEEF2',
 
     // backgrounds / greys
-    bg0: darkMode ? '#191B1F' : '#FFF',
-    bg1: darkMode ? '#212429' : '#F7F8FA',
-    bg2: darkMode ? '#2C2F36' : '#EDEEF2',
+    bg0: darkMode ? '#2CFFF3' : '#FFF',
+    bg1: darkMode ? '#030414' : '#F7F8FA',
+    bg2: darkMode ? '#001A52' : '#EDEEF2',
     bg3: darkMode ? '#40444F' : '#CED0D9',
     bg4: darkMode ? '#565A69' : '#888D9B',
     bg5: darkMode ? '#6C7284' : '#888D9B',
@@ -60,7 +62,7 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#2172E5' : '#ff007a',
+    primary1: darkMode ? '#2CFFF3' : '#ff007a',
     primary2: darkMode ? '#3680E7' : '#FF8CC3',
     primary3: darkMode ? '#4D8FEA' : '#FF99C9',
     primary4: darkMode ? '#376bad70' : '#F6DDE8',
@@ -188,19 +190,19 @@ export const TYPE = {
 
 export const ThemedBackground = styled.div<{ backgroundColor?: string | undefined }>`
   position: fixed;
-  top: 0;
-  left: calc(-100vw / 2);
-  right: 0;
+  inset: 0;
   pointer-events: none;
   /* max-width: 100vw !important; */
-  width: 200vw;
-  height: 200vh;
+  width: 100vw;
+  height: 100vh;
   mix-blend-mode: color;
-  background: ${({ backgroundColor }) =>
+  /* background: ${({ backgroundColor }) =>
     `radial-gradient(50% 50% at 50% 50%, ${
       backgroundColor ? backgroundColor : '#fc077d10'
-    } 0%, rgba(255, 255, 255, 0) 100%)`};
-  transform: translateY(-100vh);
+    } 0%, rgba(255, 255, 255, 0) 100%)`}; */
+
+  background: url(${GlobalBg}) no-repeat;
+  transform: translateY(75vh);
   will-change: background;
   transition: background 450ms ease;
 `
@@ -249,6 +251,7 @@ export const ThemedGlobalStyle = createGlobalStyle`
 html {
   color: ${({ theme }) => theme.text1};
   background-color: ${({ theme }) => theme.bg1};
+
 }
 
 body {

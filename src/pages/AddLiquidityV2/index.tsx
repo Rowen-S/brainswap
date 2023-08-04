@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
+
 import { Currency, CurrencyAmount, Percent, WETH9 } from '@uniswap/sdk-core'
 import React, { useCallback, useContext, useState } from 'react'
 import { Plus } from 'react-feather'
@@ -41,7 +42,7 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
-import { ethers } from 'ethers'
+import { ethers, PopulatedTransaction } from 'ethers'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
@@ -131,6 +132,7 @@ export default function AddLiquidity({
 
   async function onAdd() {
     if (!chainId || !library || !account || !router) return
+
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
       return
@@ -141,9 +143,12 @@ export default function AddLiquidity({
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? ZERO_PERCENT : allowedSlippage)[0],
     }
 
-    let data: any, args: Array<string | string[] | number>, value: BigNumber | null
+    let method: (...args: any) => Promise<PopulatedTransaction>,
+      args: Array<string | string[] | number>,
+      value: BigNumber | null
     if (currencyA.isNative || currencyB.isNative) {
       const tokenBIsETH = currencyB.isNative
+      method = router.populateTransaction.addLiquidityETH
       args = [
         (tokenBIsETH ? currencyA : currencyB)?.wrapped?.address ?? '', // token
         (tokenBIsETH ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
@@ -153,8 +158,8 @@ export default function AddLiquidity({
         deadline.toHexString(),
       ]
       value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).quotient.toString())
-      data = await router.populateTransaction.addLiquidityETH(...args)
     } else {
+      method = router.populateTransaction.addLiquidity
       args = [
         currencyA?.wrapped?.address ?? '',
         currencyB?.wrapped?.address ?? '',
@@ -166,22 +171,20 @@ export default function AddLiquidity({
         deadline.toHexString(),
       ]
       value = null
-      data = await router.populateTransaction.addLiquidity(...args)
     }
+    const { data } = await method(...args, { ...(value ? { value } : {}) })
     console.log('data', data)
     setAttemptingTxn(true)
-    await router['estimateGas']
-      .referAndCall(ethers.constants.AddressZero, data?.data)
+    await router.estimateGas
+      .referAndCall(ethers.constants.AddressZero, data, { value })
       .then((estimatedGasLimit) =>
         router
-          .referAndCall(ethers.constants.AddressZero, data?.data, {
-            ...(value ? { value } : {}),
+          .referAndCall(ethers.constants.AddressZero, data, {
+            value,
             gasLimit: calculateGasMargin(estimatedGasLimit),
           })
-          .then((response: any) => {
+          .then((response: TransactionResponse) => {
             setAttemptingTxn(false)
-
-            console.log(response)
 
             addTransaction(response, {
               summary:

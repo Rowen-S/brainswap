@@ -33,15 +33,15 @@ const mAssetsAdditionalBases: { [tokenAddress: string]: Token[] } = {
 const WETH_ONLY: ChainTokenList = {
   [1]: [WETH9[1]],
   // Mod
-  [1337]: [WETH9[1337]],
+  [84531]: [WETH9[84531]],
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [1]: [...WETH_ONLY[1], DAI[1337], USDC[1], USDT[1], WBTC],
+  [1]: [...WETH_ONLY[1], DAI[84531], USDC[1], USDT[1], WBTC],
   // Mod
-  [1337]: [...WETH_ONLY[1337], DAI[1337], USDC[1337], USDT[1337]],
+  [84531]: [...WETH_ONLY[84531], DAI[84531], USDC[84531], USDT[84531]],
 }
 export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {
   [1]: {
@@ -74,7 +74,7 @@ export const CUSTOM_BASES: { [chainId: number]: { [tokenAddress: string]: Token[
 export const COMMON_BASES: ChainCurrencyList = {
   [1]: [Ether.onChain(1), DAI[1], USDC[1], USDT[1], WBTC, WETH9[1]],
   // Mod
-  [1337]: [Ether.onChain(1337), DAI[1337], USDC[1337], USDT[1337], WETH9[1337]],
+  [84531]: [Ether.onChain(84531), DAI[84531], USDC[84531], USDT[84531], WETH9[84531]],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend

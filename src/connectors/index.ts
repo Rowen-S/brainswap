@@ -22,10 +22,10 @@ const NETWORK_URLS: {
   [chainId: number]: string
 } = {
   [1]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
-  [1337]: `http://47.100.41.138:8082`,
+  [84531]: `https://1rpc.io/base-goerli`,
 }
 
-const SUPPORTED_CHAIN_IDS = [1, 1337]
+const SUPPORTED_CHAIN_IDS = [1, 84531]
 
 export const network = new NetworkConnector({
   urls: NETWORK_URLS,
