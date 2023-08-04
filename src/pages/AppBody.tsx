@@ -8,9 +8,17 @@ export const BodyWrapper = styled.div<{ margin?: string }>`
   margin-top: ${({ margin }) => margin ?? '0px'};
   max-width: 480px;
   width: 100%;
-  border: 3px solid ${({ theme }) => theme.bg0};
+  background: rgba(0, 106, 254, 0.1);
+  /* box-shadow: 0px 0px 1px rgba(0, 106, 254, 0.01), 0px 4px 8px rgba(0, 106, 254, 0.1),
+    0px 16px 24px rgba(0, 106, 254, 0.1), 0px 24px 32px rgba(0, 106, 254, 0.01); */
+  /* border-radius: 24px; */
   margin-top: 1rem;
-  ::before,
+
+  & > #body {
+    margin: 10px;
+    border: 1px solid #006afe;
+  }
+  /* ::before,
   ::after {
     content: '';
     position: absolute;
@@ -48,7 +56,7 @@ export const BodyWrapper = styled.div<{ margin?: string }>`
       bottom: -3px;
       left: -3px;
     }
-  }
+  } */
 `
 /**
  * The styled container element that wraps the content of most pages and the tabs.
@@ -56,8 +64,7 @@ export const BodyWrapper = styled.div<{ margin?: string }>`
 export default function AppBody({ children, ...rest }: { children: React.ReactNode }) {
   return (
     <BodyWrapper {...rest}>
-      <div className="body-other"></div>
-      {children}
+      <div id="body">{children}</div>
     </BodyWrapper>
   )
 }

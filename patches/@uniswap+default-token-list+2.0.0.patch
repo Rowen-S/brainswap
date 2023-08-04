@@ -1,8 +1,8 @@
 diff --git a/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json b/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
-index 3726fda..5c67d2f 100644
+index 3726fda..7636b0b 100644
 --- a/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
 +++ b/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
-@@ -317,109 +317,38 @@
+@@ -317,109 +317,21 @@
        "chainId": 1,
        "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xE41d2489571d322189246DaFA5ebDe1F4699F498/logo.png"
      },
@@ -119,23 +119,6 @@ index 3726fda..5c67d2f 100644
 +      "chainId": 84531,
 +      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
      }
-+    // ,
-+    // {
-+    //   "name": "Tether USD",
-+    //   "address": "0xB49BA8BC92F4a86A89DCdf2a1D62993316DA92d1",
-+    //   "symbol": "USDT",
-+    //   "decimals": 6,
-+    //   "chainId": 1337,
-+    //   "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
-+    // },
-+    // {
-+    //   "name": "Dai Stablecoin",
-+    //   "address": "0xE1afBC03310eb7076e8f81f11f4Af14c76A26056",
-+    //   "symbol": "DAI",
-+    //   "decimals": 18,
-+    //   "chainId": 1337,
-+    //   "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png"
-+    // }
    ]
  }
 \ No newline at end of file
