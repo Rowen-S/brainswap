@@ -150,6 +150,20 @@ export const ButtonSecondary = styled(Base)`
     text-decoration: none;
   }
 `
+export const ButtonNormal = styled(Base)`
+  background-color: transparent;
+  color: #2cfff3;
+  font-size: 18px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 10px;
+  border: 1px solid #2cfff3;
+
+  &:disabled {
+    opacity: 50%;
+    cursor: auto;
+  }
+`
 
 export const ButtonPink = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
