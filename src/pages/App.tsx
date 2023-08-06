@@ -1,25 +1,26 @@
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
-import AddressClaimModal from '../components/claim/AddressClaimModal'
+// import AddressClaimModal from '../components/claim/AddressClaimModal'
 import Header from '../components/Header'
 import Polling from '../components/Header/Polling'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
 import ErrorBoundary from '../components/ErrorBoundary'
-import { ApplicationModal } from '../state/application/actions'
-import { useModalOpen, useToggleModal } from '../state/application/hooks'
+// import { ApplicationModal } from '../state/application/actions'
+// import { useModalOpen, useToggleModal } from '../state/application/hooks'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
-import Earn from './Earn'
-import Manage from './Earn/Manage'
+// import Earn from './Earn'
+// import Manage from './Earn/Manage'
 import Pool from './Pool'
 import PoolFinder from './PoolFinder'
 import RemoveLiquidity from './RemoveLiquidity'
 import Swap from './Swap'
-import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
-import Vote from './Vote'
-import VotePage from './Vote/VotePage'
+// OpenClaimAddressModalAndRedirectToSwap,
+import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+// import Vote from './Vote'
+// import VotePage from './Vote/VotePage'
 import { RedirectDuplicateTokenIdsV2 } from './AddLiquidityV2/redirects'
 import { ThemedBackground } from '../theme'
 import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
@@ -60,11 +61,11 @@ const Marginer = styled.div`
   margin-top: 5rem;
 `
 
-function TopLevelModals() {
-  const open = useModalOpen(ApplicationModal.ADDRESS_CLAIM)
-  const toggle = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
-  return <AddressClaimModal isOpen={open} onDismiss={toggle} />
-}
+// function TopLevelModals() {
+//   const open = useModalOpen(ApplicationModal.ADDRESS_CLAIM)
+//   const toggle = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
+//   return <AddressClaimModal isOpen={open} onDismiss={toggle} />
+// }
 
 export default function App() {
   return (
@@ -81,14 +82,14 @@ export default function App() {
             <ThemedBackground />
             <Popups />
             <Polling />
-            <TopLevelModals />
+            {/* <TopLevelModals /> */}
             <Web3ReactManager>
               <Switch>
-                <Route exact strict path="/vote" component={Vote} />
+                {/* <Route exact strict path="/vote" component={Vote} />
                 <Route exact strict path="/vote/:id" component={VotePage} />
                 <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
                 <Route exact strict path="/uni" component={Earn} />
-                <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
+                <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} /> */}
 
                 <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                 <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />

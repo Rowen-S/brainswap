@@ -1,5 +1,5 @@
 import { Token } from '@uniswap/sdk-core'
-import { UNI_ADDRESS } from './addresses'
+import { UNI_ADDRESS, IQ_ADDRESS } from './addresses'
 
 export const AMPL = new Token(1, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 export const DAI_MAINNET = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
@@ -22,6 +22,11 @@ export const ETH2X_FLI = new Token(
 // Mirror Protocol compat.
 export const UST = new Token(1, '0xa47c8bf37f92abed4a126bda807a7b7498661acd', 18, 'UST', 'Wrapped UST')
 export const MIR = new Token(1, '0x09a3ecafa817268f77be1283176b946c4ff2e608', 18, 'MIR', 'Wrapped MIR')
+
+export const IQ: { [chainId: number]: Token } = {
+  [80001]: new Token(80001, IQ_ADDRESS[80001], 18, 'IQ', 'Brainswap'),
+}
+
 export const UNI: { [chainId: number]: Token } = {
   [1]: new Token(1, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap'),
 }

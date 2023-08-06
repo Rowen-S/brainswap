@@ -1,18 +1,22 @@
-import React from 'react'
+import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
 import { AutoColumn } from '../../components/Column'
 import Row from 'components/Row'
 import SupplyBgImage from '../../assets/images/ilo/supply_bg.svg'
 import OfferBgImage from '../../assets/images/ilo/offer_bg.svg'
 import LPHistoryBgImage from '../../assets/images/ilo/lp_history_bg.svg'
-import DecorateBottomBgImage from '../../assets/images/decorate_bottom_bg.png'
-import DecorateBottomEarthImage from '../../assets/images/decorate_bottom_earth.png'
 import { StairCard } from 'components/StairCard'
 import SupplyItem from './SupplyItem'
 import AddLP from './AddLP'
 import ConvertLP from './ConvertLP'
 import LPHistory from './LPHistory'
+import { useWeb3React } from '@web3-react/core'
+import { useTotalSupply } from 'hooks/useTotalSupply'
+import { IQ } from 'constants/tokens'
+import { formatEther } from '@ethersproject/units'
 import { useIDOContract } from 'hooks/useContract'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import { useCallback } from 'react'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -28,7 +32,7 @@ const SectionWrapper = styled.section`
 `
 
 const ILOTitle = styled(Row)`
-  color: #ffffff;
+  color: ${({ theme }) => theme.text1};
   font-size: 28px;
 `
 
@@ -38,23 +42,28 @@ const OfferWrapper = styled.div`
   grid-row-gap: 40px;
 `
 
-const DecorateBottomBg = styled(Row)<{ bg: any }>`
-  margin-top: 76px;
-  background-image: url(${(props) => props.bg});
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 300px;
-`
-
-const DecorateBottomEarth = styled.img`
-  position: absolute;
-  margin-top: 76px;
-  width: 447px;
-`
-
 export default function LaunchPad() {
+  const { chainId } = useWeb3React()
   const idoContract = useIDOContract()
-  console.log(idoContract)
+  const iq = chainId ? IQ[chainId] : undefined
+
+  const totalSupply: CurrencyAmount<Token> | undefined = useTotalSupply(iq)
+
+  const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
+
+  const ratio = useCallback(() => {
+    if (totalSupply && idoSupply) {
+    }
+    return '-'
+  }, [idoSupply, totalSupply])
+
+  // const tokenContract = useTokenContract(iq)
+  // console.log(tokenContract)
+
+  // console.log(tokenContract?.totalSupply())
+
+  // const totalSupply = useSingleCallResult(tokenContract, 'totalSupply', [])
+  // console.log(totalSupply)
 
   return (
     <PageWrapper>
@@ -63,11 +72,39 @@ export default function LaunchPad() {
           <ILOTitle>IQ200 Initial Launchpad Offerings</ILOTitle>
 
           <StairCard bg={SupplyBgImage}>
-            <Row align="center" height="100%" justify="space-around">
-              <SupplyItem title="Total Supply" value="10,000,000,000 IQ200" desc="Fair launch for ALL MEME DEGEN" />
-              <SupplyItem title="IDO Supply" value="40,000,000「4%」" desc="Equivalent to 10 ETH" />
-              <SupplyItem title="Your allocation" value="100,100 IQ200" desc="Equivalent to 10 ETH" />
-              <SupplyItem title="Fixed Price" value="0.0001 ETH/IQ200" desc="" />
+            <Row height="100%" align={'start'} justify="space-around">
+              <SupplyItem
+                title="Total Supply"
+                content={{
+                  value: totalSupply?.toSignificant(4),
+                  suffix: 'IQ200',
+                }}
+                desc="Fair launch for ALL MEME DEGEN"
+              />
+              <SupplyItem
+                title="IDO Supply"
+                content={{
+                  value: idoSupply ? formatEther(idoSupply) : '0',
+                  suffix: '「4%」',
+                }}
+                desc="Equivalent to 10 ETH"
+              />
+              <SupplyItem
+                title="Your allocation"
+                content={{
+                  value: totalSupply?.toSignificant(4),
+                  suffix: 'IQ200',
+                }}
+                desc="Equivalent to 10 ETH"
+              />
+              <SupplyItem
+                title="Fixed Price"
+                content={{
+                  value: totalSupply?.toSignificant(4),
+                  suffix: 'ETH/IQ200',
+                }}
+                desc=""
+              />
             </Row>
           </StairCard>
 
@@ -113,10 +150,6 @@ export default function LaunchPad() {
           </StairCard>
         </SectionWrapper>
       </ContentWrapper>
-
-      <DecorateBottomBg bg={DecorateBottomBgImage} justify="center" align="flex-end">
-        <DecorateBottomEarth src={DecorateBottomEarthImage}></DecorateBottomEarth>
-      </DecorateBottomBg>
     </PageWrapper>
   )
 }

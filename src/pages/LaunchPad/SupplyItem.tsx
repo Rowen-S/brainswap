@@ -4,7 +4,10 @@ import styled from 'styled-components/macro'
 
 interface ISupplyItemProps {
   title: string
-  value: string
+  content: {
+    value: string | undefined
+    suffix: string
+  }
   desc: string
 }
 
@@ -36,12 +39,14 @@ const SupplyItemDesc = styled.div`
 
 const SupplyItemWrapper = styled(ColumnCenter)``
 
-export default function SupplyItem(props: ISupplyItemProps) {
+export default function SupplyItem({ title, content, desc }: ISupplyItemProps) {
   return (
     <SupplyItemWrapper>
-      <SupplyItemTitle>{props.title}</SupplyItemTitle>
-      <SupplyItemValue>{props.value}</SupplyItemValue>
-      <SupplyItemDesc>{props.desc}</SupplyItemDesc>
+      <SupplyItemTitle>{title}</SupplyItemTitle>
+      <SupplyItemValue>
+        {content?.value ?? 0.0} {content.suffix}
+      </SupplyItemValue>
+      <SupplyItemDesc>{desc}</SupplyItemDesc>
     </SupplyItemWrapper>
   )
 }

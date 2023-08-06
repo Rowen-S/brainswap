@@ -1,19 +1,12 @@
-import { Interface, FunctionFragment } from '@ethersproject/abi'
+import { FunctionFragment, Interface } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useBlockNumber } from '../application/hooks'
-import { AppDispatch, AppState } from '../index'
-import {
-  addMulticallListeners,
-  Call,
-  removeMulticallListeners,
-  parseCallKey,
-  toCallKey,
-  ListenerOptions,
-} from './actions'
+import { addMulticallListeners, ListenerOptions, removeMulticallListeners } from './actions'
+import { Call, parseCallKey, toCallKey } from './utils'
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -22,7 +15,7 @@ export interface Result extends ReadonlyArray<any> {
 type MethodArg = string | number | BigNumber
 type MethodArgs = Array<MethodArg | MethodArg[]>
 
-export type OptionalMethodInputs = Array<MethodArg | MethodArg[] | undefined> | undefined
+type OptionalMethodInputs = Array<MethodArg | MethodArg[] | undefined> | undefined
 
 function isMethodArg(x: unknown): x is MethodArg {
   return BigNumber.isBigNumber(x) || ['string', 'number'].indexOf(typeof x) !== -1
@@ -49,12 +42,13 @@ export const NEVER_RELOAD: ListenerOptions = {
 }
 
 // the lowest level call for subscribing to contract data
-function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): CallResult[] {
+function useCallsData(
+  calls: (Call | undefined)[],
+  { blocksPerFetch }: ListenerOptions = { blocksPerFetch: 1 }
+): CallResult[] {
   const { chainId } = useActiveWeb3React()
-  const callResults = useSelector<AppState, AppState['multicall']['callResults']>(
-    (state) => state.multicall.callResults
-  )
-  const dispatch = useDispatch<AppDispatch>()
+  const callResults = useAppSelector((state) => state.multicall.callResults)
+  const dispatch = useAppDispatch()
 
   const serializedCallKeys: string = useMemo(
     () =>
@@ -76,7 +70,7 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
       addMulticallListeners({
         chainId,
         calls,
-        options,
+        options: { blocksPerFetch },
       })
     )
 
@@ -85,11 +79,11 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
         removeMulticallListeners({
           chainId,
           calls,
-          options,
+          options: { blocksPerFetch },
         })
       )
     }
-  }, [chainId, dispatch, options, serializedCallKeys])
+  }, [chainId, dispatch, blocksPerFetch, serializedCallKeys])
 
   return useMemo(
     () =>
@@ -108,7 +102,7 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
   )
 }
 
-export interface CallState {
+interface CallState {
   readonly valid: boolean
   // the result, or undefined if loading or errored/no data
   readonly result: Result | undefined
@@ -155,7 +149,7 @@ function toCallState(
     valid: true,
     loading: false,
     syncing,
-    result: result,
+    result,
     error: !success,
   }
 }
@@ -164,10 +158,12 @@ export function useSingleContractMultipleData(
   contract: Contract | null | undefined,
   methodName: string,
   callInputs: OptionalMethodInputs[],
-  options?: ListenerOptions,
-  gasRequired?: number
+  options: Partial<ListenerOptions> & { gasRequired?: number } = {}
 ): CallState[] {
   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
+
+  const blocksPerFetch = options?.blocksPerFetch
+  const gasRequired = options?.gasRequired
 
   const calls = useMemo(
     () =>
@@ -183,7 +179,7 @@ export function useSingleContractMultipleData(
     [contract, fragment, callInputs, gasRequired]
   )
 
-  const results = useCallsData(calls, options)
+  const results = useCallsData(calls, blocksPerFetch ? { blocksPerFetch } : undefined)
 
   const latestBlockNumber = useBlockNumber()
 
@@ -197,10 +193,13 @@ export function useMultipleContractSingleData(
   contractInterface: Interface,
   methodName: string,
   callInputs?: OptionalMethodInputs,
-  options?: ListenerOptions,
-  gasRequired?: number
+  options?: Partial<ListenerOptions> & { gasRequired?: number }
 ): CallState[] {
   const fragment = useMemo(() => contractInterface.getFunction(methodName), [contractInterface, methodName])
+
+  const blocksPerFetch = options?.blocksPerFetch
+  const gasRequired = options?.gasRequired
+
   const callData: string | undefined = useMemo(
     () =>
       fragment && isValidMethodArgs(callInputs)
@@ -208,6 +207,8 @@ export function useMultipleContractSingleData(
         : undefined,
     [callInputs, contractInterface, fragment]
   )
+
+  console.log('callData', callData)
 
   const calls = useMemo(
     () =>
@@ -225,7 +226,7 @@ export function useMultipleContractSingleData(
     [addresses, callData, fragment, gasRequired]
   )
 
-  const results = useCallsData(calls, options)
+  const results = useCallsData(calls, blocksPerFetch ? { blocksPerFetch } : undefined)
 
   const latestBlockNumber = useBlockNumber()
 
@@ -234,14 +235,73 @@ export function useMultipleContractSingleData(
   }, [fragment, results, contractInterface, latestBlockNumber])
 }
 
+export function useMultipleContractMultipleData(
+  addresses: (string | undefined)[],
+  contractInterface: Interface,
+  methodName: string,
+  callInputs?: OptionalMethodInputs[][],
+  options?: ListenerOptions,
+  gasRequired?: number
+): CallState[][] {
+  const fragment = useMemo(() => contractInterface.getFunction(methodName), [contractInterface, methodName])
+
+  const calls = useMemo(() => {
+    return addresses.map((address, i) => {
+      const passesChecks = address && contractInterface && fragment
+
+      if (!passesChecks) {
+        return []
+      }
+
+      return callInputs
+        ? callInputs[i].map<Call | undefined>((inputs) => {
+            const callData: string | undefined = isValidMethodArgs(inputs)
+              ? contractInterface.encodeFunctionData(fragment, inputs)
+              : undefined
+            return address && callData
+              ? {
+                  address,
+                  callData,
+                  ...(gasRequired ? { gasRequired } : {}),
+                }
+              : undefined
+          })
+        : []
+    })
+  }, [addresses, callInputs, contractInterface, fragment, gasRequired])
+
+  const callResults = useCallsData(calls.flat(), options)
+
+  const latestBlockNumber = useBlockNumber()
+
+  return useMemo(() => {
+    const callInputLengths = callInputs ? callInputs.map((inputArray) => inputArray.length) : []
+    const unformatedResults = callResults.map((result) =>
+      toCallState(result, contractInterface, fragment, latestBlockNumber)
+    )
+
+    return callInputLengths.map((length) => {
+      let j = 0
+      const indexElements: any = []
+      while (j < length) {
+        indexElements.push(unformatedResults.shift())
+        j++
+      }
+      return indexElements
+    })
+  }, [fragment, callInputs, callResults, contractInterface, latestBlockNumber])
+}
+
 export function useSingleCallResult(
   contract: Contract | null | undefined,
   methodName: string,
   inputs?: OptionalMethodInputs,
-  options?: ListenerOptions,
-  gasRequired?: number
+  options?: Partial<ListenerOptions> & { gasRequired?: number }
 ): CallState {
   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
+
+  const blocksPerFetch = options?.blocksPerFetch
+  const gasRequired = options?.gasRequired
 
   const calls = useMemo<Call[]>(() => {
     return contract && fragment && isValidMethodArgs(inputs)
@@ -255,7 +315,7 @@ export function useSingleCallResult(
       : []
   }, [contract, fragment, inputs, gasRequired])
 
-  const result = useCallsData(calls, options)[0]
+  const result = useCallsData(calls, blocksPerFetch ? { blocksPerFetch } : undefined)[0]
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
