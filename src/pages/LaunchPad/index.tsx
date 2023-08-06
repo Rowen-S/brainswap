@@ -12,6 +12,7 @@ import SupplyItem from './SupplyItem'
 import AddLP from './AddLP'
 import ConvertLP from './ConvertLP'
 import LPHistory from './LPHistory'
+import { useIDOContract } from 'hooks/useContract'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -52,6 +53,9 @@ const DecorateBottomEarth = styled.img`
 `
 
 export default function LaunchPad() {
+  const idoContract = useIDOContract()
+  console.log(idoContract)
+
   return (
     <PageWrapper>
       <ContentWrapper>

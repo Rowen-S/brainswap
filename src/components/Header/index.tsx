@@ -8,30 +8,30 @@ import { Moon, Sun } from 'react-feather'
 import styled from 'styled-components/macro'
 
 import Logo from '../../assets/svg/logo.svg'
-import LogoDark from '../../assets/svg/logo_white.svg'
 
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 import { CardNoise } from '../earn/styled'
-import { TYPE, ExternalLink } from '../../theme'
+// ExternalLink
+import { TYPE } from '../../theme'
 
 import { YellowCard } from '../Card'
 import Menu from '../Menu'
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
-import ClaimModal from '../claim/ClaimModal'
 import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks'
 import { useUserHasAvailableClaim } from '../../state/claim/hooks'
 import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
 import { Dots } from '../swap/styleds'
 import Modal from '../Modal'
 import UniBalanceContent from './UniBalanceContent'
+import ClaimModal from '../claim/ClaimModal'
 
 const HeaderFrame = styled.div<{ showBackground: boolean }>`
   display: grid;
-  grid-template-columns: 120px 1fr 120px;
+  grid-template-columns: 160px 1fr 120px;
   align-items: center;
   justify-content: space-between;
   align-items: center;
@@ -52,7 +52,7 @@ const HeaderFrame = styled.div<{ showBackground: boolean }>`
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding:  1rem;
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: 160px 1fr;
 
   `};
 
@@ -113,10 +113,7 @@ const HeaderRow = styled(RowFixed)`
 
 const HeaderLinks = styled(Row)`
   justify-self: center;
-  background-color: ${({ theme }) => theme.bg0};
   width: fit-content;
-  padding: 4px;
-  border-radius: 16px;
   display: grid;
   grid-auto-flow: column;
   grid-gap: 10px;
@@ -205,12 +202,7 @@ const Title = styled.a`
   }
 `
 
-const TitleText = styled.text`
-  font-size: 24px;
-  margin-left: 10px;
-`
-
-const UniIcon = styled.div`
+const BrainIcon = styled.div`
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
@@ -224,21 +216,20 @@ const StyledNavLink = styled(NavLink).attrs({
 })`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
-  border-radius: 3rem;
   outline: none;
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
+  font-size: 0.875rem;
   width: fit-content;
   font-weight: 500;
   padding: 8px 12px;
+  border-bottom: 2px solid transparent;
 
   &.${activeClassName} {
-    border-radius: 12px;
     font-weight: 600;
     color: ${({ theme }) => theme.text1};
-    background-color: ${({ theme }) => theme.bg2};
+    border-bottom: 2px solid ${({ theme }) => theme.bg0};
   }
 
   :hover,
@@ -247,36 +238,36 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
-const StyledExternalLink = styled(ExternalLink).attrs({
-  activeClassName,
-})<{ isActive?: boolean }>`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: left;
-  border-radius: 3rem;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
-  width: fit-content;
-  margin: 0 12px;
-  font-weight: 500;
+// const StyledExternalLink = styled(ExternalLink).attrs({
+//   activeClassName,
+// })<{ isActive?: boolean }>`
+//   ${({ theme }) => theme.flexRowNoWrap}
+//   align-items: left;
+//   border-radius: 3rem;
+//   outline: none;
+//   cursor: pointer;
+//   text-decoration: none;
+//   color: ${({ theme }) => theme.text2};
+//   font-size: 1rem;
+//   width: fit-content;
+//   margin: 0 12px;
+//   font-weight: 500;
 
-  &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.text1};
-  }
+//   &.${activeClassName} {
+//     border-radius: 12px;
+//     font-weight: 600;
+//     color: ${({ theme }) => theme.text1};
+//   }
 
-  :hover,
-  :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-  }
+//   :hover,
+//   :focus {
+//     color: ${({ theme }) => darken(0.1, theme.text1)};
+//   }
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      display: none;
-`}
-`
+//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+//       display: none;
+// `}
+// `
 
 export const StyledMenuButton = styled.button`
   position: relative;
@@ -309,6 +300,7 @@ export const StyledMenuButton = styled.button`
 
 const NETWORK_LABELS: { [chainId: number]: string } = {
   [4]: 'Rinkeby',
+  [80001]: 'Polygon_mumbai',
   [84531]: 'base-goerli',
 }
 
@@ -340,10 +332,12 @@ export default function Header() {
       </Modal>
       <HeaderRow>
         <Title href=".">
-          <UniIcon>
-            <img width={'24px'} src={darkMode ? LogoDark : Logo} alt="logo" />
-          </UniIcon>
-          <TitleText>Brainswap</TitleText>
+          <BrainIcon>
+            <img width={'42px'} src={Logo} alt="logo" />
+          </BrainIcon>
+          <Text pl={10} fontSize={24}>
+            Brainswap
+          </Text>
         </Title>
       </HeaderRow>
       <HeaderLinks>
@@ -363,12 +357,15 @@ export default function Header() {
         >
           {t('pool')}
         </StyledNavLink>
+        <StyledNavLink id={`launchpad-nav-link`} to={'/launchpad'}>
+          Launchpad
+        </StyledNavLink>
         <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
           Vote
         </StyledNavLink>
-        <StyledExternalLink id={`stake-nav-link`} href={'https://info.uniswap.org'}>
+        {/* <StyledExternalLink id={`stake-nav-link`} href={'https://info.uniswap.org'}>
           Charts <span style={{ fontSize: '11px', textDecoration: 'none !important' }}>↗</span>
-        </StyledExternalLink>
+        </StyledExternalLink> */}
       </HeaderLinks>
       <HeaderControls>
         <HeaderElement>

@@ -22,14 +22,15 @@ const NETWORK_URLS: {
   [chainId: number]: string
 } = {
   [1]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
+  [80001]: `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
   [84531]: `https://1rpc.io/base-goerli`,
 }
 
-const SUPPORTED_CHAIN_IDS = [1, 84531]
+const SUPPORTED_CHAIN_IDS = [1, 80001, 84531]
 
 export const network = new NetworkConnector({
   urls: NETWORK_URLS,
-  defaultChainId: 1,
+  defaultChainId: 80001,
 })
 
 let networkLibrary: Web3Provider | undefined

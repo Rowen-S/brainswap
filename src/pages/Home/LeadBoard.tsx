@@ -1,8 +1,7 @@
-import React from 'react'
 import styled from 'styled-components'
 import Column from 'components/Column'
 import LeadBoardTitleImage from '../../assets/images/home/leadboard_title.png'
-import { TBody, TD, TH, THead, TR, Table } from 'components/Table'
+import { Table } from 'components/Table'
 import { StairCard } from 'components/StairCard'
 import LeadBoardBgImage from '../../assets/images/home/leadboard_bg.svg'
 
@@ -35,24 +34,26 @@ export default function LeadBoard() {
         }}
       >
         <Table>
-          <THead>
-            <TH>Rank</TH>
-            <TH>Address</TH>
-            <TH>Trading Boost</TH>
-            <TH>Volume</TH>
-            <TH>Trading IQ </TH>
-            <TH>Estimated rewards</TH>
-            <TH>Red bull</TH>
-          </THead>
-          <TBody>
-            <TR>
-              <TD>2123</TD>
-              <TD>1223</TD>
-              <TD>asdasd</TD>
-              <TD>asdasd</TD>
-              <TD>asdasd</TD>
-              <TD>asdasd</TD>
-              <TD
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Address</th>
+              <th>trading Boost</th>
+              <th>Volume</th>
+              <th>trading IQ </th>
+              <th>Estimated rewards</th>
+              <th>Red bull</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2123</td>
+              <td>1223</td>
+              <td>asdasd</td>
+              <td>asdasd</td>
+              <td>asdasd</td>
+              <td>asdasd</td>
+              <td
                 style={{
                   maxWidth: '50px',
                 }}
@@ -65,9 +66,9 @@ export default function LeadBoard() {
                 >
                   Drink 50 IQ to upgrade Boost!
                 </span>
-              </TD>
-            </TR>
-          </TBody>
+              </td>
+            </tr>
+          </tbody>
         </Table>
       </StairCard>
     </LeadBoardWrapper>

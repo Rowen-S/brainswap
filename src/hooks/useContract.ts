@@ -17,6 +17,7 @@ import { Unisocks } from 'abis/types/Unisocks'
 import UNISOCKS_ABI from 'abis/unisocks.json'
 import WETH_ABI from 'abis/weth.json'
 import EIP_2612 from 'abis/eip_2612.json'
+import IDO_ABI from 'abis/Ido.json'
 
 import {
   NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
@@ -27,6 +28,7 @@ import {
   V2_ROUTER_ADDRESS,
   ENS_REGISTRAR_ADDRESSES,
   SOCKS_CONTROLLER_ADDRESSES,
+  IDO_ADDRESS,
 } from 'constants/addresses'
 import { abi as NFTPositionManagerABI } from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { useMemo } from 'react'
@@ -40,6 +42,7 @@ import {
   Multicall2,
   Weth,
   IUniswapV2Router02,
+  Ido,
 } from '../abis/types'
 import { UNI } from '../constants/tokens'
 import { useActiveWeb3React } from './web3'
@@ -135,4 +138,8 @@ export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean):
     NFTPositionManagerABI,
     withSignerIfPossible
   )
+}
+
+export function useIDOContract(withSignerIfPossible?: boolean): Ido | null {
+  return useContract<Ido>(IDO_ADDRESS, IDO_ABI, withSignerIfPossible)
 }
