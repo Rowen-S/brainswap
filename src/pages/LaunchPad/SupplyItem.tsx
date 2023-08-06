@@ -1,6 +1,7 @@
 import { ColumnCenter } from 'components/Column'
 import React from 'react'
 import styled from 'styled-components/macro'
+import { formatWithMod } from 'utils'
 
 interface ISupplyItemProps {
   title: string
@@ -44,7 +45,7 @@ export default function SupplyItem({ title, content, desc }: ISupplyItemProps) {
     <SupplyItemWrapper>
       <SupplyItemTitle>{title}</SupplyItemTitle>
       <SupplyItemValue>
-        {content?.value ?? 0.0} {content.suffix}
+        {content?.value ? formatWithMod(Number(content.value)) : '-'} {content.suffix}
       </SupplyItemValue>
       <SupplyItemDesc>{desc}</SupplyItemDesc>
     </SupplyItemWrapper>

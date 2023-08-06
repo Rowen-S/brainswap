@@ -92,7 +92,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="Your allocation"
                 content={{
-                  value: totalSupply?.toSignificant(4),
+                  value: undefined,
                   suffix: 'IQ200',
                 }}
                 desc="Equivalent to 10 ETH"
@@ -100,7 +100,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="Fixed Price"
                 content={{
-                  value: totalSupply?.toSignificant(4),
+                  value: undefined,
                   suffix: 'ETH/IQ200',
                 }}
                 desc=""

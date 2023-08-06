@@ -54,3 +54,33 @@ export function isTokenOnList(tokenAddressMap: TokenAddressMap, token?: Token): 
 export function formattedFeeAmount(feeAmount: FeeAmount): number {
   return feeAmount / 10000
 }
+
+export function formatWithMod(amount: number): string {
+  let n = amount
+  let r = ''
+  let temp = ''
+  let mod: number
+
+  do {
+    // Calculate the remainder for the high three digits
+    mod = n % 1000
+    // Determine if the value is greater than 1, which is the condition to continue
+    n = n / 1000
+    // Get the high three digits
+    temp = ~~mod + ''
+    // 1. Padding: If n > 1, we need to pad the digits, e.g., 1 => 001
+    // Otherwise, when temp = ~~mod, 1 001 will become "11"
+    // 2. Concatenate ","
+    r = (n >= 1 ? `${temp}`.padStart(3, '0') : temp) + (!!r ? ',' + r : '')
+  } while (n >= 1)
+
+  const strNumber = amount + ''
+  const index = strNumber.indexOf('.')
+
+  // Concatenate the decimal part
+  if (index >= 0) {
+    r += strNumber.substring(index)
+  }
+
+  return r
+}
