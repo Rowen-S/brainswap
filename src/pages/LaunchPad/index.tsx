@@ -1,6 +1,6 @@
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
-import { AutoColumn, ColumnCenter } from '../../components/Column'
+import { AutoColumn } from '../../components/Column'
 import Row from 'components/Row'
 import SupplyBgImage from '../../assets/images/ilo/supply_bg.svg'
 import OfferBgImage from '../../assets/images/ilo/offer_bg.svg'

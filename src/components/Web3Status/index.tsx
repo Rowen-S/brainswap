@@ -59,40 +59,41 @@ const Web3StatusError = styled(Web3StatusGeneric)`
 `
 
 const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
-  background-color: ${({ theme }) => theme.primary4};
+  background-color: ${({ theme }) => theme.bg0};
   border: none;
-  color: ${({ theme }) => theme.primaryText1};
+  color: ${({ theme }) => theme.bg6};
   font-weight: 500;
 
   :hover,
   :focus {
     border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-    color: ${({ theme }) => theme.primaryText1};
+    color: ${({ theme }) => theme.bg6};
   }
 
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.primary5};
+      background-color: transparent;
       border: 1px solid ${({ theme }) => theme.primary5};
-      color: ${({ theme }) => theme.primaryText1};
+      color: ${({ theme }) => theme.bg6};
 
       :hover,
       :focus {
         border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
+        color: ${({ theme }) => darken(0.05, theme.bg6)};
       }
     `}
 `
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg1)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg2)};
-  color: ${({ pending, theme }) => (pending ? theme.white : theme.text1)};
+  background-color: ${({ pending, theme }) => (pending ? darken(0.1, theme.bg6) : theme.bg6)};
+  border: 1px solid ${({ pending, theme }) => (pending ? theme.primary2 : theme.bg2)};
+  margin: 1px 0;
+  color: ${({ pending, theme }) => (pending ? theme.white : theme.black)};
   font-weight: 500;
   :hover,
   :focus {
-    background-color: ${({ pending, theme }) => (pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg1))};
+    background-color: ${({ pending, theme }) => (pending ? darken(0.05, theme.bg6) : lighten(0.05, theme.bg6))};
 
     :focus {
       border: 1px solid ${({ pending, theme }) => (pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg2))};

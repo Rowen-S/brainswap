@@ -55,7 +55,7 @@ export function colors(darkMode: boolean): Colors {
     bg3: darkMode ? '#40444F' : '#CED0D9',
     bg4: darkMode ? '#565A69' : '#888D9B',
     bg5: darkMode ? '#6C7284' : '#888D9B',
-    bg6: darkMode ? '#1A2028' : '#6C7284',
+    bg6: darkMode ? '#2CFFF3' : '#6C7284',
 
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',

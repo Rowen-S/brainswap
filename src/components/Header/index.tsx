@@ -9,12 +9,16 @@ import styled from 'styled-components/macro'
 
 import Logo from '../../assets/svg/logo.svg'
 
+import TwitterIcon from '../../assets/images/twitter.svg'
+import HBroken from '../../assets/images/hBroken.svg'
+
+import WalletIcon from '../../assets/images/wallet.svg'
+
 import { useActiveWeb3React } from '../../hooks/web3'
 // import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 // import { CardNoise } from '../earn/styled'
-// ExternalLink
-// import { TYPE } from '../../theme'
+import { ExternalLink } from '../../theme'
 
 import { YellowCard } from '../Card'
 // import Menu from '../Menu'
@@ -31,7 +35,7 @@ import UniBalanceContent from './UniBalanceContent'
 
 const HeaderFrame = styled.div<{ showBackground: boolean }>`
   display: grid;
-  grid-template-columns: 160px 1fr 120px;
+  grid-template-columns: 220px 1fr 120px;
   align-items: center;
   justify-content: space-between;
   align-items: center;
@@ -39,11 +43,17 @@ const HeaderFrame = styled.div<{ showBackground: boolean }>`
   width: 100%;
   top: 0;
   position: relative;
-  padding: 1rem;
+  padding: 1rem 2rem;
   z-index: 21;
   position: relative;
 
   /* Background slide effect on scroll. */
+
+  /* background-image: url(${HBroken});
+  background-position: center;
+  background-size: 99% 100%;
+  background-repeat: no-repeat; */
+
   background-image: ${({ theme }) => `linear-gradient(to bottom, transparent 50%, ${theme.bg0} 50% )}}`};
   background-position: ${({ showBackground }) => (showBackground ? '0 -100%' : '0 0')};
   background-size: 100% 200%;
@@ -52,7 +62,7 @@ const HeaderFrame = styled.div<{ showBackground: boolean }>`
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding:  1rem;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 220px 1fr;
 
   `};
 
@@ -112,7 +122,7 @@ const HeaderRow = styled(RowFixed)`
 `
 
 const HeaderLinks = styled(Row)`
-  justify-self: center;
+  justify-self: start;
   width: fit-content;
   display: grid;
   grid-auto-flow: column;
@@ -127,7 +137,8 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg2)};
+  background-color: ${({ theme, active }) => (!active ? theme.bg1 : 'transparent')};
+  border: 1px solid ${({ theme }) => theme.bg6};
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
@@ -169,7 +180,8 @@ const HideSmall = styled.span`
 
 const NetworkCard = styled(YellowCard)`
   border-radius: 12px;
-  padding: 8px 12px;
+  padding: 10px 12px;
+  border: 1px solid ${({ theme }) => theme.error};
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0;
     margin-right: 0.5rem;
@@ -179,8 +191,11 @@ const NetworkCard = styled(YellowCard)`
     flex-shrink: 1;
   `};
 `
-
+const WalletWrapper = styled(Row)`
+  padding-left: 0.625rem;
+`
 const BalanceText = styled(Text)`
+  color: ${({ theme }) => theme.bg6};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
@@ -229,7 +244,7 @@ const StyledNavLink = styled(NavLink).attrs({
   &.${activeClassName} {
     font-weight: 600;
     color: ${({ theme }) => theme.text1};
-    border-bottom: 2px solid ${({ theme }) => theme.bg0};
+    border-bottom: 2px solid ${({ theme }) => theme.bg6};
   }
 
   :hover,
@@ -238,36 +253,36 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
-// const StyledExternalLink = styled(ExternalLink).attrs({
-//   activeClassName,
-// })<{ isActive?: boolean }>`
-//   ${({ theme }) => theme.flexRowNoWrap}
-//   align-items: left;
-//   border-radius: 3rem;
-//   outline: none;
-//   cursor: pointer;
-//   text-decoration: none;
-//   color: ${({ theme }) => theme.text2};
-//   font-size: 1rem;
-//   width: fit-content;
-//   margin: 0 12px;
-//   font-weight: 500;
+const StyledExternalLink = styled(ExternalLink).attrs({
+  activeClassName,
+})<{ isActive?: boolean }>`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: left;
+  border-radius: 3rem;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${({ theme }) => theme.text2};
+  font-size: 1rem;
+  width: fit-content;
+  margin: 0 12px;
+  font-weight: 500;
 
-//   &.${activeClassName} {
-//     border-radius: 12px;
-//     font-weight: 600;
-//     color: ${({ theme }) => theme.text1};
-//   }
+  &.${activeClassName} {
+    border-radius: 12px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.text1};
+  }
 
-//   :hover,
-//   :focus {
-//     color: ${({ theme }) => darken(0.1, theme.text1)};
-//   }
+  :hover,
+  :focus {
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+  }
 
-//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-//       display: none;
-// `}
-// `
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      display: none;
+`}
+`
 
 export const StyledMenuButton = styled.button`
   position: relative;
@@ -386,14 +401,23 @@ export default function Header() {
           )} */}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
-              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} ETH
-              </BalanceText>
+              <WalletWrapper>
+                <img src={WalletIcon} alt="wallet" />
+                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
+                  {userEthBalance?.toSignificant(4)} ETH
+                </BalanceText>
+              </WalletWrapper>
             ) : null}
             <Web3Status />
           </AccountElement>
         </HeaderElement>
         <HeaderElementWrap>
+          {/* <StyledExternalLink id={`stake-nav-link`} href={'https://info.uniswap.org'}>
+            Charts <span style={{ fontSize: '11px', textDecoration: 'none !important' }}>↗</span>
+          </StyledExternalLink> */}
+          <StyledExternalLink href={'://'}>
+            <img width={'30px'} src={TwitterIcon} alt="twitter" />
+          </StyledExternalLink>
           {/* <StyledMenuButton onClick={() => toggleDarkMode()}>
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
           </StyledMenuButton> 
