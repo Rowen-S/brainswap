@@ -17,6 +17,7 @@ import { formatEther } from '@ethersproject/units'
 import { useIDOContract } from 'hooks/useContract'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { useCallback } from 'react'
+import { IDO_RATIO } from 'constants/misc'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -84,8 +85,8 @@ export default function LaunchPad() {
               <SupplyItem
                 title="IDO Supply"
                 content={{
-                  value: idoSupply ? formatEther(idoSupply) : '0',
-                  suffix: '「4%」',
+                  value: totalSupply?.multiply(IDO_RATIO)?.toSignificant(4),
+                  suffix: '「10%」',
                 }}
                 desc="Equivalent to 10 ETH"
               />

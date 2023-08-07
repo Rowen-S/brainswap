@@ -33,6 +33,7 @@ const mAssetsAdditionalBases: { [tokenAddress: string]: Token[] } = {
 const WETH_ONLY: ChainTokenList = {
   [1]: [WETH9[1]],
   // Mod
+  [80001]: [WETH9[80001]],
   [84531]: [WETH9[84531]],
 }
 
@@ -41,6 +42,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
   [1]: [...WETH_ONLY[1], DAI[84531], USDC[1], USDT[1], WBTC],
   // Mod
+  [80001]: [...WETH_ONLY[80001], USDC[80001]],
   [84531]: [...WETH_ONLY[84531], DAI[84531], USDC[84531], USDT[84531]],
 }
 export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {

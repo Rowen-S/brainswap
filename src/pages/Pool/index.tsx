@@ -9,8 +9,8 @@ import { ExternalLink, TYPE, HideSmall } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
 import { RowBetween, RowFixed } from '../../components/Row'
-import { ButtonPrimary, ButtonSecondary, ButtonOutlined } from '../../components/Button'
-import { ChevronsRight } from 'react-feather'
+import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
+// import { ChevronsRight } from 'react-feather'
 
 import { AutoColumn } from '../../components/Column'
 
@@ -81,6 +81,9 @@ export default function Pool() {
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
+
+  console.log('trackedTokenPairs:', trackedTokenPairs)
+
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
     [trackedTokenPairs]
@@ -167,6 +170,11 @@ export default function Pool() {
                 <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/add/ETH">
                   Create a pair
                 </ResponsiveButtonSecondary>
+                <ResponsiveButtonPrimary id="find-pool-button" as={Link} padding="6px 8px" to="/pool/find">
+                  <Text fontWeight={500} fontSize={16}>
+                    Import Pool
+                  </Text>
+                </ResponsiveButtonPrimary>
                 <ResponsiveButtonPrimary
                   id="join-pool-button"
                   as={Link}
@@ -195,14 +203,14 @@ export default function Pool() {
               </EmptyProposals>
             ) : allV2PairsWithLiquidity?.length > 0 || stakingPairs?.length > 0 ? (
               <>
-                <ButtonSecondary>
+                {/* <ButtonSecondary>
                   <RowBetween>
                     <ExternalLink href={'https://v2.info.uniswap.org/account/' + account}>
                       Account analytics and accrued fees
                     </ExternalLink>
                     <span> ↗</span>
                   </RowBetween>
-                </ButtonSecondary>
+                </ButtonSecondary> */}
                 {v2PairsWithoutStakedAmount.map((v2Pair) => (
                   <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
                 ))}
@@ -216,7 +224,7 @@ export default function Pool() {
                       />
                     )
                 )}
-                <RowFixed justify="center" style={{ width: '100%' }}>
+                {/* <RowFixed justify="center" style={{ width: '100%' }}>
                   <ButtonOutlined
                     as={Link}
                     to="/migrate/v2"
@@ -232,7 +240,7 @@ export default function Pool() {
                     <ChevronsRight size={16} style={{ marginRight: '8px' }} />
                     Migrate Liquidity to V3
                   </ButtonOutlined>
-                </RowFixed>
+                </RowFixed> */}
               </>
             ) : (
               <EmptyProposals>
