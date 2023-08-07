@@ -19,6 +19,8 @@ import { useSingleCallResult } from 'state/multicall/hooks'
 // import { useCallback } from 'react'
 import { IDO_RATIO } from 'constants/misc'
 import { Text } from 'rebass'
+import Countdown from 'react-countdown'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -45,7 +47,7 @@ const OfferWrapper = styled.div`
 `
 
 export default function LaunchPad() {
-  const { chainId } = useWeb3React()
+  const { library, chainId, account } = useWeb3React()
   const idoContract = useIDOContract()
   const iq = chainId ? IQ[chainId] : undefined
 
@@ -53,17 +55,119 @@ export default function LaunchPad() {
 
   const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
 
-  // const tokenContract = useTokenContract(iq)
-  // console.log(tokenContract)
+  const userInfo = useSingleCallResult(idoContract, 'userInfo', account ? [account] : [])?.result
 
-  // console.log(tokenContract?.totalSupply())
+  const [{ startTimestamp, endTimestamp, unlockTimestamp }, setInit] = useState<{
+    startTimestamp: number | undefined
+    endTimestamp: number | undefined
+    unlockTimestamp: number | undefined
+  }>({
+    startTimestamp: undefined,
+    endTimestamp: undefined,
+    unlockTimestamp: undefined,
+  })
 
-  // const totalSupply = useSingleCallResult(tokenContract, 'totalSupply', [])
-  // console.log(totalSupply)
+  const initTimestamps = useCallback(async () => {
+    const { startTimestamp, endTimestamp, unlockTimestamp } = await idoContract.timestamps()
+    setInit({
+      startTimestamp: startTimestamp.mul(1000).toNumber(),
+      endTimestamp: endTimestamp.mul(1000).toNumber(),
+      unlockTimestamp: unlockTimestamp.mul(1000).toNumber(),
+    })
+  }, [idoContract])
+
+  const [nowTime, setNowTime] = useState<number>()
+
+  useEffect(() => {
+    if (!nowTime) return
+    const addNowTime = () => {
+      setNowTime(nowTime + 1000)
+    }
+
+    const timerId = setInterval(addNowTime, 1000)
+
+    !chainId ? setNowTime(undefined) : null
+
+    return () => {
+      clearInterval(timerId)
+    }
+  }, [nowTime, chainId])
+
+  const isBuy = useMemo(() => {
+    if (endTimestamp && nowTime) {
+      return nowTime <= endTimestamp ? true : false
+    }
+    return false
+  }, [endTimestamp, nowTime])
+
+  const isRefund = useMemo(
+    () => (idoSupply ? (Number(formatEther(idoSupply)) < 100 ? true : false) : false),
+    [idoSupply]
+  )
+
+  const getNowTime = useCallback(() => {
+    if (library) {
+      library.getBlock('latest').then((res: any) => {
+        setNowTime(res.timestamp * 1000)
+      })
+    } else {
+      setNowTime(undefined)
+    }
+  }, [library, setNowTime])
+
+  const formatNumber = useCallback((num: number) => {
+    return num.toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    })
+  }, [])
+
+  useEffect(() => {
+    if (account && chainId) {
+      initTimestamps()
+      getNowTime()
+    }
+    return () => {
+      setInit({
+        startTimestamp: undefined,
+        endTimestamp: undefined,
+        unlockTimestamp: undefined,
+      })
+    }
+  }, [account, chainId, getNowTime, initTimestamps])
+
+  const initRenderer = useCallback(
+    ({
+      hours,
+      minutes,
+      seconds,
+      completed,
+    }: {
+      hours: number
+      minutes: number
+      seconds: number
+      completed: boolean
+    }) => {
+      // Renderer callback with condition
+      if (completed) {
+        // Render a completed state
+        return nowTime && <Countdown now={() => nowTime} date={endTimestamp} renderer={() => <></>} />
+      } else {
+        // Render a countdown
+        return (
+          <Text fontSize={55}>
+            {formatNumber(hours)}:{formatNumber(minutes)}:{formatNumber(seconds)}
+          </Text>
+        )
+      }
+    },
+    [endTimestamp, nowTime, formatNumber]
+  )
 
   return (
     <PageWrapper>
       <ContentWrapper>
+        {nowTime ? <Countdown now={() => nowTime} date={startTimestamp} renderer={initRenderer} /> : null}
         <SectionWrapper>
           <ILOTitle>IQ200 Initial Launchpad Offerings</ILOTitle>
           <StairCard bg={SupplyBgImage}>
@@ -118,10 +222,10 @@ export default function LaunchPad() {
 
           <OfferWrapper>
             <StairCard bg={OfferBgImage}>
-              <AddLP />
+              <AddLP userInfo={userInfo} isbuy={isBuy} isRefund={isRefund} />
             </StairCard>
             <StairCard bg={OfferBgImage}>
-              <ConvertLP />
+              <ConvertLP userInfo={userInfo} />
             </StairCard>
           </OfferWrapper>
         </SectionWrapper>

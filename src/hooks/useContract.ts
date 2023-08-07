@@ -141,6 +141,6 @@ export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean):
   )
 }
 
-export function useIDOContract(withSignerIfPossible?: boolean): Ido | null {
-  return useContract<Ido>(IDO_ADDRESS, IDO_ABI, withSignerIfPossible)
+export function useIDOContract(withSignerIfPossible?: boolean): Ido {
+  return useContract<Ido>(IDO_ADDRESS, IDO_ABI, withSignerIfPossible) as Ido
 }

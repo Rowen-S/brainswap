@@ -6,24 +6,24 @@ import { ButtonNormal } from 'components/Button'
 import Input from 'components/NumericalInput'
 import { AutoColumn } from 'components/Column'
 import { useIDOContract } from 'hooks/useContract'
-import { parseEther } from '@ethersproject/units'
+import { formatEther, parseEther } from '@ethersproject/units'
+import { useETHBalances } from 'state/wallet/hooks'
+import { useWeb3React } from '@web3-react/core'
+import { Text } from 'rebass'
+import QuestionHelper from 'components/QuestionHelper'
 
 const ILOCardTitle = styled(Row)`
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
 `
-const ILOCardMidTitle = styled.div`
+const ILOCardText = styled(Text)`
   color: #ffffff;
-  font-size: 16px;
   opacity: 0.5;
 `
-const ILOCardSmallTitle = styled.div`
-  color: #ffffff;
-  font-size: 14px;
-  opacity: 0.5;
+const IDDWrapper = styled(AutoColumn)`
+  width: 100%;
 `
-
 const IDOInput = styled(Input)`
   background: transparent;
   border-radius: 8px;
@@ -34,9 +34,12 @@ const IDOInput = styled(Input)`
   font-size: 14px;
 `
 
-export default function AddLP() {
+export default function AddLP({ userInfo, isbuy, isRefund }: { userInfo: any; isbuy: boolean; isRefund: boolean }) {
+  const { account } = useWeb3React()
   const idoContract = useIDOContract()
   const [idoValue, setIdoValue] = useState('')
+
+  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
 
   const buyIDO = useCallback(() => {
     if (!idoValue) return
@@ -54,6 +57,22 @@ export default function AddLP() {
       })
   }, [idoContract, idoValue])
 
+  const refundIDO = useCallback(() => {
+    idoContract
+      ?.refund()
+      .then((res) => {
+        console.log('success', res)
+      })
+      .catch((err) => {
+        console.error('err', err)
+      })
+      .finally(() => {
+        setIdoValue('')
+      })
+  }, [idoContract])
+
+  console.log(isRefund, !Boolean(userInfo?.totalInvestedETH > 0))
+
   return (
     <>
       <ILOCardTitle>Add IQ200 LP offering</ILOCardTitle>
@@ -62,24 +81,42 @@ export default function AddLP() {
           marginTop: '20px',
         }}
       >
-        <ILOCardMidTitle>Take rhe faster way to get BRAINSWAP platform token</ILOCardMidTitle>
+        <ILOCardText fontSize={16}>50% buy IQ + 50% ETH = IQ LP Half money, full token</ILOCardText>
       </RowFixed>
-
       <AutoColumn gap="40px" justify="center">
         <RowBetween
           style={{
             marginTop: '30px',
           }}
         >
-          <ILOCardSmallTitle>Balance 200 ETH</ILOCardSmallTitle>
-          <ILOCardSmallTitle>Allocation 10 ETH</ILOCardSmallTitle>
+          <ILOCardText fontSize={14}>Balance: {userEthBalance?.toSignificant(4)} ETH</ILOCardText>
+          <ILOCardText fontSize={14}>
+            Allocation: {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH) : '-'} ETH
+          </ILOCardText>
         </RowBetween>
 
-        <IDOInput value={idoValue} onUserInput={(val) => setIdoValue(val)} />
-
-        <ButtonNormal disabled={!idoValue} marginTop={40} width={'400px'} onClick={buyIDO}>
-          Add ETH and claim IQ200/ETH esLP
-        </ButtonNormal>
+        {isbuy ? (
+          <>
+            <IDDWrapper gap="md">
+              <IDOInput value={idoValue} onUserInput={(val) => setIdoValue(val)} />
+              <ILOCardText as={Row} fontSize={12}>
+                Your initial LP
+                <QuestionHelper text="The final IQ you purchased will be confirmed when the launchpad is finished." />:
+                IQ + {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '-'}ETH LP
+              </ILOCardText>
+            </IDDWrapper>
+            <ButtonNormal disabled={!idoValue && !isbuy} onClick={buyIDO}>
+              Buy
+            </ButtonNormal>
+          </>
+        ) : isRefund ? (
+          <IDDWrapper gap="sm">
+            <ILOCardText fontSize={14}>*When softcap miss, click ‘refund’ to get your ETH and IQ airdrop </ILOCardText>
+            <ButtonNormal disabled={isRefund && !Boolean(userInfo?.totalInvestedETH > 0)} onClick={refundIDO}>
+              Refund
+            </ButtonNormal>
+          </IDDWrapper>
+        ) : null}
       </AutoColumn>
     </>
   )

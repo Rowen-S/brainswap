@@ -5,8 +5,6 @@ import LockSvg from '../../assets/svg/lock.svg'
 import unLockSvg from '../../assets/svg/unlock.svg'
 import { ButtonNormal } from 'components/Button'
 import { useIDOContract } from 'hooks/useContract'
-import { useSingleCallResult } from 'state/multicall/hooks'
-import { useWeb3React } from '@web3-react/core'
 
 const ILOCardTitle = styled(Row)`
   color: #ffffff;
@@ -44,10 +42,8 @@ const UnLockIcon = styled.img`
   height: 20px;
 `
 
-export default function ConvertLP() {
-  const { account } = useWeb3React()
+export default function ConvertLP({ userInfo }: { userInfo: any }) {
   const idoContract = useIDOContract()
-  const userInfo = useSingleCallResult(idoContract, 'userInfo', account ? [account] : [])?.result
 
   const claimLp = useCallback(() => {
     idoContract
