@@ -23,6 +23,8 @@ export const ETH2X_FLI = new Token(
 export const UST = new Token(1, '0xa47c8bf37f92abed4a126bda807a7b7498661acd', 18, 'UST', 'Wrapped UST')
 export const MIR = new Token(1, '0x09a3ecafa817268f77be1283176b946c4ff2e608', 18, 'MIR', 'Wrapped MIR')
 
+export const USDC_POLYGON_MUMBAI = new Token(80001, '0x0d26532fd3754b650cc303b227d8414ea7de5e8d', 6, 'USDC', 'USD//C')
+
 export const IQ: { [chainId: number]: Token } = {
   [80001]: new Token(80001, IQ_ADDRESS[80001], 18, 'IQ', 'Brainswap'),
 }
@@ -34,6 +36,7 @@ export const UNI: { [chainId: number]: Token } = {
 // Mod
 export const USDC: { [chainId: number]: Token } = {
   [1]: USDC_MAINNET,
+  [80001]: USDC_POLYGON_MUMBAI,
   [84531]: new Token(84531, '0x2e9f75df8839ff192da27e977cd154fd1eae03cf', 6, 'USDC', 'USDCoin'),
 }
 

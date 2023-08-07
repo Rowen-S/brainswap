@@ -8,7 +8,6 @@ export function useAllCurrencyCombinations(currencyA?: Currency, currencyB?: Cur
   const { chainId } = useActiveWeb3React()
 
   const [tokenA, tokenB] = chainId ? [currencyA?.wrapped, currencyB?.wrapped] : [undefined, undefined]
-
   const bases: Token[] = useMemo(() => {
     if (!chainId) return []
 
