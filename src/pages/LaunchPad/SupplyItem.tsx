@@ -9,7 +9,7 @@ interface ISupplyItemProps {
     value: string | undefined
     suffix: string
   }
-  desc: string
+  desc?: string
 }
 
 const SupplyItemTitle = styled.div`

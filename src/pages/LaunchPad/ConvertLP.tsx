@@ -1,9 +1,12 @@
 import styled from 'styled-components/macro'
 import Row, { RowFixed } from 'components/Row'
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import LockSvg from '../../assets/svg/lock.svg'
 import unLockSvg from '../../assets/svg/unlock.svg'
 import { ButtonNormal } from 'components/Button'
+import { useIDOContract } from 'hooks/useContract'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import { useWeb3React } from '@web3-react/core'
 
 const ILOCardTitle = styled(Row)`
   color: #ffffff;
@@ -42,6 +45,28 @@ const UnLockIcon = styled.img`
 `
 
 export default function ConvertLP() {
+  const { account } = useWeb3React()
+  const idoContract = useIDOContract()
+  const userInfo = useSingleCallResult(idoContract, 'userInfo', account ? [account] : [])?.result
+
+  const claimLp = useCallback(() => {
+    idoContract
+      ?.claimLP()
+      .then((res) => {
+        console.log('success', res)
+      })
+      .catch((err) => {
+        console.error('err', err)
+      })
+  }, [idoContract])
+
+  const isInvested = useMemo(() => {
+    if (userInfo && userInfo.debt > 0) {
+      return Boolean(!userInfo.totalInvestedETH)
+    }
+    return true
+  }, [userInfo])
+
   return (
     <>
       <ILOCardTitle>Convert to IQ200/ETH LP</ILOCardTitle>
@@ -80,12 +105,7 @@ export default function ConvertLP() {
         </Row>
       </LockWrapper>
 
-      <ButtonNormal
-        style={{
-          margin: '93px auto 0 auto',
-          width: '400px',
-        }}
-      >
+      <ButtonNormal width={'400px'} margin={'93px auto 0 auto'} disabled={isInvested} onClick={claimLp}>
         Claim IQ200/ETH LP
       </ButtonNormal>
     </>

@@ -1,6 +1,6 @@
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
-import { AutoColumn } from '../../components/Column'
+import { AutoColumn, ColumnCenter } from '../../components/Column'
 import Row from 'components/Row'
 import SupplyBgImage from '../../assets/images/ilo/supply_bg.svg'
 import OfferBgImage from '../../assets/images/ilo/offer_bg.svg'
@@ -16,8 +16,9 @@ import { IQ } from 'constants/tokens'
 import { formatEther } from '@ethersproject/units'
 import { useIDOContract } from 'hooks/useContract'
 import { useSingleCallResult } from 'state/multicall/hooks'
-import { useCallback } from 'react'
+// import { useCallback } from 'react'
 import { IDO_RATIO } from 'constants/misc'
+import { Text } from 'rebass'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -52,12 +53,6 @@ export default function LaunchPad() {
 
   const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
 
-  const ratio = useCallback(() => {
-    if (totalSupply && idoSupply) {
-    }
-    return '-'
-  }, [idoSupply, totalSupply])
-
   // const tokenContract = useTokenContract(iq)
   // console.log(tokenContract)
 
@@ -71,7 +66,6 @@ export default function LaunchPad() {
       <ContentWrapper>
         <SectionWrapper>
           <ILOTitle>IQ200 Initial Launchpad Offerings</ILOTitle>
-
           <StairCard bg={SupplyBgImage}>
             <Row height="100%" align={'start'} justify="space-around">
               <SupplyItem
@@ -86,28 +80,41 @@ export default function LaunchPad() {
                 title="IDO Supply"
                 content={{
                   value: totalSupply?.multiply(IDO_RATIO)?.toSignificant(4),
-                  suffix: '「10%」',
+                  suffix: '[10%]',
                 }}
                 desc="Equivalent to 10 ETH"
               />
               <SupplyItem
-                title="Your allocation"
+                title="Softcap"
                 content={{
-                  value: undefined,
-                  suffix: 'IQ200',
+                  value: '100',
+                  suffix: 'ETH',
+                }}
+              />
+              <SupplyItem
+                title="Total Raised"
+                content={{
+                  value: idoSupply ? formatEther(idoSupply) : '-',
+                  suffix: 'ETH',
                 }}
                 desc="Equivalent to 10 ETH"
               />
               <SupplyItem
-                title="Fixed Price"
+                title="FDV"
                 content={{
-                  value: undefined,
+                  value: '',
                   suffix: 'ETH/IQ200',
                 }}
-                desc=""
               />
             </Row>
           </StairCard>
+
+          <Text fontSize={14} maxWidth={['90%', '65%']} margin="0px auto" lineHeight={'24px'} textAlign={'center'}>
+            *There is no Hard Cap where the IQ price will continuously increase at every purchase. No matter when you
+            participate, everyone will get IQ tokens at the same final price. If Total Raised doesn’t meet the Soft Cap,
+            all the ETH raised will be refunded. The 10% IQ token will be airdropped to the participated address
+            according to the ETH share.
+          </Text>
 
           <OfferWrapper>
             <StairCard bg={OfferBgImage}>

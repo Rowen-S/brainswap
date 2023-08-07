@@ -8,7 +8,7 @@ export const StyledTable = styled.table`
   border-spacing: 0px 10px;
 
   & > thead {
-    & > th {
+    th {
       font-size: 12px;
       color: #2cfff3;
     }
@@ -18,7 +18,6 @@ export const StyledTable = styled.table`
     tr {
       background: rgba(32, 30, 43, 0.3);
       height: 68px;
-      line-height: 68px;
       border-radius: 10px;
       td:first-child {
         border-bottom-left-radius: 10px;
