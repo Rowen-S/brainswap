@@ -10,7 +10,7 @@ export const StyledTable = styled.table`
   & > thead {
     th {
       font-size: 12px;
-      color: #2cfff3;
+      color: ${({ theme }) => theme.bg6};
     }
   }
   & > tbody {

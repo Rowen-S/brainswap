@@ -66,7 +66,7 @@ const items_data = [
     bean: Buff_3_Bean_Image,
     pill_name: 'Superman Pill',
     pill_amount_eth: 0.99,
-    color: '#2CFFF3',
+    color: '${({ theme }) => theme.bg6}',
     bg_color: 'rgba(44, 255, 243, 0.2)',
     boosts: [
       { name: 'Trading rewards', amount: 'x 0.3' },

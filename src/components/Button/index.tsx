@@ -152,12 +152,12 @@ export const ButtonSecondary = styled(Base)`
 `
 export const ButtonNormal = styled(Base)`
   background-color: transparent;
-  color: #2cfff3;
+  color: ${({ theme }) => theme.bg6};
   font-size: 18px;
   height: 50px;
   line-height: 50px;
   border-radius: 10px;
-  border: 1px solid #2cfff3;
+  border: 1px solid ${({ theme }) => theme.bg6};
 
   &:disabled {
     opacity: 50%;

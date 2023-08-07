@@ -27,8 +27,8 @@ const ILOCardSmallTitle = styled.div`
 const IDOInput = styled(Input)`
   background: transparent;
   border-radius: 8px;
-  border: 1px dashed #2cfff3;
-  color: #2cfff3;
+  border: 1px dashed ${({ theme }) => theme.bg6};
+  color: ${({ theme }) => theme.bg6};
   padding: 18px 20px;
   width: 100%;
   font-size: 14px;
