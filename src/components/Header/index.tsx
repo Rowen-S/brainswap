@@ -10,6 +10,8 @@ import styled from 'styled-components/macro'
 import Logo from '../../assets/svg/logo.svg'
 
 import TwitterIcon from '../../assets/images/twitter.svg'
+import DcIcon from '../../assets/images/discord.svg'
+
 import HBroken from '../../assets/images/hBroken.svg'
 
 import WalletIcon from '../../assets/images/wallet.svg'
@@ -265,8 +267,11 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
   width: fit-content;
-  margin: 0 12px;
   font-weight: 500;
+
+  & :first-child {
+    margin: 0 12px;
+  }
 
   &.${activeClassName} {
     border-radius: 12px;
@@ -417,6 +422,9 @@ export default function Header() {
           </StyledExternalLink> */}
           <StyledExternalLink href={'://'}>
             <img width={'30px'} src={TwitterIcon} alt="twitter" />
+          </StyledExternalLink>
+          <StyledExternalLink href={'://'}>
+            <img width={'30px'} src={DcIcon} alt="discord" />
           </StyledExternalLink>
           {/* <StyledMenuButton onClick={() => toggleDarkMode()}>
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
