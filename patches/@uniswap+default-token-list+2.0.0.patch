@@ -1,5 +1,5 @@
 diff --git a/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json b/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
-index 3726fda..28e0570 100644
+index 3726fda..8444cef 100644
 --- a/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
 +++ b/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
 @@ -317,109 +317,37 @@
@@ -22,11 +22,12 @@ index 3726fda..28e0570 100644
 -      "chainId": 3,
 -      "logoURI": "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
 -    },
--    {
--      "name": "Wrapped Ether",
+     {
+       "name": "Wrapped Ether",
 -      "address": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
--      "symbol": "WETH",
--      "decimals": 18,
++      "address": "0x323e590A0033794d3149Af1a2EAB9E4c6108D99b",
+       "symbol": "WETH",
+       "decimals": 18,
 -      "chainId": 3,
 -      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc778417E063141139Fce010982780140Aa0cD5Ab/logo.png"
 -    },
@@ -53,30 +54,35 @@ index 3726fda..28e0570 100644
 -      "decimals": 18,
 -      "chainId": 4,
 -      "logoURI": "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
--    },
++      "chainId": 80001,
++      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+     },
      {
-       "name": "Wrapped Ether",
+-      "name": "Wrapped Ether",
 -      "address": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-+      "address": "0x323e590A0033794d3149Af1a2EAB9E4c6108D99b",
-       "symbol": "WETH",
+-      "symbol": "WETH",
++      "name": "Wrapped Matic",
++      "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
++      "symbol": "WMATIC",
        "decimals": 18,
 -      "chainId": 4,
 -      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc778417E063141139Fce010982780140Aa0cD5Ab/logo.png"
 +      "chainId": 80001,
-+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
++      "logoURI": "https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912"
      },
      {
 -      "name": "Uniswap",
 -      "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
 -      "symbol": "UNI",
-+      "name": "Wrapped Matic",
-+      "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
-+      "symbol": "WMATIC",
-       "decimals": 18,
+-      "decimals": 18,
 -      "chainId": 5,
 -      "logoURI": "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
++      "name": "USDCoin",
++      "address": "0x0d26532fd3754b650cc303b227d8414ea7de5e8d",
++      "symbol": "USDC",
++      "decimals": 6,
 +      "chainId": 80001,
-+      "logoURI": "https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912"
++      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
      },
      {
        "name": "Wrapped Ether",
@@ -113,20 +119,14 @@ index 3726fda..28e0570 100644
 +      "chainId": 84531,
 +      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
      },
-     {
+-    {
 -      "name": "Wrapped Ether",
 -      "address": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
 -      "symbol": "WETH",
 -      "decimals": 18,
 -      "chainId": 42,
 -      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xd0A1E359811322d97991E03f863a0C30C2cF029C/logo.png"
-+      "name": "USDCoin",
-+      "address": "0x2e9f75df8839ff192da27e977cd154fd1eae03cf",
-+      "symbol": "USDC",
-+      "decimals": 6,
-+      "chainId": 84531,
-+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
-     }
+-    }
    ]
  }
 \ No newline at end of file

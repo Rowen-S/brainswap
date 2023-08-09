@@ -21,7 +21,6 @@ import EIP_2612 from 'abis/eip_2612.json'
 import IDO_ABI from 'abis/Ido.json'
 
 import {
-  NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
   ARGENT_WALLET_DETECTOR_ADDRESS,
   GOVERNANCE_ADDRESS,
   MERKLE_DISTRIBUTOR_ADDRESS,
@@ -31,9 +30,7 @@ import {
   SOCKS_CONTROLLER_ADDRESSES,
   IDO_ADDRESS,
 } from 'constants/addresses'
-import { abi as NFTPositionManagerABI } from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { useMemo } from 'react'
-import { NonfungiblePositionManager } from 'types/v3/NonfungiblePositionManager'
 import { getContract } from 'utils'
 import {
   Erc20,
@@ -131,14 +128,6 @@ export function useStakingContract(stakingAddress?: string, withSignerIfPossible
 
 export function useSocksController(): Unisocks | null {
   return useContract<Unisocks>(SOCKS_CONTROLLER_ADDRESSES, UNISOCKS_ABI, false)
-}
-
-export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean): NonfungiblePositionManager | null {
-  return useContract<NonfungiblePositionManager>(
-    NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
-    NFTPositionManagerABI,
-    withSignerIfPossible
-  )
 }
 
 export function useIDOContract(withSignerIfPossible?: boolean): Ido {
