@@ -169,10 +169,6 @@ export default function LaunchPad() {
     },
     [endTimestamp, nowTime, formatNumber]
   )
-  1691810124000
-  useEffect(() => {
-    console.log(startTimestamp)
-  }, [startTimestamp])
 
   return (
     <PageWrapper>
