@@ -51,6 +51,10 @@ export default function LaunchPad() {
   const idoContract = useIDOContract()
   const iq = chainId ? IQ[chainId] : undefined
 
+  useEffect(() => {
+    console.log(account)
+  }, [account])
+
   const totalSupply: CurrencyAmount<Token> | undefined = useTotalSupply(iq)
 
   const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
@@ -138,11 +142,13 @@ export default function LaunchPad() {
 
   const initRenderer = useCallback(
     ({
+      days,
       hours,
       minutes,
       seconds,
       completed,
     }: {
+      days: number
       hours: number
       minutes: number
       seconds: number
@@ -156,27 +162,31 @@ export default function LaunchPad() {
         // Render a countdown
         return (
           <Text fontSize={55}>
-            {formatNumber(hours)}:{formatNumber(minutes)}:{formatNumber(seconds)}
+            {formatNumber(hours + days * 24)}:{formatNumber(minutes)}:{formatNumber(seconds)}
           </Text>
         )
       }
     },
     [endTimestamp, nowTime, formatNumber]
   )
+  1691810124000
+  useEffect(() => {
+    console.log(startTimestamp)
+  }, [startTimestamp])
 
   return (
     <PageWrapper>
       <ContentWrapper>
-        {nowTime ? <Countdown now={() => nowTime} date={startTimestamp} renderer={initRenderer} /> : null}
+        {nowTime && endTimestamp ? <Countdown now={() => nowTime} date={endTimestamp} renderer={initRenderer} /> : null}
         <SectionWrapper>
-          <ILOTitle>IQ200 Initial Launchpad Offerings</ILOTitle>
+          <ILOTitle>IQ Initial Launchpad Offerings</ILOTitle>
           <StairCard bg={SupplyBgImage}>
             <Row height="100%" align={'start'} justify="space-around">
               <SupplyItem
                 title="Total Supply"
                 content={{
                   value: totalSupply?.toSignificant(4),
-                  suffix: 'IQ200',
+                  suffix: 'IQ',
                 }}
                 desc="Fair launch for ALL MEME DEGEN"
               />
@@ -207,7 +217,7 @@ export default function LaunchPad() {
                 title="FDV"
                 content={{
                   value: '',
-                  suffix: 'ETH/IQ200',
+                  suffix: 'ETH/IQ',
                 }}
               />
             </Row>

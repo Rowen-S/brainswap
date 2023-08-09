@@ -75,7 +75,7 @@ export default function AddLP({ userInfo, isbuy, isRefund }: { userInfo: any; is
 
   return (
     <>
-      <ILOCardTitle>Add IQ200 LP offering</ILOCardTitle>
+      <ILOCardTitle>Add IQ LP offering</ILOCardTitle>
       <RowFixed
         style={{
           marginTop: '20px',

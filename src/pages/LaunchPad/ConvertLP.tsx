@@ -1,10 +1,9 @@
 import styled from 'styled-components/macro'
 import Row, { RowFixed } from 'components/Row'
 import React, { useCallback, useMemo } from 'react'
-import LockSvg from '../../assets/svg/lock.svg'
-import unLockSvg from '../../assets/svg/unlock.svg'
 import { ButtonNormal } from 'components/Button'
 import { useIDOContract } from 'hooks/useContract'
+import Progress from 'components/Progress'
 
 const ILOCardTitle = styled(Row)`
   color: #ffffff;
@@ -19,8 +18,7 @@ const ILOCardMidTitle = styled.div`
 const ILOCardSmallTitle = styled.div`
   color: #ffffff;
   font-size: 12px;
-  opacity: 0.7;
-  margin-left: 8px;
+  opacity: 0.5;
 `
 
 const ILOCardSimpleText = styled.div`
@@ -29,17 +27,7 @@ const ILOCardSimpleText = styled.div`
 `
 
 const LockWrapper = styled.div`
-  margin-top: 24px;
-`
-
-const LockIcon = styled.img`
-  width: 20px;
-  height: 20px;
-`
-
-const UnLockIcon = styled.img`
-  width: 20px;
-  height: 20px;
+  margin-top: 50px;
 `
 
 export default function ConvertLP({ userInfo }: { userInfo: any }) {
@@ -65,30 +53,58 @@ export default function ConvertLP({ userInfo }: { userInfo: any }) {
 
   return (
     <>
-      <ILOCardTitle>Convert to IQ200/ETH LP</ILOCardTitle>
+      <ILOCardTitle>Claim IQ/ETH LP</ILOCardTitle>
       <RowFixed
         style={{
           marginTop: '20px',
         }}
       >
-        <ILOCardMidTitle>Unlock all esLP token with 28days</ILOCardMidTitle>
+        <ILOCardMidTitle>50% LP will be unlocked in 7 days, 100% will be unlocked in 14 days</ILOCardMidTitle>
       </RowFixed>
 
-      <Row
-        justify="space-between"
+      <div
         style={{
           marginTop: '30px',
+
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
         }}
       >
-        <ILOCardSimpleText>0%</ILOCardSimpleText>
-        <ILOCardSimpleText>14Days (50%)</ILOCardSimpleText>
-        <ILOCardSimpleText>28Days (100%)</ILOCardSimpleText>
-      </Row>
+        <ILOCardSimpleText
+          style={{
+            textAlign: 'left',
+          }}
+        >
+          0%
+        </ILOCardSimpleText>
+        <ILOCardSimpleText
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          14Days (50%)
+        </ILOCardSimpleText>
+        <ILOCardSimpleText
+          style={{
+            textAlign: 'right',
+          }}
+        >
+          28Days (100%)
+        </ILOCardSimpleText>
+      </div>
+
+      <div
+        style={{
+          marginTop: '24px',
+        }}
+      >
+        <Progress progress={50}></Progress>
+      </div>
 
       <LockWrapper>
         <Row>
-          <LockIcon src={LockSvg} />
-          <ILOCardSmallTitle>Locked: 50,000 IQ200/ 5ETH LP</ILOCardSmallTitle>
+          {/* <LockIcon src={LockSvg} /> */}
+          <ILOCardSmallTitle>Your current LP: 50,000 IQ + 5 ETH</ILOCardSmallTitle>
         </Row>
 
         <Row
@@ -96,13 +112,20 @@ export default function ConvertLP({ userInfo }: { userInfo: any }) {
             marginTop: '16px',
           }}
         >
-          <UnLockIcon src={unLockSvg} />
-          <ILOCardSmallTitle>Unlocked: 50,000 IQ200/ 5ETH LP</ILOCardSmallTitle>
+          {/* <UnLockIcon src={unLockSvg} /> */}
+          <ILOCardSmallTitle
+            style={{
+              lineHeight: '24px',
+            }}
+          >
+            Note: Due to the automated market maker (AMM), your IQ and ETH in LP pool will be changed constantly after
+            every swap.
+          </ILOCardSmallTitle>
         </Row>
       </LockWrapper>
 
-      <ButtonNormal width={'400px'} margin={'93px auto 0 auto'} disabled={isInvested} onClick={claimLp}>
-        Claim IQ200/ETH LP
+      <ButtonNormal width={'400px'} margin={'25px auto 0 auto'} disabled={isInvested} onClick={claimLp}>
+        Claim unlocked LP
       </ButtonNormal>
     </>
   )
