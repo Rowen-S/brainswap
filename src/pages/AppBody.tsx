@@ -16,7 +16,7 @@ export const BodyWrapper = styled.div<{ margin?: string }>`
 
   & > #body {
     margin: 10px;
-    border: 1px solid #006afe;
+    border: 1px solid ${({ theme }) => theme.primary6};
   }
   /* ::before,
   ::after {
