@@ -71,6 +71,8 @@ export default function LaunchPad() {
     unlockTimestamp: undefined,
   })
 
+  console.log(startTimestamp, unlockTimestamp)
+
   const initTimestamps = useCallback(async () => {
     const { startTimestamp, endTimestamp, unlockTimestamp } = await idoContract.timestamps()
     setInit({
