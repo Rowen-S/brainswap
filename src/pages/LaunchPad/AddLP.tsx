@@ -71,7 +71,7 @@ export default function AddLP({ userInfo, isbuy, isRefund }: { userInfo: any; is
       })
   }, [idoContract])
 
-  console.log(isRefund, !Boolean(userInfo?.totalInvestedETH > 0))
+  // console.log(isRefund, !Boolean(userInfo?.totalInvestedETH > 0))
 
   return (
     <>

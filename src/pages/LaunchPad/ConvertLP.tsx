@@ -30,7 +30,7 @@ const LockWrapper = styled.div`
   margin-top: 50px;
 `
 
-export default function ConvertLP({ userInfo }: { userInfo: any }) {
+export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; distance: number }) {
   const idoContract = useIDOContract()
 
   const claimLp = useCallback(() => {
@@ -98,7 +98,7 @@ export default function ConvertLP({ userInfo }: { userInfo: any }) {
           marginTop: '24px',
         }}
       >
-        <Progress progress={50}></Progress>
+        <Progress progress={distance}></Progress>
       </div>
 
       <LockWrapper>

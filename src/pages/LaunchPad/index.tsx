@@ -2,9 +2,8 @@ import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
 import { AutoColumn } from '../../components/Column'
 import Row from 'components/Row'
-import SupplyBgImage from '../../assets/images/ilo/supply_bg.svg'
-import OfferBgImage from '../../assets/images/ilo/offer_bg.svg'
-import LPHistoryBgImage from '../../assets/images/ilo/lp_history_bg.svg'
+
+import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { StairCard } from 'components/StairCard'
 import SupplyItem from './SupplyItem'
 import AddLP from './AddLP'
@@ -21,6 +20,8 @@ import { IDO_RATIO } from 'constants/misc'
 import { Text } from 'rebass'
 import Countdown from 'react-countdown'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import CountDownZero from 'components/CountDownZero'
+import TokenDistribution from './TokenDistribution'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -70,8 +71,6 @@ export default function LaunchPad() {
     endTimestamp: undefined,
     unlockTimestamp: undefined,
   })
-
-  console.log(startTimestamp, unlockTimestamp)
 
   const initTimestamps = useCallback(async () => {
     const { startTimestamp, endTimestamp, unlockTimestamp } = await idoContract.timestamps()
@@ -164,7 +163,12 @@ export default function LaunchPad() {
         // Render a countdown
         return (
           <Text fontSize={55}>
-            {formatNumber(hours + days * 24)}:{formatNumber(minutes)}:{formatNumber(seconds)}
+            {/* {formatNumber(hours + days * 24)}:{formatNumber(minutes)}:{formatNumber(seconds)} */}
+            <CountDownZero
+              hours={formatNumber(hours + days * 24)}
+              minutes={formatNumber(minutes)}
+              seconds={formatNumber(seconds)}
+            ></CountDownZero>
           </Text>
         )
       }
@@ -172,13 +176,36 @@ export default function LaunchPad() {
     [endTimestamp, nowTime, formatNumber]
   )
 
+  const [claimLPPercent, setClaimLPPercent] = useState(0)
+  useEffect(() => {
+    if (unlockTimestamp && nowTime) {
+      const endTimestamp = unlockTimestamp + 14 * 24 * 60 * 60 * 1000
+      const percent = ((nowTime - unlockTimestamp) / (endTimestamp - unlockTimestamp)) * 100
+      setClaimLPPercent(percent < 0 ? 0 : percent)
+    }
+  }, [unlockTimestamp, nowTime])
+
   return (
     <PageWrapper>
       <ContentWrapper>
-        {nowTime && endTimestamp ? <Countdown now={() => nowTime} date={endTimestamp} renderer={initRenderer} /> : null}
+        {nowTime && endTimestamp ? (
+          <div
+            style={{
+              margin: '0 auto',
+            }}
+          >
+            <Text textAlign="center" color="#FFFFFF" fontSize="28px">
+              COUNTDOWN
+            </Text>
+            <Text textAlign="center" color="#ffffff" opacity="0.4" fontSize="14px" marginTop="10px" marginBottom="30px">
+              Brainswap Platform Token IQ ILO
+            </Text>
+            <Countdown now={() => nowTime} date={endTimestamp} renderer={initRenderer} />
+          </div>
+        ) : null}
         <SectionWrapper>
           <ILOTitle>IQ Initial Launchpad Offerings</ILOTitle>
-          <StairCard bg={SupplyBgImage}>
+          <StairCard bg={StairBgImage}>
             <Row height="100%" align={'start'} justify="space-around">
               <SupplyItem
                 title="Total Supply"
@@ -229,20 +256,28 @@ export default function LaunchPad() {
           </Text>
 
           <OfferWrapper>
-            <StairCard bg={OfferBgImage}>
+            <StairCard bg={StairBgImage}>
               <AddLP userInfo={userInfo} isbuy={isBuy} isRefund={isRefund} />
             </StairCard>
-            <StairCard bg={OfferBgImage}>
-              <ConvertLP userInfo={userInfo} />
+            <StairCard bg={StairBgImage}>
+              <ConvertLP userInfo={userInfo} distance={claimLPPercent} />
             </StairCard>
           </OfferWrapper>
         </SectionWrapper>
 
         <SectionWrapper>
-          <ILOTitle>Offering LP History</ILOTitle>
+          <ILOTitle>Buy History</ILOTitle>
 
-          <StairCard bg={LPHistoryBgImage}>
+          <StairCard bg={StairBgImage}>
             <LPHistory />
+          </StairCard>
+        </SectionWrapper>
+
+        <SectionWrapper>
+          <ILOTitle>Token Distribution</ILOTitle>
+
+          <StairCard bg={StairBgImage}>
+            <TokenDistribution />
           </StairCard>
         </SectionWrapper>
 
@@ -250,7 +285,7 @@ export default function LaunchPad() {
           <ILOTitle>Disclaimer</ILOTitle>
 
           <StairCard
-            bg={LPHistoryBgImage}
+            bg={StairBgImage}
             style={{
               opacity: 0.8,
               fontSize: '14px',

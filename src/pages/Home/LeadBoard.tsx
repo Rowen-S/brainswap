@@ -3,7 +3,7 @@ import Column from 'components/Column'
 import LeadBoardTitleImage from '../../assets/images/home/leadboard_title.png'
 import { Table } from 'components/Table'
 import { StairCard } from 'components/StairCard'
-import LeadBoardBgImage from '../../assets/images/home/leadboard_bg.svg'
+import StairBgImage from '../../assets/svg/stair_bg.svg'
 
 const LeadBoardWrapper = styled(Column)`
   margin-top: 0;
@@ -27,7 +27,7 @@ export default function LeadBoard() {
         <img src={LeadBoardTitleImage} width={990}></img>
       </LeadBoardTitle>
       <StairCard
-        bg={LeadBoardBgImage}
+        bg={StairBgImage}
         style={{
           marginTop: '50px',
           background: 'transparent',
