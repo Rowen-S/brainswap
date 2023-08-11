@@ -1,9 +1,11 @@
 import styled from 'styled-components/macro'
 import Row, { RowFixed } from 'components/Row'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ButtonNormal } from 'components/Button'
 import { useIDOContract } from 'hooks/useContract'
 import Progress from 'components/Progress'
+import { useWeb3React } from '@web3-react/core'
+import { formatEther } from 'ethers/lib/utils'
 
 const ILOCardTitle = styled(Row)`
   color: #ffffff;
@@ -32,7 +34,6 @@ const LockWrapper = styled.div`
 
 export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; distance: number }) {
   const idoContract = useIDOContract()
-
   const claimLp = useCallback(() => {
     idoContract
       ?.claimLP()
@@ -50,6 +51,15 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
     }
     return true
   }, [userInfo])
+
+  const [reverses, setReverses] = useState([0, 0])
+  useEffect(() => {
+    if (userInfo && idoContract) {
+      idoContract.getLP((userInfo.total || 0) - (userInfo.debt || 0)).then(([reverse0, reverse1]) => {
+        setReverses([Number(formatEther(reverse0)), Number(formatEther(reverse1))])
+      })
+    }
+  }, [userInfo, idoContract])
 
   return (
     <>
@@ -104,7 +114,9 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
       <LockWrapper>
         <Row>
           {/* <LockIcon src={LockSvg} /> */}
-          <ILOCardSmallTitle>Your current LP: 50,000 IQ + 5 ETH</ILOCardSmallTitle>
+          <ILOCardSmallTitle>
+            Your current LP: {reverses[0]} IQ + {reverses[1]} ETH
+          </ILOCardSmallTitle>
         </Row>
 
         <Row
