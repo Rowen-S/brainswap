@@ -25,7 +25,6 @@ import { RedirectDuplicateTokenIdsV2 } from './AddLiquidityV2/redirects'
 import { ThemedBackground } from '../theme'
 import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
 import LaunchPad from './LaunchPad'
-import Home, { RedirectPathToHome } from './Home'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -104,9 +103,7 @@ export default function App() {
 
                 <Route exact strict path="/launchpad" component={LaunchPad} />
 
-                <Route exact strict path="/" component={Home} />
-
-                <Route component={RedirectPathToHome} />
+                <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>
             <Marginer />
