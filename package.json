@@ -1,6 +1,6 @@
 {
-  "name": "@shitswap/interface",
-  "description": "Shitswap Interface",
+  "name": "@brainswap/interface",
+  "description": "Brainswap Interface",
   "homepage": ".",
   "private": true,
   "devDependencies": {

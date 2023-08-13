@@ -204,6 +204,7 @@ export const ThemedBackground = styled.div<{ backgroundColor?: string | undefine
     } 0%, rgba(255, 255, 255, 0) 100%)`}; */
 
   background: url(${GlobalBg}) center center / cover no-repeat;
+  z-index: -1;
   will-change: background;
   transition: background 450ms ease;
 `

@@ -22,6 +22,7 @@ import Countdown from 'react-countdown'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import CountDownZero from 'components/CountDownZero'
 import TokenDistribution from './TokenDistribution'
+import { BigNumber } from 'ethers'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -60,7 +61,33 @@ export default function LaunchPad() {
 
   const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
 
-  const userInfo = useSingleCallResult(idoContract, 'userInfo', account ? [account] : [])?.result
+  const [userInfo, setUserInfo] =
+    useState<{
+      debt: BigNumber
+      total: BigNumber
+      totalInvestedETH: BigNumber
+    }>()
+
+  const getUserInfo = useCallback(() => {
+    if (account) {
+      idoContract?.userInfo(account).then((res) => {
+        console.log('getUserInfo:', res)
+        setUserInfo({
+          debt: res.debt,
+          total: res.total,
+          totalInvestedETH: res.totalInvestedETH,
+        })
+      })
+    }
+  }, [idoContract, account])
+
+  useEffect(() => {
+    if (account) getUserInfo()
+
+    return () => {
+      setUserInfo(undefined)
+    }
+  }, [account, getUserInfo])
 
   const [{ startTimestamp, endTimestamp, unlockTimestamp }, setInit] = useState<{
     startTimestamp: number | undefined
