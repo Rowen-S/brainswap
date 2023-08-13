@@ -9,10 +9,11 @@ import styled from 'styled-components/macro'
 
 import Logo from '../../assets/svg/logo.svg'
 
-import TwitterIcon from '../../assets/images/twitter.svg'
-import DcIcon from '../../assets/images/discord.svg'
+import HeaderBg from '../../assets/images/herderBg.svg'
 
-import HBroken from '../../assets/images/hBroken.svg'
+import TwitterIcon from '../../assets/images/twitter.svg'
+
+import DcIcon from '../../assets/images/discord.svg'
 
 import WalletIcon from '../../assets/images/wallet.svg'
 
@@ -51,7 +52,7 @@ const HeaderFrame = styled.div<{ showBackground: boolean }>`
 
   /* Background slide effect on scroll. */
 
-  /* background-image: url(${HBroken});
+  /* background-image: url(${HeaderBg});
   background-position: center;
   background-size: 99% 100%;
   background-repeat: no-repeat; */

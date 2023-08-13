@@ -7,7 +7,7 @@ import { TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
 import { RowBetween, RowFixed } from '../Row'
 import { DEFAULT_DEADLINE_FROM_NOW } from 'constants/misc'
-import { darken } from 'polished'
+import { darken, transparentize } from 'polished'
 import { useSetUserSlippageTolerance, useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'
 
 enum SlippageError {
@@ -18,22 +18,22 @@ enum DeadlineError {
   InvalidInput = 'InvalidInput',
 }
 
-const FancyButton = styled.button`
+const FancyButton = styled.button<{ $radius?: string }>`
   color: ${({ theme }) => theme.text1};
   align-items: center;
   height: 2rem;
-  border-radius: 36px;
-  font-size: 1rem;
+  border-radius: ${({ $radius }) => $radius ?? '6px'};
+  font-size: 0.875rem;
   width: auto;
   min-width: 3.5rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.primary6};
   outline: none;
-  background: ${({ theme }) => theme.bg1};
+  background: ${({ theme }) => transparentize(0.83, theme.primary6)};
   :hover {
-    border: 1px solid ${({ theme }) => theme.bg4};
+    border: 1px solid ${({ theme }) => theme.primary6};
   }
   :focus {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.primary6};
   }
 `
 
@@ -47,8 +47,8 @@ const Option = styled(FancyButton)<{ active: boolean }>`
 `
 
 const Input = styled.input`
-  background: ${({ theme }) => theme.bg1};
-  font-size: 16px;
+  background: transparent;
+  font-size: 14px;
   width: auto;
   outline: none;
   &::-webkit-outer-spin-button,
@@ -154,7 +154,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
     <AutoColumn gap="md">
       <AutoColumn gap="sm">
         <RowFixed>
-          <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+          <TYPE.black fontWeight={250} fontSize={14} color={theme.text1}>
             Slippage tolerance
           </TYPE.black>
           <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." />
@@ -216,13 +216,13 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
 
       <AutoColumn gap="sm">
         <RowFixed>
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+          <TYPE.black fontSize={14} fontWeight={250} color={theme.text1}>
             Transaction deadline
           </TYPE.black>
           <QuestionHelper text="Your transaction will revert if it is pending for more than this period of time." />
         </RowFixed>
         <RowFixed>
-          <OptionCustom style={{ width: '80px' }} warning={!!deadlineError} tabIndex={-1}>
+          <OptionCustom style={{ width: '80px' }} warning={!!deadlineError} tabIndex={-1} $radius="56px">
             <Input
               placeholder={(DEFAULT_DEADLINE_FROM_NOW / 60).toString()}
               value={

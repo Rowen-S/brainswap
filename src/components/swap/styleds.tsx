@@ -9,7 +9,8 @@ import { AutoColumn } from '../Column'
 
 export const Wrapper = styled.div`
   position: relative;
-  padding: 8px;
+  /* padding: 8px; */
+  padding: 8px 20px 20px;
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`

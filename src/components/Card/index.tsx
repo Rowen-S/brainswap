@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
 import { Box } from 'rebass/styled-components'
+import { transparentize } from 'polished'
 
 const Card = styled(Box)<{ width?: string; padding?: string; border?: string; borderRadius?: string }>`
   width: ${({ width }) => width ?? '100%'};
@@ -12,8 +13,8 @@ const Card = styled(Box)<{ width?: string; padding?: string; border?: string; bo
 export default Card
 
 export const LightCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.bg2};
   background-color: ${({ theme }) => theme.bg1};
+  border: 1px solid ${({ theme }) => transparentize(0.68, theme.primary6)};
 `
 
 export const LightGreyCard = styled(Card)`
@@ -49,7 +50,7 @@ export const PinkCard = styled(Card)`
 `
 
 export const BlueCard = styled(Card)`
-  background-color: ${({ theme }) => theme.primary5};
+  border: 1px solid ${({ theme }) => theme.primary6};
   color: ${({ theme }) => theme.blue2};
   border-radius: 12px;
 `

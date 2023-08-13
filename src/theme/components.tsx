@@ -3,7 +3,8 @@ import ReactGA from 'react-ga'
 import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import { darken } from 'polished'
-import { ArrowLeft, X, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
+import { X, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
+import { ReactComponent as ArrowLeft } from 'assets/svg/arrowLeft.svg'
 
 export const ButtonText = styled.button`
   outline: none;

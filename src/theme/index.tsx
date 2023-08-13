@@ -49,10 +49,10 @@ export function colors(darkMode: boolean): Colors {
     text5: darkMode ? '#2C2F36' : '#EDEEF2',
 
     // backgrounds / greys
-    bg0: darkMode ? '#191B1F' : '#FFF',
-    bg1: darkMode ? '#212429' : '#F7F8FA',
+    bg0: darkMode ? '#001533' : '#FFF',
+    bg1: darkMode ? '#002355' : '#F7F8FA',
     bg2: darkMode ? '#2C2F36' : '#EDEEF2',
-    bg3: darkMode ? '#40444F' : '#CED0D9',
+    bg3: darkMode ? '#265EAD' : '#CED0D9',
     bg4: darkMode ? '#565A69' : '#888D9B',
     bg5: darkMode ? '#6C7284' : '#888D9B',
     bg6: darkMode ? '#2CFFF3' : '#6C7284',
@@ -194,7 +194,7 @@ export const ThemedBackground = styled.div<{ backgroundColor?: string | undefine
   position: fixed;
   inset: 0;
   pointer-events: none;
-  /* max-width: 100vw !important; */
+  max-width: 100vw !important;
   width: 100vw;
   height: 100vh;
   mix-blend-mode: color;
@@ -203,8 +203,7 @@ export const ThemedBackground = styled.div<{ backgroundColor?: string | undefine
       backgroundColor ? backgroundColor : '#fc077d10'
     } 0%, rgba(255, 255, 255, 0) 100%)`}; */
 
-  background: url(${GlobalBg}) no-repeat;
-  transform: translateY(75vh);
+  background: url(${GlobalBg}) center center / cover no-repeat;
   will-change: background;
   transition: background 450ms ease;
 `

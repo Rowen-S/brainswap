@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ButtonNormal } from 'components/Button'
 import { useIDOContract } from 'hooks/useContract'
 import Progress from 'components/Progress'
-import { useWeb3React } from '@web3-react/core'
 import { formatEther } from 'ethers/lib/utils'
 
 const ILOCardTitle = styled(Row)`

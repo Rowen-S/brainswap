@@ -594,7 +594,7 @@ export default function Swap({ history }: RouteComponentProps) {
                   disabled={!isValid || priceImpactTooHigh || !!swapCallbackError}
                   error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
                 >
-                  <Text fontSize={20} fontWeight={500}>
+                  <Text fontSize={22} fontWeight={500}>
                     {swapInputError
                       ? swapInputError
                       : priceImpactTooHigh

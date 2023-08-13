@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro'
 import { AutoColumn } from '../Column'
 import { RowBetween, RowFixed } from '../Row'
+import { transparentize } from 'polished'
 
 export const ModalInfo = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -77,20 +78,21 @@ export const MenuItem = styled(RowBetween)`
 export const SearchInput = styled.input`
   position: relative;
   display: flex;
-  padding: 16px;
+  padding: 11px;
   align-items: center;
   width: 100%;
   white-space: nowrap;
   background: none;
   border: none;
   outline: none;
-  border-radius: 20px;
+  border-radius: 6px;
   color: ${({ theme }) => theme.text1};
   border-style: solid;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.primary6};
+  background-color: ${({ theme }) => transparentize(0.83, theme.primary6)};
   -webkit-appearance: none;
 
-  font-size: 18px;
+  font-size: 14px;
 
   ::placeholder {
     color: ${({ theme }) => theme.text3};
@@ -104,7 +106,7 @@ export const SearchInput = styled.input`
 export const Separator = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg3};
 `
 
 export const SeparatorDark = styled.div`

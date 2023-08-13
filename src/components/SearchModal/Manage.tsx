@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { PaddedColumn, Separator } from './styleds'
 import { RowBetween } from 'components/Row'
-import { ArrowLeft } from 'react-feather'
+// import { ArrowLeft } from 'react-feather'
+import { ReactComponent as ArrowLeft } from '../../assets/svg/arrowLeft.svg'
+
 import { Text } from 'rebass'
 import { CloseIcon } from 'theme'
 import styled from 'styled-components/macro'
@@ -10,6 +12,7 @@ import { ManageLists } from './ManageLists'
 import ManageTokens from './ManageTokens'
 import { TokenList } from '@uniswap/token-lists'
 import { CurrencyModalView } from './CurrencySearchModal'
+import { transparentize } from 'polished'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -18,19 +21,21 @@ const Wrapper = styled.div`
 `
 
 const ToggleWrapper = styled(RowBetween)`
-  background-color: ${({ theme }) => theme.bg3};
-  border-radius: 12px;
-  padding: 6px;
+  background-color: ${({ theme }) => transparentize(0.83, theme.primary6)};
+  border-radius: 6px;
+  padding: 5px;
 `
 
 const ToggleOption = styled.div<{ active?: boolean }>`
   width: 48%;
-  padding: 10px;
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  font-weight: 600;
+  border-radius: 4px;
+  font-weight: 250;
+  font-size: 14px;
+  line-height: 14px;
   background-color: ${({ theme, active }) => (active ? theme.bg1 : theme.bg3)};
   color: ${({ theme, active }) => (active ? theme.text1 : theme.text2)};
   user-select: none;
@@ -62,9 +67,7 @@ export default function Manage({
       <PaddedColumn>
         <RowBetween>
           <ArrowLeft style={{ cursor: 'pointer' }} onClick={() => setModalView(CurrencyModalView.search)} />
-          <Text fontWeight={500} fontSize={20}>
-            Manage
-          </Text>
+          <Text fontWeight={500}>Manage</Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
       </PaddedColumn>

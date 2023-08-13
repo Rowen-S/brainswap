@@ -123,7 +123,7 @@
     "compile-external-abi-types": "typechain --target ethers-v5 --out-dir src/abis/types './src/abis/**/*.json'",
     "build": "yarn compile-contract-types && react-scripts build",
     "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'",
-    "start": "export NODE_OPTIONS=--openssl-legacy-provider && yarn compile-contract-types && react-scripts start",
+    "start": "yarn compile-contract-types && react-scripts start",
     "storybook": "start-storybook -p 6006",
     "test": "react-scripts test --env=jsdom"
   },

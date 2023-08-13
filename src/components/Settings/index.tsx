@@ -78,7 +78,7 @@ const StyledMenu = styled.div`
 
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg1};
   border: 1px solid ${({ theme }) => theme.bg3};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
@@ -174,7 +174,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
         {expertMode ? (
           <EmojiWrapper>
             <span role="img" aria-label="wizard-icon">
-              🧙
+              🧠
             </span>
           </EmojiWrapper>
         ) : null}
@@ -182,16 +182,16 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
       {open && (
         <MenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
-            <Text fontWeight={600} fontSize={14}>
+            <Text fontWeight={600} fontSize={14} color={theme.text1}>
               Transaction Settings
             </Text>
             <TransactionSettings placeholderSlippage={placeholderSlippage} />
-            <Text fontWeight={600} fontSize={14}>
+            <Text fontWeight={600} fontSize={14} color={theme.text1}>
               Interface Settings
             </Text>
             <RowBetween>
               <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+                <TYPE.black fontWeight={250} fontSize={14} color={theme.text1}>
                   Toggle Expert Mode
                 </TYPE.black>
                 <QuestionHelper text="Allow high price impact trades and skip the confirm screen. Use at your own risk." />
@@ -214,7 +214,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
             </RowBetween>
             <RowBetween>
               <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+                <TYPE.black fontWeight={250} fontSize={14} color={theme.text1}>
                   Disable Multihops
                 </TYPE.black>
                 <QuestionHelper text="Restricts swaps to direct pairs only." />

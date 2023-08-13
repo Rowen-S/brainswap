@@ -23,8 +23,8 @@ import { formatTokenAmount } from 'utils/formatTokenAmount'
 const InputPanel = styled.div<{ hideInput?: boolean }>`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
-  border-radius: ${({ hideInput }) => (hideInput ? '16px' : '20px')};
-  background-color: ${({ theme, hideInput }) => (hideInput ? 'transparent' : theme.bg2)};
+  /* border-radius: ${({ hideInput }) => (hideInput ? '16px' : '20px')};
+  background-color: ${({ theme, hideInput }) => (hideInput ? 'transparent' : theme.bg2)}; */
   z-index: 1;
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
 `
@@ -33,7 +33,7 @@ const FixedContainer = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  border-radius: 20px;
+  border-radius: 8px;
   background-color: ${({ theme }) => theme.bg1};
   opacity: 0.95;
   display: flex;
@@ -43,13 +43,13 @@ const FixedContainer = styled.div`
 `
 
 const Container = styled.div<{ hideInput: boolean }>`
-  border-radius: ${({ hideInput }) => (hideInput ? '16px' : '20px')};
-  border: 1px solid ${({ theme, hideInput }) => (hideInput ? ' transparent' : theme.bg2)};
+  border-radius: ${({ hideInput }) => (hideInput ? '8px' : '8px')};
+  border: 1px solid ${({ theme, hideInput }) => (hideInput ? ' transparent' : theme.bg1)};
   background-color: ${({ theme }) => theme.bg1};
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
   :focus,
   :hover {
-    border: 1px solid ${({ theme, hideInput }) => (hideInput ? ' transparent' : theme.bg3)};
+    border: 1px solid ${({ theme, hideInput }) => (hideInput ? ' transparent' : theme.primary6)};
   }
 `
 
@@ -57,15 +57,15 @@ const CurrencySelect = styled(ButtonGray)<{ selected: boolean; hideInput?: boole
   align-items: center;
   font-size: 24px;
   font-weight: 500;
-  background-color: ${({ selected, theme }) => (selected ? theme.bg2 : theme.primary1)};
+  border: 1px solid ${({ theme }) => theme.primary6};
+  /* background-color: ${({ selected, theme }) => (selected ? theme.bg2 : theme.primary1)}; */
   color: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
-  border-radius: 16px;
+  border-radius: 6px;
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
   outline: none;
   cursor: pointer;
   user-select: none;
-  border: none;
   height: ${({ hideInput }) => (hideInput ? '2.8rem' : '2.4rem')};
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
   padding: 0 8px;
@@ -73,7 +73,8 @@ const CurrencySelect = styled(ButtonGray)<{ selected: boolean; hideInput?: boole
   margin-right: ${({ hideInput }) => (hideInput ? '0' : '12px')};
   :focus,
   :hover {
-    background-color: ${({ selected, theme }) => (selected ? theme.bg2 : darken(0.05, theme.primary1))};
+    /* background-color: ${({ selected, theme }) => (selected ? theme.bg2 : darken(0.05, theme.primary1))}; */
+    background-color: transparent;
   }
 `
 
@@ -119,7 +120,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.25rem;' : '  margin: 0 0.25rem 0 0.25rem;')}
-  font-size:  ${({ active }) => (active ? '18px' : '18px')};
+  font-size:  ${({ active }) => (active ? '20px' : '20px')};
 `
 
 const StyledBalanceMax = styled.button<{ disabled?: boolean }>`
