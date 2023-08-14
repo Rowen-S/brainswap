@@ -1,7 +1,7 @@
 import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
 import { Trade as V2Trade } from '@uniswap/v2-sdk'
 import { Trade as V3Trade } from '@uniswap/v3-sdk'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ArrowDown, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
@@ -19,7 +19,6 @@ import { TruncatedText, SwapShowAcceptChanges } from './styleds'
 import { AdvancedSwapDetails } from './AdvancedSwapDetails'
 import { LightCard } from '../Card'
 
-import { DarkGreyCard } from '../Card'
 import TradePrice from '../swap/TradePrice'
 
 export const ArrowWrapper = styled.div`
@@ -35,7 +34,8 @@ export const ArrowWrapper = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.bg1};
-  z-index: 2;
+  border: 2px solid ${({ theme }) => theme.bg0};
+  z-index: 3;
 `
 
 export default function SwapModalHeader({
@@ -60,7 +60,7 @@ export default function SwapModalHeader({
 
   return (
     <AutoColumn gap={'4px'} style={{ marginTop: '1rem' }}>
-      <DarkGreyCard padding="0.75rem 1rem">
+      <LightCard padding="0.75rem 1rem">
         <AutoColumn gap={'8px'}>
           <RowBetween>
             <TYPE.body color={theme.text3} fontWeight={500} fontSize={14}>
@@ -86,11 +86,11 @@ export default function SwapModalHeader({
             </RowFixed>
           </RowBetween>
         </AutoColumn>
-      </DarkGreyCard>
+      </LightCard>
       <ArrowWrapper>
         <ArrowDown size="16" color={theme.text2} />
       </ArrowWrapper>
-      <DarkGreyCard padding="0.75rem 1rem" style={{ marginBottom: '0.25rem' }}>
+      <LightCard padding="0.75rem 1rem" style={{ marginBottom: '0.25rem' }}>
         <AutoColumn gap={'8px'}>
           <RowBetween>
             <TYPE.body color={theme.text3} fontWeight={500} fontSize={14}>
@@ -117,7 +117,7 @@ export default function SwapModalHeader({
             </RowFixed>
           </RowBetween>
         </AutoColumn>
-      </DarkGreyCard>
+      </LightCard>
       <RowBetween style={{ marginTop: '0.25rem', padding: '0 1rem' }}>
         <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
           {'Price:'}

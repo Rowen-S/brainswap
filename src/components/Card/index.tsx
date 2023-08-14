@@ -9,7 +9,7 @@ const Card = styled(Box)<{ width?: string; padding?: string; border?: string; bo
   padding: ${({ padding }) => padding};
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius};
-  z-index: 99;
+  z-index: 2;
 `
 export default Card
 
