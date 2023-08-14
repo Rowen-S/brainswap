@@ -102,12 +102,15 @@ export default function LaunchPad() {
   console.log(startTimestamp)
 
   const initTimestamps = useCallback(async () => {
-    const { startTimestamp, endTimestamp, unlockTimestamp } = await idoContract.timestamps()
-    setInit({
-      startTimestamp: startTimestamp.mul(1000).toNumber(),
-      endTimestamp: endTimestamp.mul(1000).toNumber(),
-      unlockTimestamp: unlockTimestamp.mul(1000).toNumber(),
-    })
+    try {
+      const { startTimestamp, endTimestamp, unlockTimestamp } = await idoContract.timestamps()
+      console.log('startTimestamp=' + startTimestamp)
+      setInit({
+        startTimestamp: startTimestamp.mul(1000).toNumber(),
+        endTimestamp: endTimestamp.mul(1000).toNumber(),
+        unlockTimestamp: unlockTimestamp.mul(1000).toNumber(),
+      })
+    } catch (error) {}
   }, [idoContract])
 
   const [nowTime, setNowTime] = useState<number>()
@@ -157,7 +160,7 @@ export default function LaunchPad() {
   }, [])
 
   useEffect(() => {
-    if (account && chainId) {
+    if (chainId) {
       initTimestamps()
       getNowTime()
     }
@@ -184,23 +187,16 @@ export default function LaunchPad() {
       seconds: number
       completed: boolean
     }) => {
-      // Renderer callback with condition
-      if (completed) {
-        // Render a completed state
-        return nowTime && <Countdown now={() => nowTime} date={endTimestamp} renderer={() => <></>} />
-      } else {
-        // Render a countdown
-        return (
-          <Text fontSize={55}>
-            {/* {formatNumber(hours + days * 24)}:{formatNumber(minutes)}:{formatNumber(seconds)} */}
-            <CountDownZero
-              hours={formatNumber(hours + days * 24)}
-              minutes={formatNumber(minutes)}
-              seconds={formatNumber(seconds)}
-            ></CountDownZero>
-          </Text>
-        )
-      }
+      return (
+        <Text fontSize={55}>
+          {/* {formatNumber(hours + days * 24)}:{formatNumber(minutes)}:{formatNumber(seconds)} */}
+          <CountDownZero
+            hours={formatNumber(hours + days * 24)}
+            minutes={formatNumber(minutes)}
+            seconds={formatNumber(seconds)}
+          ></CountDownZero>
+        </Text>
+      )
     },
     [endTimestamp, nowTime, formatNumber]
   )
@@ -217,7 +213,7 @@ export default function LaunchPad() {
   return (
     <PageWrapper>
       <ContentWrapper>
-        {nowTime && endTimestamp ? (
+        {
           <div
             style={{
               margin: '0 auto',
@@ -229,12 +225,17 @@ export default function LaunchPad() {
             <Text textAlign="center" color="#ffffff" opacity="0.4" fontSize="14px" marginTop="10px" marginBottom="30px">
               Brainswap Platform Token IQ ILO
             </Text>
-            <Countdown now={() => nowTime} date={endTimestamp} renderer={initRenderer} />
+            <Countdown now={() => nowTime || 1} date={endTimestamp || 1} renderer={initRenderer} />
           </div>
-        ) : null}
+        }
         <SectionWrapper>
           <ILOTitle>IQ Initial Launchpad Offerings</ILOTitle>
-          <StairCard bg={StairBgImage}>
+          <StairCard
+            bg={StairBgImage}
+            style={{
+              background: '#0A0C1B',
+            }}
+          >
             <Row height="100%" align={'start'} justify="space-around">
               <SupplyItem
                 title="Total Supply"
@@ -277,7 +278,15 @@ export default function LaunchPad() {
             </Row>
           </StairCard>
 
-          <Text fontSize={14} maxWidth={['90%', '65%']} margin="0px auto" lineHeight={'24px'} textAlign={'center'}>
+          <Text
+            fontSize={14}
+            maxWidth={['90%', '65%']}
+            margin="0px auto"
+            lineHeight={'24px'}
+            textAlign={'center'}
+            color="white"
+            opacity="0.5"
+          >
             *There is no Hard Cap where the IQ price will continuously increase at every purchase. No matter when you
             participate, everyone will get IQ tokens at the same final price. If Total Raised doesn’t meet the Soft Cap,
             all the ETH raised will be refunded. The 10% IQ token will be airdropped to the participated address
@@ -285,10 +294,20 @@ export default function LaunchPad() {
           </Text>
 
           <OfferWrapper>
-            <StairCard bg={StairBgImage}>
+            <StairCard
+              bg={StairBgImage}
+              style={{
+                background: '#0A0C1B',
+              }}
+            >
               <AddLP userInfo={userInfo} isbuy={isBuy} isRefund={isRefund} />
             </StairCard>
-            <StairCard bg={StairBgImage}>
+            <StairCard
+              bg={StairBgImage}
+              style={{
+                background: '#0A0C1B',
+              }}
+            >
               <ConvertLP userInfo={userInfo} distance={claimLPPercent} />
             </StairCard>
           </OfferWrapper>
@@ -297,7 +316,12 @@ export default function LaunchPad() {
         <SectionWrapper>
           <ILOTitle>Buy History</ILOTitle>
 
-          <StairCard bg={StairBgImage}>
+          <StairCard
+            bg={StairBgImage}
+            style={{
+              background: '#0A0C1B',
+            }}
+          >
             <LPHistory />
           </StairCard>
         </SectionWrapper>
@@ -305,7 +329,12 @@ export default function LaunchPad() {
         <SectionWrapper>
           <ILOTitle>Token Distribution</ILOTitle>
 
-          <StairCard bg={StairBgImage}>
+          <StairCard
+            bg={StairBgImage}
+            style={{
+              background: '#0A0C1B',
+            }}
+          >
             <TokenDistribution />
           </StairCard>
         </SectionWrapper>
@@ -320,6 +349,7 @@ export default function LaunchPad() {
               fontSize: '14px',
               fontWeight: 500,
               lineHeight: '30px',
+              background: '#0A0C1B',
             }}
           >
             {`Please ensure you understand the public sale mechanics and terms before proceeding, deposited amounts CANNOT

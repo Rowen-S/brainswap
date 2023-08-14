@@ -40,21 +40,21 @@ export default function CountDownZero(props: CountDownZeroProps) {
   return (
     <Row align="center" justify="center">
       <TimeWrapper>
-        <TimeText>{props.hours}</TimeText>
+        <TimeText>{props.hours || 0}</TimeText>
         <TimeDescText>HOURS</TimeDescText>
       </TimeWrapper>
 
       <TimeSeperate>:</TimeSeperate>
 
       <TimeWrapper>
-        <TimeText>{props.minutes}</TimeText>
+        <TimeText>{props.minutes || 0}</TimeText>
         <TimeDescText>MINUTES</TimeDescText>
       </TimeWrapper>
 
       <TimeSeperate>:</TimeSeperate>
 
       <TimeWrapper>
-        <TimeText>{props.seconds}</TimeText>
+        <TimeText>{props.seconds || 0}</TimeText>
         <TimeDescText>SECONDS</TimeDescText>
       </TimeWrapper>
     </Row>
