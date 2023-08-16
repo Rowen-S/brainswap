@@ -30,6 +30,7 @@ import { BIG_INT_ZERO } from '../../constants/misc'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
+  color: ${({ theme }) => theme.text1};
 `
 
 export const HoverCard = styled(Card)`

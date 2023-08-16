@@ -111,6 +111,7 @@ function CurrencyRow({
   style: CSSProperties
 }) {
   const { account } = useActiveWeb3React()
+  const theme = useTheme()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency.isToken ? currency : undefined)
@@ -128,7 +129,7 @@ function CurrencyRow({
     >
       <CurrencyLogo currency={currency} size={'24px'} />
       <Column>
-        <Text title={currency.name} fontWeight={500} color="#fff">
+        <Text title={currency.name} fontWeight={500} color={theme.text1}>
           {currency.symbol}
         </Text>
         <TYPE.darkGray ml="0px" fontSize={'12px'} fontWeight={300}>

@@ -109,8 +109,9 @@ const ModalContentWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2rem 0;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg3};
   border-radius: 20px;
+  color: ${({ theme }) => theme.text1};
 `
 
 export default function SettingsTab({ placeholderSlippage }: { placeholderSlippage: Percent }) {
@@ -161,7 +162,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
                   }
                 }}
               >
-                <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
+                <Text fontSize={20} fontWeight={500} id="confirm-expert-mode" color={theme.text1}>
                   Turn On Expert Mode
                 </Text>
               </ButtonError>

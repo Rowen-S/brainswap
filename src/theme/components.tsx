@@ -1,10 +1,15 @@
 import React, { HTMLProps, useCallback } from 'react'
 import ReactGA from 'react-ga'
+import { Text } from 'rebass'
 import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import { darken } from 'polished'
 import { X, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
 import { ReactComponent as ArrowLeft } from 'assets/svg/arrowLeft.svg'
+
+export const TextWrapper = styled(Text)`
+  ${({ theme }) => theme.text1};
+`
 
 export const ButtonText = styled.button`
   outline: none;

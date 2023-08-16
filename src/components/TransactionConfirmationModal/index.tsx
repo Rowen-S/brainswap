@@ -21,6 +21,7 @@ const Wrapper = styled.div`
 `
 const Section = styled(AutoColumn)<{ inline?: boolean }>`
   padding: ${({ inline }) => (inline ? '0' : '0')};
+  color: ${({ theme }) => theme.text1};
 `
 
 const BottomSection = styled(Section)`

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'rebass'
 import { Currency } from '@uniswap/sdk-core'
-import styled from 'styled-components/macro'
+import styled, { useTheme } from 'styled-components/macro'
 
 import { COMMON_BASES } from '../../constants/routing'
 import { currencyId } from '../../utils/currencyId'
@@ -9,6 +9,7 @@ import { AutoColumn } from '../Column'
 import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Row'
 import CurrencyLogo from '../CurrencyLogo'
+import { theme } from 'theme'
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.bg3)};
@@ -36,11 +37,12 @@ export default function CommonBases({
   onSelect: (currency: Currency) => void
 }) {
   const bases = typeof chainId !== 'undefined' ? COMMON_BASES[chainId] ?? [] : []
+  const theme = useTheme()
 
   return bases.length > 0 ? (
     <AutoColumn gap="md">
       <AutoRow>
-        <Text fontWeight={500} fontSize={14}>
+        <Text fontWeight={500} fontSize={14} color={theme.text1}>
           Common bases
         </Text>
         <QuestionHelper text="These tokens are commonly paired with other tokens." />
@@ -55,7 +57,7 @@ export default function CommonBases({
               key={currencyId(currency)}
             >
               <CurrencyLogo currency={currency} style={{ marginRight: 8 }} />
-              <Text fontWeight={500} fontSize={16}>
+              <Text fontWeight={500} fontSize={16} color={theme.text1}>
                 {currency.symbol}
               </Text>
             </BaseWrapper>

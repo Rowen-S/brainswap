@@ -4,8 +4,7 @@ import { RowBetween } from 'components/Row'
 // import { ArrowLeft } from 'react-feather'
 import { ReactComponent as ArrowLeft } from '../../assets/svg/arrowLeft.svg'
 
-import { Text } from 'rebass'
-import { CloseIcon } from 'theme'
+import { CloseIcon, TextWrapper } from 'theme'
 import styled from 'styled-components/macro'
 import { Token } from '@uniswap/sdk-core'
 import { ManageLists } from './ManageLists'
@@ -67,7 +66,7 @@ export default function Manage({
       <PaddedColumn>
         <RowBetween>
           <ArrowLeft style={{ cursor: 'pointer' }} onClick={() => setModalView(CurrencyModalView.search)} />
-          <Text fontWeight={500}>Manage</Text>
+          <TextWrapper fontWeight={500}>Manage</TextWrapper>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
       </PaddedColumn>
