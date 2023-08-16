@@ -7,6 +7,8 @@ export interface Colors {
   black: Color
 
   // text
+  text: Color
+
   text1: Color
   text2: Color
   text3: Color

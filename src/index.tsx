@@ -64,13 +64,13 @@ ReactDOM.render(
       <Web3ProviderNetwork getLibrary={getLibrary}>
         <Blocklist>
           <Provider store={store}>
-            <Updaters />
-            <ThemeProvider>
-              <ThemedGlobalStyle />
-              <HashRouter>
+            <HashRouter>
+              <Updaters />
+              <ThemeProvider>
+                <ThemedGlobalStyle />
                 <App />
-              </HashRouter>
-            </ThemeProvider>
+              </ThemeProvider>
+            </HashRouter>
           </Provider>
         </Blocklist>
       </Web3ProviderNetwork>

@@ -42,6 +42,7 @@ export function colors(darkMode: boolean): Colors {
     black,
 
     // text
+    text: white,
     text1: darkMode ? '#FFFFFF' : '#000000',
     text2: darkMode ? '#C3C5CB' : '#565A69',
     text3: darkMode ? '#6C7284' : '#888D9B',
@@ -210,13 +211,12 @@ export const ThemedBackground = styled.div<{ backgroundColor?: string | undefine
 `
 
 export const ThemedGlobalStyle = createGlobalStyle`
-html {
-  color: ${({ theme }) => theme.text1};
-  background-color: #030414;
+  html {
+    color: ${({ theme }) => theme.text1};
+    background-color: #030414;
 
-}
-
-a {
- color: ${({ theme }) => theme.blue1}; 
-}
+  }
+  a {
+    color: ${({ theme }) => theme.blue1}; 
+  }
 `

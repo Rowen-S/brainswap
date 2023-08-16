@@ -6,7 +6,7 @@ import { Provider as StoreProvider } from 'react-redux'
 import { ThemeProvider as SCThemeProvider } from 'styled-components'
 import { NetworkContextName } from '../src/constants/misc'
 import store from '../src/state'
-import { FixedGlobalStyle, theme, ThemedGlobalStyle } from '../src/theme'
+import { theme, ThemedGlobalStyle } from '../src/theme'
 import getLibrary from '../src/utils/getLibrary'
 import * as storybookThemes from './theme'
 
@@ -17,7 +17,7 @@ export const parameters = {
     hideEmpty: true,
   },
   docs: {
-    theme: storybookThemes.light,
+    theme: storybookThemes.dark,
   },
   viewport: {
     viewports: {
@@ -75,7 +75,6 @@ const withProviders = (Component: Story, context: Record<string, any>) => {
         <Web3ProviderNetwork getLibrary={getLibrary}>
           <StoreProvider store={store}>
             <SCThemeProvider theme={THEME}>
-              <FixedGlobalStyle />
               <ThemedGlobalStyle />
               <main>
                 <Component />
