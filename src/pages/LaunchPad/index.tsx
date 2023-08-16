@@ -179,8 +179,8 @@ export default function LaunchPad() {
       hours,
       minutes,
       seconds,
-      completed,
-    }: {
+    }: // completed,
+    {
       days: number
       hours: number
       minutes: number
@@ -198,7 +198,7 @@ export default function LaunchPad() {
         </Text>
       )
     },
-    [endTimestamp, nowTime, formatNumber]
+    [formatNumber]
   )
 
   const [claimLPPercent, setClaimLPPercent] = useState(0)

@@ -219,4 +219,8 @@ html {
 a {
  color: ${({ theme }) => theme.blue1}; 
 }
+
+Text {
+  color: ${({ theme }) => theme.text1};
+}
 `
