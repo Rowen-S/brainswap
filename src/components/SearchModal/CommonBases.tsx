@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'rebass'
 import { Currency } from '@uniswap/sdk-core'
-import styled, { useTheme } from 'styled-components/macro'
+import styled from 'styled-components/macro'
 
 import { COMMON_BASES } from '../../constants/routing'
 import { currencyId } from '../../utils/currencyId'
@@ -9,7 +9,7 @@ import { AutoColumn } from '../Column'
 import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Row'
 import CurrencyLogo from '../CurrencyLogo'
-import { theme } from 'theme'
+import useTheme from 'hooks/useTheme'
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.bg3)};
