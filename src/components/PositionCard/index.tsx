@@ -151,7 +151,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
         </GreyCard>
       ) : (
         <LightCard>
-          <TYPE.subHeader style={{ textAlign: 'center' }}>
+          <TYPE.subHeader style={{ textAlign: 'center' }} color="text1">
             <span role="img" aria-label="wizard-icon">
               ⭐️
             </span>{' '}

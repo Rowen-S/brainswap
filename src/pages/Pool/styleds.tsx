@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components'
 export const Wrapper = styled.div`
   position: relative;
   padding: 20px;
+  color: ${({ theme }) => theme.text1};
 `
 
 export const ClickableText = styled(Text)`

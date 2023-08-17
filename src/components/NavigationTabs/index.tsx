@@ -115,7 +115,7 @@ export function AddRemoveTabs({
         >
           <StyledArrowLeft stroke={theme.text2} />
         </HistoryLink>
-        <TYPE.mediumHeader fontWeight={500} fontSize={20}>
+        <TYPE.mediumHeader fontWeight={500} fontSize={20} color="text1">
           {creating ? 'Create a pair' : adding ? 'Add Liquidity' : 'Remove Liquidity'}
         </TYPE.mediumHeader>
         <SettingsTab placeholderSlippage={defaultSlippage} />

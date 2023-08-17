@@ -4,7 +4,7 @@ import { RowBetween } from 'components/Row'
 // import { ArrowLeft } from 'react-feather'
 import { ReactComponent as ArrowLeft } from '../../assets/svg/arrowLeft.svg'
 
-import { CloseIcon, TextWrapper } from 'theme'
+import { CloseIcon } from 'theme'
 import styled from 'styled-components/macro'
 import { Token } from '@uniswap/sdk-core'
 import { ManageLists } from './ManageLists'
@@ -12,11 +12,13 @@ import ManageTokens from './ManageTokens'
 import { TokenList } from '@uniswap/token-lists'
 import { CurrencyModalView } from './CurrencySearchModal'
 import { transparentize } from 'polished'
+import { Text } from 'rebass'
 
 const Wrapper = styled.div`
   width: 100%;
   position: relative;
   padding-bottom: 80px;
+  color: ${({ theme }) => theme.text1};
 `
 
 const ToggleWrapper = styled(RowBetween)`
@@ -66,7 +68,7 @@ export default function Manage({
       <PaddedColumn>
         <RowBetween>
           <ArrowLeft style={{ cursor: 'pointer' }} onClick={() => setModalView(CurrencyModalView.search)} />
-          <TextWrapper fontWeight={500}>Manage</TextWrapper>
+          <Text fontWeight={500}>Manage</Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
       </PaddedColumn>

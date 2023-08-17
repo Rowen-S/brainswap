@@ -109,7 +109,7 @@ const ModalContentWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2rem 0;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.bg0};
   border-radius: 20px;
   color: ${({ theme }) => theme.text1};
 `

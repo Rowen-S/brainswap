@@ -212,9 +212,8 @@ export const ThemedBackground = styled.div<{ backgroundColor?: string | undefine
 
 export const ThemedGlobalStyle = createGlobalStyle`
   html {
-    color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.text1} !important;;
     background-color: #030414;
-
   }
   a {
     color: ${({ theme }) => theme.blue1}; 

@@ -34,7 +34,7 @@ const HeaderRow = styled.div`
 
 const UpperSection = styled.div`
   position: relative;
-
+  color: ${({ theme }) => theme.text1};
   h5 {
     margin: 0;
     margin-bottom: 0.5rem;

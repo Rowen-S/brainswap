@@ -1,5 +1,4 @@
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import React from 'react'
 import styled from 'styled-components/macro'
 import { SUPPORTED_WALLETS } from '../../constants/wallet'
 import Option from './Option'
@@ -59,6 +58,7 @@ const ErrorButton = styled.div`
 
 const LoadingWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
+  color: ${({ theme }) => theme.text1};
   align-items: center;
   justify-content: center;
 `

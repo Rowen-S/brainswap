@@ -8,7 +8,7 @@ import { X, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
 import { ReactComponent as ArrowLeft } from 'assets/svg/arrowLeft.svg'
 
 export const TextWrapper = styled(Text)`
-  ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.text1};
 `
 
 export const ButtonText = styled.button`
@@ -61,6 +61,7 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
 
 export const CloseIcon = styled(X)<{ onClick: () => void }>`
   cursor: pointer;
+  color: ${({ theme }) => theme.text1};
 `
 
 // for wrapper react feather icons

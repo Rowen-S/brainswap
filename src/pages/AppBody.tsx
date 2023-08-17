@@ -13,6 +13,7 @@ export const BodyWrapper = styled.div<{ margin?: string }>`
     0px 16px 24px rgba(0, 106, 254, 0.1), 0px 24px 32px rgba(0, 106, 254, 0.01); */
   /* border-radius: 24px; */
   margin-top: 1rem;
+  color: ${({ theme }) => theme.text1};
 
   & > #body {
     margin: 10px;
