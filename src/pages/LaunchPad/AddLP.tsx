@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 
 import Row, { RowBetween, RowFixed } from 'components/Row'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ButtonNormal } from 'components/Button'
 import Input from 'components/NumericalInput'
 import { AutoColumn } from 'components/Column'
@@ -50,14 +50,22 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
   const idoContract = useIDOContract()
   const [idoValue, setIdoValue] = useState('')
 
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     console.log('userInfo changed============')
+  //     console.log(formatEther(userInfo?.totalInvestedETH).toString())
+  //   }
+  // }, [userInfo])
+
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
 
-  const buyIDO = useCallback(() => {
+  const buyIDO = useCallback(async () => {
     if (!idoValue) return
 
     idoContract
       ?.pay({ value: parseEther(idoValue) })
-      .then((res) => {
+      .then(async (tx) => {
+        await tx.wait()
         onBuySucceed && onBuySucceed()
       })
       .catch((err) => {

@@ -23,6 +23,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import CountDownZero from 'components/CountDownZero'
 import TokenDistribution from './TokenDistribution'
 import { BigNumber, ethers } from 'ethers'
+import useUSDCPrice from 'hooks/useUSDCPrice'
+import { useCurrency } from 'hooks/Tokens'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -62,6 +64,15 @@ export default function LaunchPad() {
   const totalSupply: CurrencyAmount<Token> | undefined = useTotalSupply(iq)
 
   const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
+
+  const WETH = useCurrency('ETH')
+  const price = useUSDCPrice(WETH!)
+  const [ETHPrice, setETHPrice] = useState(0)
+  useEffect(() => {
+    if (WETH) {
+      // const price = useUSDCPrice(WETH)
+    }
+  }, [WETH])
 
   const [userInfo, setUserInfo] =
     useState<{
@@ -237,6 +248,8 @@ export default function LaunchPad() {
   }, [unlockTimestamp, nowTime])
 
   const onBuySucceed = () => {
+    console.log('onBuySucceed')
+
     getUserInfo()
   }
 
