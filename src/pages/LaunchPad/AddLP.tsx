@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 
 import Row, { RowBetween, RowFixed } from 'components/Row'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { ButtonNormal } from 'components/Button'
 import Input from 'components/NumericalInput'
 import { AutoColumn } from 'components/Column'
@@ -74,12 +74,13 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
       .finally(() => {
         setIdoValue('')
       })
-  }, [idoContract, idoValue])
+  }, [idoContract, idoValue, onBuySucceed])
 
   const refundIDO = useCallback(() => {
     idoContract
       ?.refund()
       .then((res) => {
+        console.log(res)
         onRefundSucceed && onRefundSucceed()
       })
       .catch((err) => {
@@ -88,7 +89,7 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
       .finally(() => {
         setIdoValue('')
       })
-  }, [idoContract])
+  }, [idoContract, onRefundSucceed])
 
   // console.log(isRefund, !Boolean(userInfo?.totalInvestedETH > 0))
 

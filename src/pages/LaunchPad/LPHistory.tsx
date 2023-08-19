@@ -1,11 +1,15 @@
 import { Table } from 'components/Table'
 import { gql, useQuery } from '@apollo/client'
-import { DateTime } from 'luxon'
 import Loader from 'components/Loader'
+import { formatEther } from 'ethers/lib/utils'
+import { ExternalLink } from 'theme'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { useWeb3React } from '@web3-react/core'
+import { formatLuxonDateTime, shortenString } from 'utils'
 
 const GET_IDOHISTORYS = gql`
-  query {
-    actions(first: 5) {
+  query AllIDOHistory($user: String!) {
+    actions(where: { user: $user }, orderBy: timestamp) {
       transactionHash
       id
       user
@@ -23,18 +27,11 @@ interface History {
   timestamp: string
 }
 export default function LPHistory() {
+  const { chainId, account } = useWeb3React()
+
   const { loading, error, data } = useQuery(GET_IDOHISTORYS, {
-    variables: { language: 'english' },
+    variables: { user: account },
   })
-  function formatLuxonDateTime(timestampString: string, targetZone = 'UTC') {
-    const timestamp = parseInt(timestampString, 10)
-    const dateTime = DateTime.fromSeconds(timestamp)
-
-    // 将 Luxon DateTime 对象转换为目标时区的字符串
-    const formattedTime = dateTime.setZone(targetZone).toISO()
-
-    return formattedTime
-  }
 
   return (
     <Table>
@@ -50,15 +47,21 @@ export default function LPHistory() {
       </thead>
       <tbody>
         {loading && <Loader />}
-        {error ? (
+        {!chainId ? (
+          <></>
+        ) : error ? (
           <>Error.</>
         ) : (
           data?.actions.map((x: History, i: number) => (
             <tr key={x?.id}>
-              <td>{i}</td>
-              <td>1223</td>
-              <td>{x.transactionHash}</td>
-              <td>{x.amount}</td>
+              <td>{i + 1}</td>
+              <td>buy</td>
+              <td>
+                <ExternalLink href={getExplorerLink(chainId, x.transactionHash, ExplorerDataType.TRANSACTION)}>
+                  {shortenString(x.transactionHash)}
+                </ExternalLink>
+              </td>
+              <td>{x.amount ? formatEther(x.amount) : '-'}</td>
               <td>confirm</td>
               <td>{x.timestamp ? formatLuxonDateTime(x.timestamp) : '-'}</td>
             </tr>
