@@ -22,8 +22,8 @@ import Countdown from 'react-countdown'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import CountDownZero from 'components/CountDownZero'
 import TokenDistribution from './TokenDistribution'
-import { BigNumber, ethers } from 'ethers'
-import useUSDCPrice from 'hooks/useUSDCPrice'
+import { BigNumber } from 'ethers'
+// import useUSDCPrice from 'hooks/useUSDCPrice'
 import { useCurrency } from 'hooks/Tokens'
 
 const PageWrapper = styled(AutoColumn)`
@@ -69,8 +69,8 @@ export default function LaunchPad() {
   const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
 
   const WETH = useCurrency('ETH')
-  const price = useUSDCPrice(WETH!)
-  const [ETHPrice, setETHPrice] = useState(0)
+  // const price = useUSDCPrice(WETH!)
+  // const [ETHPrice, setETHPrice] = useState(0)
   useEffect(() => {
     if (WETH) {
       // const price = useUSDCPrice(WETH)
@@ -114,6 +114,8 @@ export default function LaunchPad() {
     endTimestamp: localEndTimeStamp,
     unlockTimestamp: localUnlockTimestamp,
   })
+
+  console.log(startTimestamp)
 
   const initTimestamps = useCallback(async () => {
     try {

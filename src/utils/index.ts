@@ -1,6 +1,7 @@
 import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { Contract } from '@ethersproject/contracts'
+import { DateTime } from 'luxon'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { Token } from '@uniswap/sdk-core'
 import { FeeAmount } from '@uniswap/v3-sdk/dist/'
@@ -22,6 +23,20 @@ export function shortenAddress(address: string, chars = 4): string {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
   return `${parsed.substring(0, chars + 2)}...${parsed.substring(42 - chars)}`
+}
+
+// shorten the checksummed version of the input address to have 0x + 4 characters at start and end
+export function shortenString(text: string, chars = 6): string {
+  return `${text.substring(0, chars + 2)}...${text.substring(text.length - chars)}`
+}
+
+export function formatLuxonDateTime(timestampString: string, targetZone = 'UTC') {
+  const timestamp = parseInt(timestampString, 10)
+  const dateTime = DateTime.fromSeconds(timestamp)
+
+  const formattedTime = dateTime.setZone(targetZone).toISO()
+
+  return formattedTime
 }
 
 // account is not optional
