@@ -32,9 +32,20 @@ const IDOInput = styled(Input)`
   padding: 18px 20px;
   width: 100%;
   font-size: 14px;
+  &:disabled {
+    cursor: not-allowed;
+  }
 `
+interface AddLPProps {
+  userInfo: any
+  isExpired: boolean
+  isbuy: boolean
+  isRefund: boolean
+  onBuySucceed: () => void
+  onRefundSucceed: () => void
+}
 
-export default function AddLP({ userInfo, isbuy, isRefund }: { userInfo: any; isbuy: boolean; isRefund: boolean }) {
+export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucceed, onRefundSucceed }: AddLPProps) {
   const { account } = useWeb3React()
   const idoContract = useIDOContract()
   const [idoValue, setIdoValue] = useState('')
@@ -47,7 +58,7 @@ export default function AddLP({ userInfo, isbuy, isRefund }: { userInfo: any; is
     idoContract
       ?.pay({ value: parseEther(idoValue) })
       .then((res) => {
-        console.log('success', res)
+        onBuySucceed && onBuySucceed()
       })
       .catch((err) => {
         console.error('err', err)
@@ -61,7 +72,7 @@ export default function AddLP({ userInfo, isbuy, isRefund }: { userInfo: any; is
     idoContract
       ?.refund()
       .then((res) => {
-        console.log('success', res)
+        onRefundSucceed && onRefundSucceed()
       })
       .catch((err) => {
         console.error('err', err)
@@ -98,14 +109,14 @@ export default function AddLP({ userInfo, isbuy, isRefund }: { userInfo: any; is
         {isbuy ? (
           <>
             <IDDWrapper gap="md">
-              <IDOInput value={idoValue} onUserInput={(val) => setIdoValue(val)} />
+              <IDOInput value={idoValue} onUserInput={(val) => setIdoValue(val)} disabled={isExpired} />
               <ILOCardText as={Row} fontSize={12}>
                 Your initial LP
                 <QuestionHelper text="The final IQ you purchased will be confirmed when the launchpad is finished." />:
                 IQ + {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '-'}ETH LP
               </ILOCardText>
             </IDDWrapper>
-            <ButtonNormal disabled={!idoValue && !isbuy} onClick={buyIDO}>
+            <ButtonNormal disabled={(!idoValue && !isbuy) || isExpired} onClick={buyIDO}>
               Buy
             </ButtonNormal>
           </>

@@ -12,7 +12,7 @@ import LPHistory from './LPHistory'
 import { useWeb3React } from '@web3-react/core'
 import { useTotalSupply } from 'hooks/useTotalSupply'
 import { IQ } from 'constants/tokens'
-import { formatEther } from '@ethersproject/units'
+import { formatEther, parseEther } from '@ethersproject/units'
 import { useIDOContract } from 'hooks/useContract'
 import { useSingleCallResult } from 'state/multicall/hooks'
 // import { useCallback } from 'react'
@@ -22,7 +22,7 @@ import Countdown from 'react-countdown'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import CountDownZero from 'components/CountDownZero'
 import TokenDistribution from './TokenDistribution'
-import { BigNumber } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -48,14 +48,16 @@ const OfferWrapper = styled.div`
   grid-row-gap: 40px;
 `
 
+const localStartTimeStamp = 1692433827000
+const localEndTimeStamp = 1692441027000
+const localUnlockTimestamp = 1692441028000
+
+const maxRaise = parseEther('0.1')
+
 export default function LaunchPad() {
   const { library, chainId, account } = useWeb3React()
   const idoContract = useIDOContract()
   const iq = chainId ? IQ[chainId] : undefined
-
-  useEffect(() => {
-    console.log(account)
-  }, [account])
 
   const totalSupply: CurrencyAmount<Token> | undefined = useTotalSupply(iq)
 
@@ -94,17 +96,14 @@ export default function LaunchPad() {
     endTimestamp: number | undefined
     unlockTimestamp: number | undefined
   }>({
-    startTimestamp: undefined,
-    endTimestamp: undefined,
-    unlockTimestamp: undefined,
+    startTimestamp: localStartTimeStamp,
+    endTimestamp: localEndTimeStamp,
+    unlockTimestamp: localUnlockTimestamp,
   })
-
-  console.log(startTimestamp)
 
   const initTimestamps = useCallback(async () => {
     try {
       const { startTimestamp, endTimestamp, unlockTimestamp } = await idoContract.timestamps()
-      console.log('startTimestamp=' + startTimestamp)
       setInit({
         startTimestamp: startTimestamp.mul(1000).toNumber(),
         endTimestamp: endTimestamp.mul(1000).toNumber(),
@@ -115,15 +114,22 @@ export default function LaunchPad() {
 
   const [nowTime, setNowTime] = useState<number>()
 
+  // useEffect(() => {
+  //   console.log('endTimestamp=' + endTimestamp)
+  // }, [endTimestamp])
+
   useEffect(() => {
     if (!nowTime) return
     const addNowTime = () => {
       setNowTime(nowTime + 1000)
     }
 
+    if (chainId) {
+    }
+
     const timerId = setInterval(addNowTime, 1000)
 
-    !chainId ? setNowTime(undefined) : null
+    // !chainId ? setNowTime(undefined) : null
 
     return () => {
       clearInterval(timerId)
@@ -131,10 +137,18 @@ export default function LaunchPad() {
   }, [nowTime, chainId])
 
   const isBuy = useMemo(() => {
-    if (endTimestamp && nowTime) {
-      return nowTime <= endTimestamp ? true : false
+    if (endTimestamp && nowTime && userInfo) {
+      // return nowTime <= endTimestamp ? true : false
+      if (nowTime <= endTimestamp || (nowTime > endTimestamp && userInfo?.totalInvestedETH >= maxRaise)) return true
     }
     return false
+  }, [endTimestamp, nowTime, userInfo])
+
+  const isIDOExpired = useMemo(() => {
+    if (endTimestamp && nowTime) {
+      return nowTime <= endTimestamp ? false : true
+    }
+    return true
   }, [endTimestamp, nowTime])
 
   const isRefund = useMemo(
@@ -144,11 +158,20 @@ export default function LaunchPad() {
 
   const getNowTime = useCallback(() => {
     if (library) {
-      library.getBlock('latest').then((res: any) => {
-        setNowTime(res.timestamp * 1000)
-      })
+      library
+        .getBlock('latest')
+        .then((res: any) => {
+          setNowTime(res.timestamp * 1000)
+        })
+        .catch(() => {
+          console.log('set now time library--')
+
+          setNowTime(new Date().getTime())
+        })
     } else {
-      setNowTime(undefined)
+      console.log('set now time--')
+
+      setNowTime(new Date().getTime())
     }
   }, [library, setNowTime])
 
@@ -163,7 +186,10 @@ export default function LaunchPad() {
     if (chainId) {
       initTimestamps()
       getNowTime()
+    } else {
+      getNowTime()
     }
+
     return () => {
       setInit({
         startTimestamp: undefined,
@@ -194,7 +220,7 @@ export default function LaunchPad() {
             hours={formatNumber(hours + days * 24)}
             minutes={formatNumber(minutes)}
             seconds={formatNumber(seconds)}
-          ></CountDownZero>
+          />
         </Text>
       )
     },
@@ -204,11 +230,19 @@ export default function LaunchPad() {
   const [claimLPPercent, setClaimLPPercent] = useState(0)
   useEffect(() => {
     if (unlockTimestamp && nowTime) {
-      const endTimestamp = unlockTimestamp + 14 * 24 * 60 * 60 * 1000
+      const endTimestamp = unlockTimestamp + 28 * 24 * 60 * 60 * 1000
       const percent = ((nowTime - unlockTimestamp) / (endTimestamp - unlockTimestamp)) * 100
       setClaimLPPercent(percent < 0 ? 0 : percent)
     }
   }, [unlockTimestamp, nowTime])
+
+  const onBuySucceed = () => {
+    getUserInfo()
+  }
+
+  const onRefundSucceed = () => {
+    getUserInfo()
+  }
 
   return (
     <PageWrapper>
@@ -225,7 +259,7 @@ export default function LaunchPad() {
             <Text textAlign="center" color="#ffffff" opacity="0.4" fontSize="14px" marginTop="10px" marginBottom="30px">
               Brainswap Platform Token IQ ILO
             </Text>
-            <Countdown now={() => nowTime || 1} date={endTimestamp || 1} renderer={initRenderer} />
+            <Countdown now={() => nowTime || 1} date={endTimestamp || 1} renderer={initRenderer} key={nowTime} />
           </div>
         }
         <SectionWrapper>
@@ -256,7 +290,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="Softcap"
                 content={{
-                  value: '100',
+                  value: formatEther(maxRaise),
                   suffix: 'ETH',
                 }}
               />
@@ -300,7 +334,14 @@ export default function LaunchPad() {
                 background: '#0A0C1B',
               }}
             >
-              <AddLP userInfo={userInfo} isbuy={isBuy} isRefund={isRefund} />
+              <AddLP
+                userInfo={userInfo}
+                isbuy={isBuy}
+                isExpired={isIDOExpired}
+                isRefund={isRefund}
+                onBuySucceed={onBuySucceed}
+                onRefundSucceed={onRefundSucceed}
+              />
             </StairCard>
             <StairCard
               bg={StairBgImage}

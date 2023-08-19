@@ -162,6 +162,7 @@ export const ButtonNormal = styled(Base)`
   &:disabled {
     opacity: 50%;
     cursor: auto;
+    cursor: not-allowed;
   }
 `
 
