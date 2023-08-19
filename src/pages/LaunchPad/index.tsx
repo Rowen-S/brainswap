@@ -56,6 +56,9 @@ const localUnlockTimestamp = 1692441028000
 
 const maxRaise = parseEther('0.1')
 
+const days = 28
+const lpLockTime = 0
+
 export default function LaunchPad() {
   const { library, chainId, account } = useWeb3React()
   const idoContract = useIDOContract()
@@ -148,12 +151,19 @@ export default function LaunchPad() {
   }, [nowTime, chainId])
 
   const isBuy = useMemo(() => {
-    if (endTimestamp && nowTime && userInfo) {
+    if (endTimestamp && nowTime && idoSupply) {
       // return nowTime <= endTimestamp ? true : false
-      if (nowTime <= endTimestamp || (nowTime > endTimestamp && userInfo?.totalInvestedETH >= maxRaise)) return true
+      // console.log(idoSupply)
+      // console.log(maxRaise)
+      // console.log(idoSupply.lte(maxRaise))
+
+      // const x = userInfo?.totalInvestedETH >= maxRaise
+      const more = maxRaise.lte(idoSupply)
+      // debugger
+      if (nowTime <= endTimestamp || (nowTime > endTimestamp && more)) return true
     }
     return false
-  }, [endTimestamp, nowTime, userInfo])
+  }, [endTimestamp, nowTime, idoSupply])
 
   const isIDOExpired = useMemo(() => {
     if (endTimestamp && nowTime) {
@@ -241,7 +251,7 @@ export default function LaunchPad() {
   const [claimLPPercent, setClaimLPPercent] = useState(0)
   useEffect(() => {
     if (unlockTimestamp && nowTime) {
-      const endTimestamp = unlockTimestamp + 28 * 24 * 60 * 60 * 1000
+      const endTimestamp = unlockTimestamp + lpLockTime
       const percent = ((nowTime - unlockTimestamp) / (endTimestamp - unlockTimestamp)) * 100
       setClaimLPPercent(percent < 0 ? 0 : percent)
     }

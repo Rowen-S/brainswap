@@ -36,8 +36,8 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   const claimLp = useCallback(() => {
     idoContract
       ?.claimLP()
-      .then((res) => {
-        console.log('success', res)
+      .then(async (tx) => {
+        await tx.wait()
       })
       .catch((err) => {
         console.error('err', err)
@@ -45,7 +45,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   }, [idoContract])
 
   const isInvested = useMemo(() => {
-    if (userInfo && userInfo.debt > 0) {
+    if (userInfo && userInfo.debt >= 0) {
       return Boolean(!userInfo.totalInvestedETH)
     }
     return true
@@ -54,6 +54,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   const [reverses, setReverses] = useState([0, 0])
   useEffect(() => {
     if (userInfo && idoContract) {
+      // 5163977794943222513438
       idoContract.getLP((userInfo.total || 0) - (userInfo.debt || 0)).then(([reverse0, reverse1]) => {
         setReverses([Number(formatEther(reverse0)), Number(formatEther(reverse1))])
       })

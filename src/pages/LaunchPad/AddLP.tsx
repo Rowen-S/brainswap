@@ -38,7 +38,7 @@ const IDOInput = styled(Input)`
 `
 interface AddLPProps {
   userInfo: any
-  isExpired: boolean
+  isExpired?: boolean
   isbuy: boolean
   isRefund: boolean
   onBuySucceed: () => void
@@ -56,6 +56,10 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
   //     console.log(formatEther(userInfo?.totalInvestedETH).toString())
   //   }
   // }, [userInfo])
+
+  useEffect(() => {
+    console.log(isbuy)
+  }, [isbuy])
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
 
@@ -79,7 +83,8 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
   const refundIDO = useCallback(() => {
     idoContract
       ?.refund()
-      .then((res) => {
+      .then(async (tx) => {
+        await tx.wait()
         onRefundSucceed && onRefundSucceed()
       })
       .catch((err) => {
