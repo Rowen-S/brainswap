@@ -1,5 +1,6 @@
 import { Table } from 'components/Table'
 import { gql, useQuery } from '@apollo/client'
+import { DateTime } from 'luxon'
 import Loader from 'components/Loader'
 
 const GET_IDOHISTORYS = gql`
@@ -25,6 +26,15 @@ export default function LPHistory() {
   const { loading, error, data } = useQuery(GET_IDOHISTORYS, {
     variables: { language: 'english' },
   })
+  function formatLuxonDateTime(timestampString: string, targetZone = 'UTC') {
+    const timestamp = parseInt(timestampString, 10)
+    const dateTime = DateTime.fromSeconds(timestamp)
+
+    // 将 Luxon DateTime 对象转换为目标时区的字符串
+    const formattedTime = dateTime.setZone(targetZone).toISO()
+
+    return formattedTime
+  }
 
   return (
     <Table>
@@ -50,7 +60,7 @@ export default function LPHistory() {
               <td>{x.transactionHash}</td>
               <td>{x.amount}</td>
               <td>confirm</td>
-              <td>{x.timestamp}</td>
+              <td>{x.timestamp ? formatLuxonDateTime(x.timestamp) : '-'}</td>
             </tr>
           ))
         )}
