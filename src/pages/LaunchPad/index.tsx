@@ -1,4 +1,4 @@
-import { CurrencyAmount, Token } from '@uniswap/sdk-core'
+import { CurrencyAmount, Token, WETH9 } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
 import { AutoColumn } from '../../components/Column'
 import Row from 'components/Row'
@@ -23,7 +23,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import CountDownZero from 'components/CountDownZero'
 import TokenDistribution from './TokenDistribution'
 import { BigNumber } from 'ethers'
-// import useUSDCPrice from 'hooks/useUSDCPrice'
+import useUSDCPrice, { useUSDCValue } from 'hooks/useUSDCPrice'
 import { useCurrency } from 'hooks/Tokens'
 
 const PageWrapper = styled(AutoColumn)`
@@ -68,14 +68,8 @@ export default function LaunchPad() {
 
   const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
 
-  const WETH = useCurrency('ETH')
-  // const price = useUSDCPrice(WETH!)
-  // const [ETHPrice, setETHPrice] = useState(0)
-  useEffect(() => {
-    if (WETH) {
-      // const price = useUSDCPrice(WETH)
-    }
-  }, [WETH])
+  const weth = chainId ? WETH9[1] : undefined
+  const ethPrice = useUSDCPrice(weth)
 
   const [userInfo, setUserInfo] =
     useState<{
@@ -114,8 +108,6 @@ export default function LaunchPad() {
     endTimestamp: localEndTimeStamp,
     unlockTimestamp: localUnlockTimestamp,
   })
-
-  console.log(startTimestamp)
 
   const initTimestamps = useCallback(async () => {
     try {
@@ -236,6 +228,7 @@ export default function LaunchPad() {
       seconds: number
       completed: boolean
     }) => {
+      // debugger
       return (
         <Text fontSize={55}>
           {/* {formatNumber(hours + days * 24)}:{formatNumber(minutes)}:{formatNumber(seconds)} */}
@@ -284,7 +277,12 @@ export default function LaunchPad() {
             <Text textAlign="center" color="#ffffff" opacity="0.4" fontSize="14px" marginTop="10px" marginBottom="30px">
               Brainswap Platform Token IQ ILO
             </Text>
-            <Countdown now={() => nowTime || 1} date={endTimestamp || 1} renderer={initRenderer} key={nowTime} />
+            <Countdown
+              now={() => nowTime || new Date().getTime()}
+              date={endTimestamp || 1}
+              renderer={initRenderer}
+              key={nowTime}
+            />
           </div>
         }
         <SectionWrapper>
@@ -330,7 +328,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="FDV"
                 content={{
-                  value: '',
+                  value: ethPrice ? String(Number(ethPrice.toFixed(2)) / 0.1) : '-',
                   suffix: 'ETH/IQ',
                 }}
               />
