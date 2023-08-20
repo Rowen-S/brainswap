@@ -1,13 +1,14 @@
 import { StairCard } from 'components/StairCard'
 import React from 'react'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
-import { Box, Image, Text } from 'rebass'
+import { Image, Text } from 'rebass'
 import { Table } from 'components/Table'
 import styled from 'styled-components'
 
 import Rank0Image from '../../assets/images/rank_0.svg'
 import Rank1Image from '../../assets/images/rank_1.svg'
 import Rank2Image from '../../assets/images/rank_2.svg'
+import Pagination from 'components/Pagination'
 
 const TradingBoost = styled.span`
   border: 1px dashed #2cfff3;
@@ -91,6 +92,8 @@ export default function Leaderboard() {
           </tbody>
         </Table>
       </StairCard>
+
+      <Pagination total={101} pageSize={50}></Pagination>
     </>
   )
 }
