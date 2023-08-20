@@ -362,6 +362,7 @@ export default function LaunchPad() {
                 isbuy={isBuy}
                 isExpired={isIDOExpired}
                 isRefund={isRefund}
+                softCap={maxRaise}
                 onBuySucceed={onBuySucceed}
                 onRefundSucceed={onRefundSucceed}
               />

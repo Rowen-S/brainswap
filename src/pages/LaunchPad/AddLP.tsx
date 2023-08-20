@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
-
+import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import Row, { RowBetween, RowFixed } from 'components/Row'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ButtonNormal } from 'components/Button'
 import Input from 'components/NumericalInput'
 import { AutoColumn } from 'components/Column'
@@ -11,6 +11,11 @@ import { useETHBalances } from 'state/wallet/hooks'
 import { useWeb3React } from '@web3-react/core'
 import { Text } from 'rebass'
 import QuestionHelper from 'components/QuestionHelper'
+import { BigNumber } from 'ethers'
+import { useTotalSupply } from 'hooks/useTotalSupply'
+import { IQ } from 'constants/tokens'
+import { IDO_RATIO } from 'constants/misc'
+import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 
 const ILOCardTitle = styled(Row)`
   color: #ffffff;
@@ -41,25 +46,38 @@ interface AddLPProps {
   isExpired?: boolean
   isbuy: boolean
   isRefund: boolean
+  softCap: BigNumber
   onBuySucceed: () => void
   onRefundSucceed: () => void
 }
 
-export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucceed, onRefundSucceed }: AddLPProps) {
-  const { account } = useWeb3React()
+export default function AddLP({
+  userInfo,
+  isExpired,
+  isbuy,
+  isRefund,
+  softCap,
+  onBuySucceed,
+  onRefundSucceed,
+}: AddLPProps) {
+  const { account, chainId } = useWeb3React()
   const idoContract = useIDOContract()
   const [idoValue, setIdoValue] = useState('')
+  const [txHash, setTxHash] = useState<string>('')
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
 
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     console.log('userInfo changed============')
-  //     console.log(formatEther(userInfo?.totalInvestedETH).toString())
-  //   }
-  // }, [userInfo])
+  const iq = chainId ? IQ[chainId] : undefined
+  const totalSupply: CurrencyAmount<Token> | undefined = useTotalSupply(iq)
 
-  // useEffect(() => {
-  //   console.log(isbuy)
-  // }, [isbuy])
+  const [initIQAmount, setInitIQAmount] = useState('0')
+  useEffect(() => {
+    if (userInfo && userInfo.totalInvestedETH && totalSupply && softCap) {
+      // totalSupply * 10%            IQ amount?
+      //     softCap          userInfo.totalInvestedETH
+      const idoSupply = parseEther(totalSupply.multiply(IDO_RATIO).toFixed(0))
+      setInitIQAmount(formatEther(userInfo.totalInvestedETH.div(2).mul(idoSupply).div(softCap)).toString())
+    }
+  }, [userInfo, totalSupply, softCap])
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
 
@@ -70,6 +88,8 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
       ?.pay({ value: parseEther(idoValue) })
       .then(async (tx) => {
         await tx.wait()
+        setTxHash(tx.hash)
+        setShowConfirm(true)
         onBuySucceed && onBuySucceed()
       })
       .catch((err) => {
@@ -85,6 +105,8 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
       ?.refund()
       .then(async (tx) => {
         await tx.wait()
+        setTxHash(tx.hash)
+        setShowConfirm(true)
         onRefundSucceed && onRefundSucceed()
       })
       .catch((err) => {
@@ -99,6 +121,21 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
 
   return (
     <>
+      <TransactionConfirmationModal
+        isOpen={showConfirm}
+        onDismiss={() => setShowConfirm(false)}
+        attemptingTxn={false}
+        hash={txHash}
+        content={() => (
+          <ConfirmationModalContent
+            title="Adding LP..."
+            onDismiss={() => setShowConfirm(false)}
+            topContent={() => <div></div>}
+            bottomContent={() => <div></div>}
+          />
+        )}
+        pendingText={''}
+      />
       <ILOCardTitle>Add IQ LP offering</ILOCardTitle>
       <RowFixed
         style={{
@@ -126,7 +163,9 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
               <ILOCardText as={Row} fontSize={12}>
                 Your initial LP
                 <QuestionHelper text="The final IQ you purchased will be confirmed when the launchpad is finished." />:
-                IQ + {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '-'}ETH LP
+                &nbsp;
+                {initIQAmount} IQ + {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '0'}{' '}
+                ETH LP
               </ILOCardText>
             </IDDWrapper>
             <ButtonNormal disabled={(!idoValue && !isbuy) || isExpired} onClick={buyIDO}>
@@ -136,7 +175,13 @@ export default function AddLP({ userInfo, isExpired, isbuy, isRefund, onBuySucce
         ) : isRefund ? (
           <IDDWrapper gap="sm">
             <ILOCardText fontSize={14}>*When softcap miss, click ‘refund’ to get your ETH and IQ airdrop </ILOCardText>
-            <ButtonNormal disabled={isRefund && !Boolean(userInfo?.totalInvestedETH > 0)} onClick={refundIDO}>
+            <ButtonNormal
+              disabled={isRefund && !Boolean(userInfo?.totalInvestedETH > 0)}
+              onClick={refundIDO}
+              style={{
+                marginTop: '32px',
+              }}
+            >
               Refund
             </ButtonNormal>
           </IDDWrapper>

@@ -5,6 +5,9 @@ import { ButtonNormal } from 'components/Button'
 import { useIDOContract } from 'hooks/useContract'
 import Progress from 'components/Progress'
 import { formatEther } from 'ethers/lib/utils'
+import { useWeb3React } from '@web3-react/core'
+import { BigNumber } from 'ethers'
+import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 
 const ILOCardTitle = styled(Row)`
   color: #ffffff;
@@ -33,16 +36,9 @@ const LockWrapper = styled.div`
 
 export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; distance: number }) {
   const idoContract = useIDOContract()
-  const claimLp = useCallback(() => {
-    idoContract
-      ?.claimLP()
-      .then(async (tx) => {
-        await tx.wait()
-      })
-      .catch((err) => {
-        console.error('err', err)
-      })
-  }, [idoContract])
+  const { account } = useWeb3React()
+  const [txHash, setTxHash] = useState<string>('')
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
 
   const isInvested = useMemo(() => {
     if (userInfo && userInfo.debt >= 0) {
@@ -51,18 +47,80 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
     return true
   }, [userInfo])
 
-  const [reverses, setReverses] = useState([0, 0])
-  useEffect(() => {
-    if (userInfo && idoContract) {
-      // 5163977794943222513438
-      idoContract.getLP((userInfo.total || 0) - (userInfo.debt || 0)).then(([reverse0, reverse1]) => {
-        setReverses([Number(formatEther(reverse0)), Number(formatEther(reverse1))])
+  const [realUserInfo, setRealUserInfo] = useState<{
+    debt: BigNumber
+    total: BigNumber
+    amount: BigNumber
+  }>({
+    debt: BigNumber.from(0),
+    total: BigNumber.from(0),
+    amount: BigNumber.from(0),
+  })
+
+  const getRealUserInfo = useCallback(async () => {
+    try {
+      const userInfo = await idoContract.getUserInfo(account!)
+
+      setRealUserInfo({
+        debt: userInfo[1],
+        total: userInfo[0],
+        amount: userInfo[2],
+      })
+    } catch (e) {
+      setRealUserInfo({
+        debt: BigNumber.from(0),
+        total: BigNumber.from(0),
+        amount: BigNumber.from(0),
       })
     }
-  }, [userInfo, idoContract])
+  }, [account, idoContract])
 
+  useEffect(() => {
+    if (account && idoContract) {
+      getRealUserInfo()
+    }
+  }, [account, idoContract, getRealUserInfo])
+
+  const [reverses, setReverses] = useState<[BigNumber, BigNumber]>([BigNumber.from(0), BigNumber.from(0)])
+  useEffect(() => {
+    if (idoContract) {
+      // 5163977794943222513438  realUserInfo.total - (realUserInfo.debt || 0)
+      idoContract.getLP(realUserInfo.total.sub(realUserInfo.debt)).then(([reverse0, reverse1]) => {
+        setReverses([reverse0, reverse1])
+      })
+    }
+  }, [idoContract, realUserInfo])
+
+  const claimLp = useCallback(() => {
+    idoContract
+      ?.claimLP()
+      .then(async (tx) => {
+        await tx.wait()
+        setTxHash(tx.hash)
+        setShowConfirm(true)
+        getRealUserInfo()
+      })
+      .catch((err) => {
+        console.error('err', err)
+      })
+  }, [idoContract, getRealUserInfo])
   return (
     <>
+      <TransactionConfirmationModal
+        isOpen={showConfirm}
+        onDismiss={() => setShowConfirm(false)}
+        attemptingTxn={false}
+        hash={txHash}
+        content={() => (
+          <ConfirmationModalContent
+            title="Claiming LP..."
+            onDismiss={() => setShowConfirm(false)}
+            topContent={() => <div></div>}
+            bottomContent={() => <div></div>}
+          />
+        )}
+        pendingText={''}
+      />
       <ILOCardTitle>Claim IQ/ETH LP</ILOCardTitle>
       <RowFixed
         style={{
@@ -115,7 +173,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
         <Row>
           {/* <LockIcon src={LockSvg} /> */}
           <ILOCardSmallTitle>
-            Your current LP: {reverses[0]} IQ + {reverses[1]} ETH
+            Your current LP: {formatEther(reverses[0])} IQ + {formatEther(reverses[1])} ETH
           </ILOCardSmallTitle>
         </Row>
 
