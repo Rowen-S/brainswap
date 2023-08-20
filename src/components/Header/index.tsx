@@ -378,6 +378,11 @@ export default function Header() {
         >
           {t('pool')}
         </StyledNavLink>
+
+        <StyledNavLink id={`launchpad-nav-link`} to={'/farm'}>
+          Trading Rewards
+        </StyledNavLink>
+
         <StyledNavLink id={`launchpad-nav-link`} to={'/launchpad'}>
           Launchpad
         </StyledNavLink>

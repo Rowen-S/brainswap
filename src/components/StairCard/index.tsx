@@ -8,4 +8,5 @@ export const StairCard = styled.div<{ bg: any }>`
   border-image-repeat: stretch;
   font-size: 28px;
   padding: 20px;
+  background: #0a0c1b;
 `

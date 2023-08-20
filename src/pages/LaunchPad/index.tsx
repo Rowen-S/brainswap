@@ -57,7 +57,7 @@ const localUnlockTimestamp = 1692441028000
 const maxRaise = parseEther('0.1')
 
 const days = 28
-const lpLockTime = 0
+const lpLockTime = days * 24 * 60 * 3600
 
 export default function LaunchPad() {
   const { library, chainId, account } = useWeb3React()
