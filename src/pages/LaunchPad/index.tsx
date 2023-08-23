@@ -248,7 +248,7 @@ export default function LaunchPad() {
     if (unlockTimestamp && nowTime) {
       const endTimestamp = unlockTimestamp + lpLockTime
       const percent = ((nowTime - unlockTimestamp) / (endTimestamp - unlockTimestamp)) * 100
-      setClaimLPPercent(percent < 0 ? 0 : percent)
+      setClaimLPPercent(percent < 0 ? 0 : Math.min(percent, 100))
     }
   }, [unlockTimestamp, nowTime])
 
