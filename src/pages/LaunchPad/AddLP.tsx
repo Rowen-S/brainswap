@@ -71,19 +71,20 @@ export default function AddLP({
   const iq = chainId ? IQ[chainId] : undefined
   const totalSupply: CurrencyAmount<Token> | undefined = useTotalSupply(iq)
 
-  const [initIQAmount, setInitIQAmount] = useState('0')
+  const [initIQAmount, setInitIQAmount] = useState<CurrencyAmount<Token>>()
   useEffect(() => {
-    if (userInfo && userInfo.totalInvestedETH && totalSupply && softCap) {
+    if (userInfo && userInfo.totalInvestedETH && totalSupply && softCap && iq) {
       // totalSupply * 10%            IQ amount?
       //     softCap          userInfo.totalInvestedETH
       try {
         const idoSupply = parseEther(totalSupply.multiply(IDO_RATIO).toFixed(0))
-        setInitIQAmount(formatEther(userInfo.totalInvestedETH.mul(idoSupply).div(investedEth)).toString())
+        // setInitIQAmount(formatEther().toString())
+        setInitIQAmount(CurrencyAmount.fromRawAmount(iq, userInfo.totalInvestedETH.mul(idoSupply).div(investedEth)))
       } catch (error) {
-        setInitIQAmount('0')
+        setInitIQAmount(CurrencyAmount.fromRawAmount(iq, 0))
       }
     }
-  }, [userInfo, totalSupply, softCap])
+  }, [userInfo, totalSupply, softCap, iq])
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
 
@@ -183,8 +184,8 @@ export default function AddLP({
                 Your initial LP
                 <QuestionHelper text="The final IQ you purchased will be confirmed when the launchpad is finished." />:
                 &nbsp;
-                {initIQAmount} IQ + {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '0'}{' '}
-                ETH LP
+                {initIQAmount?.toSignificant(2)} IQ +{' '}
+                {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '0'} ETH LP
               </ILOCardText>
             </IDDWrapper>
             <ButtonNormal disabled={(!idoValue && !isbuy) || isExpired} onClick={buyIDO}>
