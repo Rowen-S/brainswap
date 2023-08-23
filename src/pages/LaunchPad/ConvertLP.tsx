@@ -41,7 +41,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
 
   const isInvested = useMemo(() => {
-    if (userInfo && userInfo.debt >= 0) {
+    if (userInfo && userInfo.debt > 0) {
       return Boolean(!userInfo.totalInvestedETH)
     }
     return true

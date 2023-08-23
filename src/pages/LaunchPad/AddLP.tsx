@@ -47,6 +47,7 @@ interface AddLPProps {
   isbuy: boolean
   isRefund: boolean
   softCap: BigNumber
+  investedEth: BigNumber
   onBuySucceed: () => void
   onRefundSucceed: () => void
 }
@@ -57,6 +58,7 @@ export default function AddLP({
   isbuy,
   isRefund,
   softCap,
+  investedEth,
   onBuySucceed,
   onRefundSucceed,
 }: AddLPProps) {
@@ -75,7 +77,7 @@ export default function AddLP({
       // totalSupply * 10%            IQ amount?
       //     softCap          userInfo.totalInvestedETH
       const idoSupply = parseEther(totalSupply.multiply(IDO_RATIO).toFixed(0))
-      setInitIQAmount(formatEther(userInfo.totalInvestedETH.div(2).mul(idoSupply).div(softCap)).toString())
+      setInitIQAmount(formatEther(userInfo.totalInvestedETH.div(2).mul(idoSupply).div(investedEth)))
     }
   }, [userInfo, totalSupply, softCap])
 
