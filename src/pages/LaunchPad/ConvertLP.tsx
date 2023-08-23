@@ -95,9 +95,9 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
     idoContract
       ?.claimLP()
       .then(async (tx) => {
-        await tx.wait()
         setTxHash(tx.hash)
         setShowConfirm(true)
+        await tx.wait()
         getRealUserInfo()
       })
       .catch((err) => {
