@@ -87,9 +87,9 @@ export default function AddLP({
     idoContract
       ?.pay({ value: parseEther(idoValue) })
       .then(async (tx) => {
-        await tx.wait()
         setTxHash(tx.hash)
         setShowConfirm(true)
+        await tx.wait()
         onBuySucceed && onBuySucceed()
       })
       .catch((err) => {
@@ -104,9 +104,9 @@ export default function AddLP({
     idoContract
       ?.refund()
       .then(async (tx) => {
-        await tx.wait()
         setTxHash(tx.hash)
         setShowConfirm(true)
+        await tx.wait()
         onRefundSucceed && onRefundSucceed()
       })
       .catch((err) => {
