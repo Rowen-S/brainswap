@@ -2,7 +2,7 @@ import { CurrencyAmount, Token, WETH9 } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
 import { AutoColumn } from '../../components/Column'
 import Row from 'components/Row'
-
+import JSBI from 'jsbi'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { StairCard } from 'components/StairCard'
 import SupplyItem from './SupplyItem'
@@ -23,9 +23,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import CountDownZero from 'components/CountDownZero'
 import TokenDistribution from './TokenDistribution'
 import { BigNumber } from 'ethers'
-import useUSDCPrice, { useUSDCValue } from 'hooks/useUSDCPrice'
-import { useCurrency } from 'hooks/Tokens'
-import { unwrappedToken } from 'utils/unwrappedToken'
+import { useUSDCValue } from 'hooks/useUSDCPrice'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -67,13 +65,19 @@ export default function LaunchPad() {
 
   const totalSupply: CurrencyAmount<Token> | undefined = useTotalSupply(iq)
 
-  const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
+  const idoSupply: BigNumber = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
 
-  const weth = WETH9[80001]
-  const currency = unwrappedToken(weth)
-  const ethPrice = useUSDCPrice(currency)
+  const WETH = WETH9[80001]
 
-  console.log('ethPriceethPriceethPriceethPrice:', ethPrice?.toSignificant(2))
+  let valueAmountInWETH: CurrencyAmount<Token> | undefined
+  if (idoSupply) {
+    valueAmountInWETH = CurrencyAmount.fromRawAmount(
+      WETH,
+      JSBI.divide(JSBI.multiply(JSBI.divide(JSBI.BigInt(idoSupply), JSBI.BigInt(2)), JSBI.BigInt(100)), JSBI.BigInt(10))
+    )
+  }
+
+  const USDPrice = useUSDCValue(valueAmountInWETH)
 
   const [userInfo, setUserInfo] =
     useState<{
@@ -85,7 +89,6 @@ export default function LaunchPad() {
   const getUserInfo = useCallback(() => {
     if (account) {
       idoContract?.userInfo(account).then((res) => {
-        console.log('getUserInfo:', res)
         setUserInfo({
           debt: res.debt,
           total: res.total,
@@ -332,7 +335,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="FDV"
                 content={{
-                  value: ethPrice ? String(Number(ethPrice.toFixed(2)) / 0.1) : '-',
+                  value: (USDPrice && USDPrice?.toSignificant(6, { groupSeparator: ',' })) ?? '-',
                   suffix: 'ETH/IQ',
                 }}
               />

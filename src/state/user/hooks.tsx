@@ -272,7 +272,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
       chainId
         ? flatMap(Object.keys(tokens), (tokenAddress) => {
             const token = tokens[tokenAddress]
-            console.log('token:', token)
+            // console.log('token:', token)
 
             // for each token on the current chain,
             return (

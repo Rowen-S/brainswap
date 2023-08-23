@@ -86,6 +86,8 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo.stakedAmount.currency)
   const [, stakingTokenPair] = useV2Pair(...stakingInfo.tokens)
 
+  console.log('stakingInfo:', stakingInfo, stakingInfo.totalStakedAmount.quotient)
+
   // let returnOverMonth: Percent = new Percent('0')
   let valueOfTotalStakedAmountInWETH: CurrencyAmount<Token> | undefined
   if (totalSupplyOfStakingToken && stakingTokenPair) {

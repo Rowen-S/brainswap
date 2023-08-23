@@ -45,7 +45,7 @@ export default function SupplyItem({ title, content, desc }: ISupplyItemProps) {
     <SupplyItemWrapper>
       <SupplyItemTitle>{title}</SupplyItemTitle>
       <SupplyItemValue>
-        {content?.value ? formatWithMod(Number(content.value)) : '-'} {content.suffix}
+        {content?.value} {content.suffix}
       </SupplyItemValue>
       <SupplyItemDesc>{desc}</SupplyItemDesc>
     </SupplyItemWrapper>

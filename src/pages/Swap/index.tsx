@@ -136,6 +136,7 @@ export default function Swap({ history }: RouteComponentProps) {
   )
 
   const fiatValueInput = useUSDCValue(parsedAmounts[Field.INPUT])
+
   const fiatValueOutput = useUSDCValue(parsedAmounts[Field.OUTPUT])
   const priceImpact = computeFiatValuePriceImpact(fiatValueInput, fiatValueOutput)
 
