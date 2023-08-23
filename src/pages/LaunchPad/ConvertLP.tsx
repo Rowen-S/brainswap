@@ -42,9 +42,9 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
 
   const isInvested = useMemo(() => {
     if (userInfo && userInfo.debt > 0) {
-      return Boolean(!userInfo.totalInvestedETH)
+      return !!userInfo.totalInvestedETH
     }
-    return true
+    return false
   }, [userInfo])
 
   const [realUserInfo, setRealUserInfo] = useState<{
@@ -173,7 +173,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
         <Row>
           {/* <LockIcon src={LockSvg} /> */}
           <ILOCardSmallTitle>
-            Your current LP: {formatEther(reverses[0])} IQ + {formatEther(reverses[1])} ETH
+            Your current LP: {formatEther(reverses[1])} IQ + {formatEther(reverses[0])} ETH
           </ILOCardSmallTitle>
         </Row>
 
