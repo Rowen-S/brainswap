@@ -156,7 +156,20 @@ export default function AddLP({
           </ILOCardText>
         </RowBetween>
 
-        {isbuy ? (
+        {isRefund && !isbuy ? (
+          <IDDWrapper gap="sm">
+            <ILOCardText fontSize={14}>*When softcap miss, click ‘refund’ to get your ETH and IQ airdrop </ILOCardText>
+            <ButtonNormal
+              disabled={isRefund && !Boolean(userInfo?.totalInvestedETH > 0)}
+              onClick={refundIDO}
+              style={{
+                marginTop: '32px',
+              }}
+            >
+              Refund
+            </ButtonNormal>
+          </IDDWrapper>
+        ) : (
           <>
             <IDDWrapper gap="md">
               <IDOInput value={idoValue} onUserInput={(val) => setIdoValue(val)} disabled={isExpired} />
@@ -172,20 +185,7 @@ export default function AddLP({
               Buy
             </ButtonNormal>
           </>
-        ) : isRefund ? (
-          <IDDWrapper gap="sm">
-            <ILOCardText fontSize={14}>*When softcap miss, click ‘refund’ to get your ETH and IQ airdrop </ILOCardText>
-            <ButtonNormal
-              disabled={isRefund && !Boolean(userInfo?.totalInvestedETH > 0)}
-              onClick={refundIDO}
-              style={{
-                marginTop: '32px',
-              }}
-            >
-              Refund
-            </ButtonNormal>
-          </IDDWrapper>
-        ) : null}
+        )}
       </AutoColumn>
     </>
   )
