@@ -20,13 +20,6 @@ import UserUpdater from './state/user/updater'
 import ThemeProvider, { ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  uri: 'https://api.thegraph.com/subgraphs/name/brainswapfi/brainswap',
-})
-
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if (!!window.ethereum) {
@@ -69,19 +62,17 @@ ReactDOM.render(
   <StrictMode>
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
-        <ApolloProvider client={client}>
-          <Blocklist>
-            <Provider store={store}>
-              <HashRouter>
-                <Updaters />
-                <ThemeProvider>
-                  <ThemedGlobalStyle />
-                  <App />
-                </ThemeProvider>
-              </HashRouter>
-            </Provider>
-          </Blocklist>
-        </ApolloProvider>
+        <Blocklist>
+          <Provider store={store}>
+            <HashRouter>
+              <Updaters />
+              <ThemeProvider>
+                <ThemedGlobalStyle />
+                <App />
+              </ThemeProvider>
+            </HashRouter>
+          </Provider>
+        </Blocklist>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
   </StrictMode>,

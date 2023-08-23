@@ -25,6 +25,7 @@ import TokenDistribution from './TokenDistribution'
 import { BigNumber } from 'ethers'
 import useUSDCPrice, { useUSDCValue } from 'hooks/useUSDCPrice'
 import { useCurrency } from 'hooks/Tokens'
+import { unwrappedToken } from 'utils/unwrappedToken'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -68,8 +69,11 @@ export default function LaunchPad() {
 
   const idoSupply = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
 
-  const weth = chainId ? WETH9[1] : undefined
-  const ethPrice = useUSDCPrice(weth)
+  const weth = WETH9[80001]
+  const currency = unwrappedToken(weth)
+  const ethPrice = useUSDCPrice(currency)
+
+  console.log('ethPriceethPriceethPriceethPrice:', ethPrice?.toSignificant(2))
 
   const [userInfo, setUserInfo] =
     useState<{

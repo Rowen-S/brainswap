@@ -11,7 +11,7 @@ export const MULTICALL_ADDRESSES = {
 }
 export const V2_ROUTER_ADDRESS: AddressMap = {
   ...constructSameAddressMap('0x0a8746e1ab19888f5671511f538aaf0ca935d4a7'),
-  [80001]: '0xF1f646D9d3b7667ec2e7F1AdAAa4f7B36451c265',
+  [80001]: '0xeCf0FB249F7FE90e2B882341d9Ad83E05b8cb0DD',
 }
 export const GOVERNANCE_ADDRESS: AddressMap = constructSameAddressMap('0x5e4be8Bc9637f0EAA1A755019e06A68ce081D58F')
 export const TIMELOCK_ADDRESS: AddressMap = constructSameAddressMap('0x1a9C8182C09F50C8318d769245beA52c32BE35BC')

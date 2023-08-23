@@ -70,6 +70,13 @@ export function formattedFeeAmount(feeAmount: FeeAmount): number {
   return feeAmount / 10000
 }
 
+export function formatToFixed(amount: string | number, place = 2): string {
+  amount = amount
+  if (typeof amount == 'string') {
+    amount = parseFloat(amount)
+  }
+  return formatWithMod(parseFloat(amount.toFixed(place)))
+}
 export function formatWithMod(amount: number): string {
   let n = amount
   let r = ''

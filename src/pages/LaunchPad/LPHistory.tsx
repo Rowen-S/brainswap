@@ -1,23 +1,13 @@
 import { Table } from 'components/Table'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import Loader from 'components/Loader'
 import { formatEther } from 'ethers/lib/utils'
 import { ExternalLink } from 'theme'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { useWeb3React } from '@web3-react/core'
 import { formatLuxonDateTime, shortenString } from 'utils'
-
-const GET_IDOHISTORYS = gql`
-  query AllIDOHistory($user: String!) {
-    actions(where: { user: $user }, orderBy: timestamp) {
-      transactionHash
-      id
-      user
-      amount
-      timestamp
-    }
-  }
-`
+import { idoClient } from 'lib/thegraph'
+import { GET_IDOHISTORYS } from 'lib/thegraph/gql/ido'
 
 interface History {
   transactionHash: string
@@ -30,6 +20,7 @@ export default function LPHistory() {
   const { chainId, account } = useWeb3React()
 
   const { loading, error, data } = useQuery(GET_IDOHISTORYS, {
+    client: idoClient,
     variables: { user: account },
   })
 

@@ -1,5 +1,5 @@
 diff --git a/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json b/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
-index 3726fda..c86f11c 100644
+index 3726fda..95b0b7b 100644
 --- a/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
 +++ b/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
 @@ -317,109 +317,37 @@
@@ -129,4 +129,3 @@ index 3726fda..c86f11c 100644
      }
    ]
  }
-\ No newline at end of file
