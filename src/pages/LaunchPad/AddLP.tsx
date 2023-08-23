@@ -76,8 +76,12 @@ export default function AddLP({
     if (userInfo && userInfo.totalInvestedETH && totalSupply && softCap) {
       // totalSupply * 10%            IQ amount?
       //     softCap          userInfo.totalInvestedETH
-      const idoSupply = parseEther(totalSupply.multiply(IDO_RATIO).toFixed(0))
-      setInitIQAmount(formatEther(userInfo.totalInvestedETH.div(2).mul(idoSupply).div(investedEth)))
+      try {
+        const idoSupply = parseEther(totalSupply.multiply(IDO_RATIO).toFixed(0))
+        setInitIQAmount(formatEther(userInfo.totalInvestedETH.div(2).mul(idoSupply).div(investedEth)).toString())
+      } catch (error) {
+        setInitIQAmount('0')
+      }
     }
   }, [userInfo, totalSupply, softCap])
 
