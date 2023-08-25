@@ -51,8 +51,6 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   })
 
   const isInvested = useMemo(() => {
-    console.log(realUserInfo)
-
     if (realUserInfo && realUserInfo.debt.gt(0)) {
       return true
     }
@@ -62,8 +60,6 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   const getRealUserInfo = useCallback(async () => {
     try {
       const userInfo = await idoContract.getUserInfo(account!)
-      console.log(userInfo)
-
       setRealUserInfo({
         debt: userInfo[1],
         total: userInfo[0],
@@ -81,17 +77,31 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   useEffect(() => {
     if (account && idoContract) {
       getRealUserInfo()
+      getLP()
     }
   }, [account, idoContract, getRealUserInfo])
 
-  const [reverses, setReverses] = useState<[BigNumber, BigNumber]>([BigNumber.from(0), BigNumber.from(0)])
-  useEffect(() => {
+  const [totalReverses, setTotalReverses] = useState<[BigNumber, BigNumber]>([BigNumber.from(0), BigNumber.from(0)])
+
+  const [unLockedReverses, setUnLockedReverses] = useState<[BigNumber, BigNumber]>([
+    BigNumber.from(0),
+    BigNumber.from(0),
+  ])
+
+  const getLP = useCallback(() => {
     if (idoContract) {
       // 5163977794943222513438  realUserInfo.total - (realUserInfo.debt || 0)
-      idoContract.getLP(realUserInfo.total.sub(realUserInfo.amount)).then(([reverse0, reverse1]) => {
-        setReverses([reverse0, reverse1])
+      idoContract.getLP(realUserInfo.total).then(([reverse0, reverse1]) => {
+        setTotalReverses([reverse0, reverse1])
+      })
+      idoContract.getLP(realUserInfo.amount).then(([reverse0, reverse1]) => {
+        setUnLockedReverses([reverse0, reverse1])
       })
     }
+  }, [idoContract, realUserInfo])
+
+  useEffect(() => {
+    getLP()
   }, [idoContract, realUserInfo])
 
   const claimLp = useCallback(() => {
@@ -102,6 +112,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
         setShowConfirm(true)
         await tx.wait()
         getRealUserInfo()
+        getLP()
       })
       .catch((err) => {
         console.error('err', err)
@@ -176,8 +187,30 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
         <Row>
           {/* <LockIcon src={LockSvg} /> */}
           <ILOCardSmallTitle>
-            Your current LP: {parseFloat(formatEther(reverses[1])).toFixed(4)} IQ +{' '}
-            {parseFloat(formatEther(reverses[0])).toFixed(4)} ETH
+            Your unlocked LP:{' '}
+            {parseFloat(formatEther(unLockedReverses[1]))
+              .toFixed(4)
+              .replace(/\.?0+$/, '')}{' '}
+            IQ +{' '}
+            {parseFloat(formatEther(unLockedReverses[0]))
+              .toFixed(4)
+              .replace(/\.?0+$/, '')}{' '}
+            ETH
+          </ILOCardSmallTitle>
+        </Row>
+
+        <Row mt={10}>
+          {/* <LockIcon src={LockSvg} /> */}
+          <ILOCardSmallTitle>
+            Your total LP:{' '}
+            {parseFloat(formatEther(totalReverses[1]))
+              .toFixed(4)
+              .replace(/\.?0+$/, '')}{' '}
+            IQ +{' '}
+            {parseFloat(formatEther(totalReverses[0]))
+              .toFixed(4)
+              .replace(/\.?0+$/, '')}{' '}
+            ETH
           </ILOCardSmallTitle>
         </Row>
 
