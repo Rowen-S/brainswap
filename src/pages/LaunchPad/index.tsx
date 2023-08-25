@@ -83,7 +83,7 @@ export default function LaunchPad() {
   )
   const ethPrice = useMemo(() => {
     if (!error && ethPriceValue && ethPriceValue.bundle && ethPriceValue.bundle.ethPriceUSD) {
-      return JSBI.BigInt(Math.ceil(ethPriceValue.bundle.ethPriceUSD))
+      return JSBI.BigInt(Math.ceil(ethPriceValue.bundle.ethPriceUSD).toFixed(0))
     }
     return 0
   }, [error, ethPriceValue])
