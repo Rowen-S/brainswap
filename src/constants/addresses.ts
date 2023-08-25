@@ -32,7 +32,7 @@ export const SOCKS_CONTROLLER_ADDRESSES: AddressMap = {
   [1]: '0x65770b5283117639760beA3F867b69b3697a91dd',
 }
 export const IDO_ADDRESS: AddressMap = {
-  [80001]: '0x5a20716464E190656Ab69D40Da2eC3b37fA2aF35',
+  [80001]: '0x93cEeDe2C439830D695fdC77F5E7DDE9c280bBec',
 }
 
 export const ES_TOKEN_ADDRESS: AddressMap = {
