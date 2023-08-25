@@ -51,7 +51,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   })
 
   const isInvested = useMemo(() => {
-    if (realUserInfo && realUserInfo.debt.gt(0)) {
+    if (realUserInfo && realUserInfo.amount.gt(0)) {
       return true
     }
     return false
