@@ -1,11 +1,11 @@
 import { ColumnCenter } from 'components/Column'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components/macro'
 
 interface ISupplyItemProps {
   title: string
   content: {
-    value: string | undefined
+    value: string | ReactNode
     suffix: string
   }
   desc?: string
