@@ -129,7 +129,7 @@ const HeaderLinks = styled(Row)`
   width: fit-content;
   display: grid;
   grid-auto-flow: column;
-  grid-gap: 10px;
+  grid-gap: 15px;
   overflow: auto;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     justify-self: flex-end;
@@ -241,7 +241,7 @@ const StyledNavLink = styled(NavLink).attrs({
   font-size: 0.875rem;
   width: fit-content;
   font-weight: 500;
-  padding: 8px 12px;
+  padding: 8px 4px;
   border-bottom: 2px solid transparent;
 
   &.${activeClassName} {
@@ -380,7 +380,7 @@ export default function Header() {
         </StyledNavLink>
 
         <StyledNavLink id={`launchpad-nav-link`} to={'/farm'}>
-          Trading Rewards
+          Farm
         </StyledNavLink>
 
         <StyledNavLink id={`launchpad-nav-link`} to={'/launchpad'}>

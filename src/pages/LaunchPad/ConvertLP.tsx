@@ -194,7 +194,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
         </Row>
       </LockWrapper>
 
-      <ButtonNormal width={'400px'} margin={'25px auto 0 auto'} disabled={isInvested} onClick={claimLp}>
+      <ButtonNormal width={'400px'} margin={'25px auto 0 auto'} disabled={!isInvested} onClick={claimLp}>
         Claim unlocked LP
       </ButtonNormal>
     </>
