@@ -3,19 +3,28 @@ import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { Text } from 'rebass'
 import Row from 'components/Row'
 import { ButtonNormal } from 'components/Button'
-import { useUserRewardListData } from 'state/farm/hooks'
+import { useUserHasAvailableMint } from 'state/farm/hooks'
 import { useWeb3React } from '@web3-react/core'
-import styled from 'styled-components/macro'
+import { useDropContract } from 'hooks/useContract'
+import { useCallback } from 'react'
+import { formatEther } from '@ethersproject/units'
+import { formatToFixed } from 'utils'
 
 export default function RewardESIQ() {
   const { account } = useWeb3React()
-  const reward = useUserRewardListData(account)
+  const dropContract = useDropContract()
+  const { rewards, isClaimd } = useUserHasAvailableMint(account)
 
-  const RewardText = styled(Text)`
-    /* width: 160px;
-    text-overflow: ellipsis;
-    overflow: hidden; */
-  `
+  const claim = useCallback(() => {
+    if (rewards) {
+      dropContract
+        ?.claim(rewards.amount, rewards.proofs)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => console.log(err))
+    }
+  }, [dropContract, rewards])
   return (
     <StairCard
       bg={StairBgImage}
@@ -25,7 +34,7 @@ export default function RewardESIQ() {
     >
       <Text fontSize={16}>My Trading rewards</Text>
       <Row align="flex-end" mt={40}>
-        <RewardText fontSize={42}>{reward?.amount ?? '-'}</RewardText>
+        <Text fontSize={42}>{(rewards?.amount && formatToFixed(formatEther(rewards?.amount))) ?? '-'}</Text>
         <Text
           fontSize={16}
           opacity={0.5}
@@ -43,7 +52,9 @@ export default function RewardESIQ() {
         The token will be claimable this epoch. The unclaimed token will be expired after epoch
       </Text>
 
-      <ButtonNormal mt={70}>Claim All esIQ200</ButtonNormal>
+      <ButtonNormal mt={70} onClick={claim} disabled={isClaimd}>
+        Claim All esIQ
+      </ButtonNormal>
     </StairCard>
   )
 }

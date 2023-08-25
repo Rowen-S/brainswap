@@ -38,3 +38,5 @@ export const IDO_ADDRESS: AddressMap = {
 export const ES_TOKEN_ADDRESS: AddressMap = {
   ...constructSameAddressMap('0x124a8F7dFD98D54b34c6dCa137f0901fcCbC4f63'),
 }
+
+export const DROP_ADDRESS: AddressMap = constructSameAddressMap('0xb19EA693C1A977fbc17e95dd5cEFC6b926514F63')

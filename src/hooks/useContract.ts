@@ -20,6 +20,7 @@ import WETH_ABI from 'abis/weth.json'
 import EIP_2612 from 'abis/eip_2612.json'
 import IDO_ABI from 'abis/Ido.json'
 import ES_TOKEN_ABI from 'abis/es-token.json'
+import DROP_ABI from 'abis/drop.json'
 
 import {
   ARGENT_WALLET_DETECTOR_ADDRESS,
@@ -31,6 +32,7 @@ import {
   SOCKS_CONTROLLER_ADDRESSES,
   IDO_ADDRESS,
   ES_TOKEN_ADDRESS,
+  DROP_ADDRESS,
 } from 'constants/addresses'
 import { useMemo } from 'react'
 import { getContract } from 'utils'
@@ -44,6 +46,7 @@ import {
   Ido,
   UniswapInterfaceMulticall,
   EsToken,
+  Drop,
 } from '../abis/types'
 import { UNI } from '../constants/tokens'
 import { useActiveWeb3React } from './web3'
@@ -139,4 +142,8 @@ export function useIDOContract(withSignerIfPossible?: boolean): Ido {
 
 export function useEsTokenContract(withSignerIfPossible?: boolean) {
   return useContract<EsToken>(ES_TOKEN_ADDRESS, ES_TOKEN_ABI, withSignerIfPossible) as EsToken
+}
+
+export function useDropContract(withSignerIfPossible?: boolean) {
+  return useContract<Drop>(DROP_ADDRESS, DROP_ABI, withSignerIfPossible) as Drop
 }

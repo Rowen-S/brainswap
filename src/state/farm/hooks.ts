@@ -1,7 +1,8 @@
 import { isAddress } from '@ethersproject/address'
+import { useDropContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
-// import { useSingleCallResult } from 'state/multicall/hooks'
-// import { ZERO_ADDRESS } from 'constants/misc'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import { ZERO_ADDRESS } from 'constants/misc'
 
 interface UserProofData {
   proofs: string[]
@@ -23,8 +24,8 @@ function fetchClaim(account: string): Promise<UserProofData | null> {
     MINT_PROMISES[key] ??
     new Promise((resolve) =>
       resolve({
-        proofs: ['0xaec3e3051b45e4c2682be9fa73c0b1b73c7c52f795fedcaf628d213d97edf59a'],
-        amount: '516046972320789937105582435',
+        proofs: ['0x6dcdb1e6bc704c351a550d7063f870a66823ddb9d3da4094c41aa7dd0664e557'],
+        amount: '3205804928762930256623',
       })
     ))
 }
@@ -49,17 +50,21 @@ export function useUserRewardListData(account: string | null | undefined): UserP
   return account ? claimInfo[key] : undefined
 }
 
-// // Check whether the user is in the whitelist and has not mint (key)
-// export function useUserHasAvailableMint(account: string | null | undefined): {
-//   proof: string[] | undefined
-//   isMinted: boolean
-// } {
-//   const userMintData = useUserWhiteListData(account)
-//   const distributorContract = useRa1seBoxContract()
-//   const isMintedResult = useSingleCallResult(distributorContract, 'mintedAddress', [account ?? ZERO_ADDRESS])
-//   // user is in blob and contract marks as unminted
-//   return {
-//     proof: userMintData?.proof,
-//     isMinted: !isMintedResult.loading && isMintedResult.result?.[0],
-//   }
-// }
+// Check whether the user is in the whitelist and has not mint (key)
+export function useUserHasAvailableMint(account: string | null | undefined): {
+  rewards: UserProofData | null | undefined
+  isClaimd: boolean
+} {
+  const userRewardData = useUserRewardListData(account)
+  const distributorContract = useDropContract()
+
+  const merkleRoot = useSingleCallResult(distributorContract, 'merkleRoot', [])?.result?.[0]
+
+  const isMintedResult = useSingleCallResult(distributorContract, 'withdrawn', [merkleRoot, account ?? ZERO_ADDRESS])
+
+  // user is in blob and contract marks as unminted
+  return {
+    rewards: userRewardData,
+    isClaimd: !isMintedResult.loading && isMintedResult.result?.[0],
+  }
+}

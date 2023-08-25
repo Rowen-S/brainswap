@@ -3,6 +3,7 @@
 /* eslint-disable */
 export type { ArgentWalletContract } from "./ArgentWalletContract";
 export type { ArgentWalletDetector } from "./ArgentWalletDetector";
+export type { Drop } from "./Drop";
 export type { Eip2612 } from "./Eip2612";
 export type { EnsPublicResolver } from "./EnsPublicResolver";
 export type { EnsRegistrar } from "./EnsRegistrar";
@@ -17,6 +18,7 @@ export type { Weth } from "./Weth";
 
 export { ArgentWalletContract__factory } from "./factories/ArgentWalletContract__factory";
 export { ArgentWalletDetector__factory } from "./factories/ArgentWalletDetector__factory";
+export { Drop__factory } from "./factories/Drop__factory";
 export { Eip2612__factory } from "./factories/Eip2612__factory";
 export { EnsPublicResolver__factory } from "./factories/EnsPublicResolver__factory";
 export { EnsRegistrar__factory } from "./factories/EnsRegistrar__factory";

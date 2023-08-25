@@ -31,8 +31,6 @@ export default function RewardIQ() {
     variables: { user: account },
   })
 
-  console.log(loading, error, data)
-
   const myTotalPower = useMemo(() => {
     if (!loading && !error && data && data.lpinfos.length && data.userMiningInfos.length) {
       const lpPower = parseFloat(data.lpinfos[0].power ?? '0')
