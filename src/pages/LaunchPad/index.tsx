@@ -361,7 +361,7 @@ export default function LaunchPad() {
                   value: (valueAmountInWETH && valueAmountInWETH?.toSignificant(6, { groupSeparator: ',' })) ?? (
                     <Loader />
                   ),
-                  suffix: 'USD/IQ',
+                  suffix: 'USD',
                 }}
               />
             </Row>
