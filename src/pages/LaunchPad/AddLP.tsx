@@ -84,7 +84,7 @@ export default function AddLP({
         setInitIQAmount(CurrencyAmount.fromRawAmount(iq, 0))
       }
     }
-  }, [userInfo, totalSupply, softCap, iq])
+  }, [userInfo, totalSupply, softCap, iq, investedEth])
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 import Row, { RowFixed } from 'components/Row'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ButtonNormal } from 'components/Button'
 import { useIDOContract } from 'hooks/useContract'
 import Progress from 'components/Progress'
@@ -61,6 +61,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
 
   const getRealUserInfo = useCallback(async () => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const userInfo = await idoContract.getUserInfo(account!)
       console.log(userInfo)
 

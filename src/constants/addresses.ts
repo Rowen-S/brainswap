@@ -34,3 +34,7 @@ export const SOCKS_CONTROLLER_ADDRESSES: AddressMap = {
 export const IDO_ADDRESS: AddressMap = {
   [80001]: '0x0181Bcd6325E615327CD92041Daf519c0dF054b7',
 }
+
+export const ES_TOKEN_ADDRESS: AddressMap = {
+  ...constructSameAddressMap('0x124a8F7dFD98D54b34c6dCa137f0901fcCbC4f63'),
+}

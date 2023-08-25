@@ -106,7 +106,7 @@ export default function LaunchPad() {
     }
   }, [account, getUserInfo])
 
-  const [{ startTimestamp, endTimestamp, unlockTimestamp }, setInit] = useState<{
+  const [{ endTimestamp, unlockTimestamp }, setInit] = useState<{
     startTimestamp: number | undefined
     endTimestamp: number | undefined
     unlockTimestamp: number | undefined

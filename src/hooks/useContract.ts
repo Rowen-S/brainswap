@@ -19,6 +19,7 @@ import UNISOCKS_ABI from 'abis/unisocks.json'
 import WETH_ABI from 'abis/weth.json'
 import EIP_2612 from 'abis/eip_2612.json'
 import IDO_ABI from 'abis/Ido.json'
+import ES_TOKEN_ABI from 'abis/es-token.json'
 
 import {
   ARGENT_WALLET_DETECTOR_ADDRESS,
@@ -29,6 +30,7 @@ import {
   ENS_REGISTRAR_ADDRESSES,
   SOCKS_CONTROLLER_ADDRESSES,
   IDO_ADDRESS,
+  ES_TOKEN_ADDRESS,
 } from 'constants/addresses'
 import { useMemo } from 'react'
 import { getContract } from 'utils'
@@ -41,6 +43,7 @@ import {
   IUniswapV2Router02,
   Ido,
   UniswapInterfaceMulticall,
+  EsToken,
 } from '../abis/types'
 import { UNI } from '../constants/tokens'
 import { useActiveWeb3React } from './web3'
@@ -132,4 +135,8 @@ export function useSocksController(): Unisocks | null {
 
 export function useIDOContract(withSignerIfPossible?: boolean): Ido {
   return useContract<Ido>(IDO_ADDRESS, IDO_ABI, withSignerIfPossible) as Ido
+}
+
+export function useEsTokenContract(withSignerIfPossible?: boolean) {
+  return useContract<EsToken>(ES_TOKEN_ADDRESS, ES_TOKEN_ABI, withSignerIfPossible) as EsToken
 }

@@ -1,12 +1,12 @@
 import { StairCard } from 'components/StairCard'
-import React from 'react'
+import { useMemo } from 'react'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { RowBetween } from 'components/Row'
 import styled from 'styled-components'
 import { Text } from 'rebass'
 import { ColumnCenter } from 'components/Column'
 import { useQuery } from '@apollo/client'
-import { GET_LP_TRAD_POWER } from 'lib/thegraph/gql/trading'
+import { GET_LP_TRAD_POWER, PowerProps } from 'lib/thegraph/gql/trading'
 import { tradingClient } from 'lib/thegraph'
 import { useWeb3React } from '@web3-react/core'
 import { formatToFixed } from 'utils'
@@ -26,31 +26,42 @@ const IQNumber = styled(Text)`
 `
 export default function RewardIQ() {
   const { account } = useWeb3React()
-  const { loading, error, data } = useQuery(GET_LP_TRAD_POWER, {
+  const { loading, error, data } = useQuery<PowerProps>(GET_LP_TRAD_POWER, {
     client: tradingClient,
     variables: { user: account },
   })
 
   console.log(loading, error, data)
 
+  const myTotalPower = useMemo(() => {
+    if (!loading && !error && data && data.lpinfos.length && data.userMiningInfos.length) {
+      const lpPower = parseFloat(data.lpinfos[0].power ?? '0')
+      const tradPower = parseFloat(data.userMiningInfos[0].power ?? '0')
+      return lpPower + tradPower
+    }
+    return 0
+  }, [data, error, loading])
+
   return (
     <StairCard bg={StairBgImage}>
       <RowBetween>
         <IQNumberWrapper>
           <IQNumberTitle>My Total Power</IQNumberTitle>
-          <IQNumber>299999</IQNumber>
+          <IQNumber>{formatToFixed(myTotalPower.toString())}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Trading Power</IQNumberTitle>
-          <IQNumber>{(data && formatToFixed(data?.userMiningInfos?.[0]?.power)) ?? '-'}</IQNumber>
+          <IQNumber>
+            {(data && data?.userMiningInfos?.[0]?.power && formatToFixed(data?.userMiningInfos?.[0]?.power)) ?? '-'}
+          </IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>LP Power</IQNumberTitle>
-          <IQNumber>{(data && data?.lpinfos.length[0]?.power) ?? '-'}</IQNumber>
+          <IQNumber>{(data && data?.lpinfos?.[0]?.power && formatToFixed(data?.lpinfos?.[0]?.power)) ?? '-'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Referral Power</IQNumberTitle>
-          <IQNumber>299999</IQNumber>
+          <IQNumber>Coming Soon</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Red bull Power</IQNumberTitle>

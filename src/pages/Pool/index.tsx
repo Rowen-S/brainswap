@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { ExternalLink, TYPE, HideSmall } from '../../theme'
+import { TYPE, HideSmall } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
 import { RowBetween, RowFixed } from '../../components/Row'
@@ -18,19 +18,14 @@ import { useActiveWeb3React } from '../../hooks/web3'
 import { useV2Pairs } from '../../hooks/useV2Pairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
-import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
 import { useStakingInfo } from '../../state/stake/hooks'
 import { BIG_INT_ZERO } from '../../constants/misc'
 import { Pair } from '@uniswap/v2-sdk'
+import { Table } from 'components/Table'
 
 const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
+  max-width: 870px;
   width: 100%;
-`
-
-const VoteCard = styled(DataCard)`
-  background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
-  overflow: hidden;
 `
 
 const TitleRow = styled(RowBetween)`
@@ -130,38 +125,12 @@ export default function Pool() {
     <>
       <PageWrapper>
         <SwapPoolTabs active={'pool'} />
-        <VoteCard>
-          <CardBGImage />
-          <CardNoise />
-          <CardSection>
-            <AutoColumn gap="md">
-              <RowBetween>
-                <TYPE.white fontWeight={600}>Liquidity provider rewards</TYPE.white>
-              </RowBetween>
-              <RowBetween>
-                <TYPE.white fontSize={14}>
-                  {`Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.`}
-                </TYPE.white>
-              </RowBetween>
-              <ExternalLink
-                style={{ color: 'white', textDecoration: 'underline' }}
-                target="_blank"
-                href="https://uniswap.org/docs/v2/core-concepts/pools/"
-              >
-                <TYPE.white fontSize={14}>Read more about providing liquidity</TYPE.white>
-              </ExternalLink>
-            </AutoColumn>
-          </CardSection>
-          <CardBGImage />
-          <CardNoise />
-        </VoteCard>
-
         <AutoColumn gap="lg" justify="center">
           <AutoColumn gap="md" style={{ width: '100%' }}>
             <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
               <HideSmall>
                 <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
-                  Your V2 liquidity
+                  My position
                 </TYPE.mediumHeader>
               </HideSmall>
               <ButtonRow>
@@ -247,6 +216,38 @@ export default function Pool() {
                 </TYPE.body>
               </EmptyProposals>
             )}
+          </AutoColumn>
+          <AutoColumn gap="md" style={{ width: '100%' }}>
+            <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
+              <HideSmall>
+                <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
+                  Rewards pools
+                </TYPE.mediumHeader>
+              </HideSmall>
+            </TitleRow>
+
+            <Table>
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Type</th>
+                  <th>Hash</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </Table>
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>

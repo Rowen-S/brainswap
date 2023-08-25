@@ -1,7 +1,6 @@
 import { ColumnCenter } from 'components/Column'
 import React from 'react'
 import styled from 'styled-components/macro'
-import { formatWithMod } from 'utils'
 
 interface ISupplyItemProps {
   title: string

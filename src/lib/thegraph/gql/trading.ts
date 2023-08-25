@@ -1,5 +1,9 @@
 import { gql } from '@apollo/client'
 
+export interface PowerProps {
+  lpinfos: [{ power: string }]
+  userMiningInfos: [{ power: string }]
+}
 export const GET_LP_TRAD_POWER = gql`
   query AllTradandlp($user: String!) {
     lpinfos(where: { user: $user }) {

@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import RewardIQ from './RewardIQ'
-import { RowBetween, RowFixed } from 'components/Row'
+import { RowBetween } from 'components/Row'
 import RewardESIQ from './RewardESIQ'
-import Column, { AutoColumn } from 'components/Column'
+import { AutoColumn } from 'components/Column'
 import EpochCountDown from './EpochCountDown'
 import RewardPool from './RewardPool'
 import ConvertIQ from './ConvertIQ'
 import VestingHistory from './VestingHistory'
 import Leaderboard from './LeaderBoard'
+import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
+import { towWeek, tradStartTime } from 'constants/misc'
 
 const ContentWrapper = styled.div`
   max-width: 1280px;
@@ -18,27 +20,34 @@ const ContentWrapper = styled.div`
 `
 
 const PrimaryTitle = styled(Text)`
-  color: #ffffff;
+  color: ${({ theme }) => theme.text1};
   font-size: 28px;
 `
 const SecondrayTitle = styled(Text)`
-  color: #ffffff;
+  color: ${({ theme }) => theme.text1};
   opacity: 0.5;
   font-size: 14px;
 `
+
+// now - tradStartTime / 2W
 export default function Farm() {
+  const blockTimestamp = useCurrentBlockTimestamp()
+  const per = useMemo(() => {
+    if (blockTimestamp && tradStartTime) {
+      return Math.ceil((blockTimestamp.toNumber() - tradStartTime) / towWeek)
+    }
+    return
+  }, [blockTimestamp])
+
   return (
     <ContentWrapper>
-      <PrimaryTitle>Genesis Epoch Trading Leaderboard</PrimaryTitle>
+      <PrimaryTitle>Genesis Epoch ({per ?? '-'}) Trading Leaderboard</PrimaryTitle>
       <SecondrayTitle marginTop="20px">
         Get to the top of the leaderboard in GENESIS EPOCH to determine your NEXT EPOCH trading boost
       </SecondrayTitle>
-
       <RewardIQ />
-
       <RowBetween>
         <RewardESIQ />
-
         <div>
           <AutoColumn justify="space-between">
             <EpochCountDown />
