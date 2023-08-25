@@ -1,4 +1,4 @@
-import { CurrencyAmount, Token, WETH9 } from '@uniswap/sdk-core'
+import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
 import { AutoColumn } from '../../components/Column'
 import Row from 'components/Row'
@@ -23,7 +23,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import CountDownZero from 'components/CountDownZero'
 import TokenDistribution from './TokenDistribution'
 import { BigNumber } from 'ethers'
-import { useUSDCValue } from 'hooks/useUSDCPrice'
+import { uniClient } from 'lib/thegraph'
+import { gql, useQuery } from '@apollo/client'
+import Loader from 'components/Loader'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -67,17 +69,38 @@ export default function LaunchPad() {
 
   const idoSupply: BigNumber = useSingleCallResult(idoContract, 'totalInvestedETH', [])?.result?.[0]
 
-  const WETH = WETH9[80001]
+  const { error, data: ethPriceValue } = useQuery(
+    gql`
+      {
+        bundle(id: "1") {
+          ethPriceUSD
+        }
+      }
+    `,
+    {
+      client: uniClient,
+    }
+  )
+  const ethPrice = useMemo(() => {
+    if (!error && ethPriceValue && ethPriceValue.bundle && ethPriceValue.bundle.ethPriceUSD) {
+      return JSBI.BigInt(Math.ceil(ethPriceValue.bundle.ethPriceUSD))
+    }
+    return 0
+  }, [error, ethPriceValue])
 
   let valueAmountInWETH: CurrencyAmount<Token> | undefined
-  if (idoSupply) {
+  if (idoSupply && ethPrice && chainId) {
     valueAmountInWETH = CurrencyAmount.fromRawAmount(
-      WETH,
-      JSBI.divide(JSBI.multiply(JSBI.divide(JSBI.BigInt(idoSupply), JSBI.BigInt(2)), JSBI.BigInt(100)), JSBI.BigInt(10))
+      new Token(chainId, '0x0000000000000000000000000000000000000001', 18),
+      JSBI.multiply(
+        ethPrice,
+        JSBI.divide(
+          JSBI.multiply(JSBI.divide(JSBI.BigInt(idoSupply), JSBI.BigInt(2)), JSBI.BigInt(100)),
+          JSBI.BigInt(10)
+        )
+      )
     )
   }
-
-  const USDPrice = useUSDCValue(valueAmountInWETH)
 
   const [userInfo, setUserInfo] =
     useState<{
@@ -106,7 +129,7 @@ export default function LaunchPad() {
     }
   }, [account, getUserInfo])
 
-  const [{ startTimestamp, endTimestamp, unlockTimestamp }, setInit] = useState<{
+  const [{ endTimestamp, unlockTimestamp }, setInit] = useState<{
     startTimestamp: number | undefined
     endTimestamp: number | undefined
     unlockTimestamp: number | undefined
@@ -335,8 +358,10 @@ export default function LaunchPad() {
               <SupplyItem
                 title="FDV"
                 content={{
-                  value: (USDPrice && USDPrice?.toSignificant(6, { groupSeparator: ',' })) ?? '-',
-                  suffix: 'ETH/IQ',
+                  value: (valueAmountInWETH && valueAmountInWETH?.toSignificant(6, { groupSeparator: ',' })) ?? (
+                    <Loader />
+                  ),
+                  suffix: 'USD/IQ',
                 }}
               />
             </Row>

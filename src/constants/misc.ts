@@ -20,6 +20,12 @@ export const BIPS_BASE = JSBI.BigInt(10000)
 // 10% IDO
 export const IDO_RATIO = new Percent(JSBI.BigInt(1000), BIPS_BASE) // 10%
 
+/**
+ * Trading Farm
+ */
+export const tradStartTime = 1692679002
+export const towWeek = 1209600
+
 // used for warning states
 export const ALLOWED_PRICE_IMPACT_LOW: Percent = new Percent(JSBI.BigInt(100), BIPS_BASE) // 1%
 export const ALLOWED_PRICE_IMPACT_MEDIUM: Percent = new Percent(JSBI.BigInt(300), BIPS_BASE) // 3%
