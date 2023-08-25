@@ -184,7 +184,7 @@ export default function AddLP({
                 Your initial LP
                 <QuestionHelper text="The final IQ you purchased will be confirmed when the launchpad is finished." />:
                 &nbsp;
-                {initIQAmount?.toSignificant(2)} IQ +{' '}
+                {initIQAmount?.toFixed(2)} IQ +{' '}
                 {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '0'} ETH LP
               </ILOCardText>
             </IDDWrapper>

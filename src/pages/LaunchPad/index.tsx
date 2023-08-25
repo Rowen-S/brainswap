@@ -307,7 +307,7 @@ export default function LaunchPad() {
                   value: totalSupply?.toSignificant(4),
                   suffix: 'IQ',
                 }}
-                desc="Fair launch for ALL MEME DEGEN"
+                desc=""
               />
               <SupplyItem
                 title="IDO Supply"
@@ -315,7 +315,7 @@ export default function LaunchPad() {
                   value: totalSupply?.multiply(IDO_RATIO)?.toSignificant(4),
                   suffix: '[10%]',
                 }}
-                desc="Equivalent to 10 ETH"
+                desc=""
               />
               <SupplyItem
                 title="Softcap"
@@ -330,7 +330,7 @@ export default function LaunchPad() {
                   value: idoSupply ? formatEther(idoSupply) : '-',
                   suffix: 'ETH',
                 }}
-                desc="Equivalent to 10 ETH"
+                desc=""
               />
               <SupplyItem
                 title="FDV"

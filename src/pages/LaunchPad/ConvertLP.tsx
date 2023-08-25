@@ -40,13 +40,6 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   const [txHash, setTxHash] = useState<string>('')
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
 
-  const isInvested = useMemo(() => {
-    if (userInfo && userInfo.debt > 0) {
-      return !!userInfo.totalInvestedETH
-    }
-    return false
-  }, [userInfo])
-
   const [realUserInfo, setRealUserInfo] = useState<{
     debt: BigNumber
     total: BigNumber
@@ -57,9 +50,19 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
     amount: BigNumber.from(0),
   })
 
+  const isInvested = useMemo(() => {
+    console.log(realUserInfo)
+
+    if (realUserInfo && realUserInfo.debt > 0) {
+      return true
+    }
+    return false
+  }, [realUserInfo])
+
   const getRealUserInfo = useCallback(async () => {
     try {
       const userInfo = await idoContract.getUserInfo(account!)
+      console.log(userInfo)
 
       setRealUserInfo({
         debt: userInfo[1],
@@ -85,7 +88,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
   useEffect(() => {
     if (idoContract) {
       // 5163977794943222513438  realUserInfo.total - (realUserInfo.debt || 0)
-      idoContract.getLP(realUserInfo.total.sub(realUserInfo.debt)).then(([reverse0, reverse1]) => {
+      idoContract.getLP(realUserInfo.total.sub(realUserInfo.amount)).then(([reverse0, reverse1]) => {
         setReverses([reverse0, reverse1])
       })
     }
@@ -173,7 +176,8 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
         <Row>
           {/* <LockIcon src={LockSvg} /> */}
           <ILOCardSmallTitle>
-            Your current LP: {formatEther(reverses[1])} IQ + {formatEther(reverses[0])} ETH
+            Your current LP: {parseFloat(formatEther(reverses[1])).toFixed(4)} IQ +{' '}
+            {parseFloat(formatEther(reverses[0])).toFixed(4)} ETH
           </ILOCardSmallTitle>
         </Row>
 

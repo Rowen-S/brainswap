@@ -28,26 +28,26 @@ const SupplyItemValue = styled.div`
   font-weight: 500;
 `
 
-const SupplyItemDesc = styled.div`
-  color: #ffffff;
-  margin-top: 25px;
-  text-align: center;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: 500;
-  opacity: 0.5;
-`
+// const SupplyItemDesc = styled.div`
+//   color: #ffffff;
+//   margin-top: 25px;
+//   text-align: center;
+//   font-size: 12px;
+//   line-height: 12px;
+//   font-weight: 500;
+//   opacity: 0.5;
+// `
 
 const SupplyItemWrapper = styled(ColumnCenter)``
 
-export default function SupplyItem({ title, content, desc }: ISupplyItemProps) {
+export default function SupplyItem({ title, content }: ISupplyItemProps) {
   return (
     <SupplyItemWrapper>
       <SupplyItemTitle>{title}</SupplyItemTitle>
       <SupplyItemValue>
         {content?.value} {content.suffix}
       </SupplyItemValue>
-      <SupplyItemDesc>{desc}</SupplyItemDesc>
+      {/* <SupplyItemDesc>{desc}</SupplyItemDesc> */}
     </SupplyItemWrapper>
   )
 }
