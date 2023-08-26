@@ -4,7 +4,6 @@ type AddressMap = { [chainId: number]: string }
 
 export const UNI_ADDRESS: AddressMap = constructSameAddressMap('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984')
 
-export const IQ_ADDRESS = constructSameAddressMap('0xB2F0b8ff91336DbC074CDc34Db6C19EA7df9F30a')
 export const MULTICALL_ADDRESSES = {
   ...constructSameAddressMap('0x1F98415757620B543A52E61c46B32eB19261F984'),
   [84531]: '0xa5D7b84358B979949F850eDF77FcFDf5d5848602',
@@ -34,6 +33,8 @@ export const SOCKS_CONTROLLER_ADDRESSES: AddressMap = {
 export const IDO_ADDRESS: AddressMap = {
   [80001]: '0x2CDC113BC5d17f9DAA0e61e6F7DACc25A4a5299e',
 }
+
+export const IQ_ADDRESS = constructSameAddressMap('0x62F3c82a4E76C0512ecd6a1405363E25Ce0ce05B')
 
 export const ES_TOKEN_ADDRESS: AddressMap = {
   ...constructSameAddressMap('0x124a8F7dFD98D54b34c6dCa137f0901fcCbC4f63'),
