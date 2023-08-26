@@ -175,39 +175,41 @@ export default function AddLiquidity({
     const { data } = await method(...args, { ...(value ? { value } : {}) })
     console.log('data', data)
     setAttemptingTxn(true)
-    await router.estimateGas
-      .referAndCall(ethers.constants.AddressZero, data, { value })
-      .then((estimatedGasLimit) =>
-        router
-          .referAndCall(ethers.constants.AddressZero, data, {
-            value,
-            gasLimit: calculateGasMargin(estimatedGasLimit),
-          })
-          .then((response: TransactionResponse) => {
-            setAttemptingTxn(false)
+    await router
+      .referAndCall(ethers.constants.AddressZero, data, {
+        value,
+        // gasLimit: calculateGasMargin(estimatedGasLimit),
+        gasLimit: 100_0000,
+      })
+      .then((response: TransactionResponse) => {
+        setAttemptingTxn(false)
 
-            addTransaction(response, {
-              summary:
-                'Add ' +
-                parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
-                ' ' +
-                currencies[Field.CURRENCY_A]?.symbol +
-                ' and ' +
-                parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
-                ' ' +
-                currencies[Field.CURRENCY_B]?.symbol,
-            })
+        addTransaction(response, {
+          summary:
+            'Add ' +
+            parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
+            ' ' +
+            currencies[Field.CURRENCY_A]?.symbol +
+            ' and ' +
+            parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
+            ' ' +
+            currencies[Field.CURRENCY_B]?.symbol,
+        })
 
-            setTxHash(response.hash)
+        setTxHash(response.hash)
 
-            ReactGA.event({
-              category: 'Liquidity',
-              action: 'Add',
-              label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
-            })
-          })
-      )
-      .catch((error) => {
+        ReactGA.event({
+          category: 'Liquidity',
+          action: 'Add',
+          label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
+        })
+      })
+      // router.estimateGas
+      //   .referAndCall(ethers.constants.AddressZero, data, { value })
+      //   .then((estimatedGasLimit) =>
+
+      //   )
+      .catch((error: any) => {
         setAttemptingTxn(false)
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
