@@ -34,7 +34,7 @@ const LockWrapper = styled.div`
   margin-top: 50px;
 `
 
-export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; distance: number }) {
+export default function ConvertLP({ distance = 0 }: { distance: number }) {
   const idoContract = useIDOContract()
   const { account } = useWeb3React()
   const [txHash, setTxHash] = useState<string>('')
@@ -80,6 +80,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
       getRealUserInfo()
       getLP()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, idoContract, getRealUserInfo])
 
   const [totalReverses, setTotalReverses] = useState<[BigNumber, BigNumber]>([BigNumber.from(0), BigNumber.from(0)])
@@ -103,7 +104,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
 
   useEffect(() => {
     getLP()
-  }, [idoContract, realUserInfo])
+  }, [getLP, idoContract, realUserInfo])
 
   const claimLp = useCallback(() => {
     idoContract
@@ -118,7 +119,7 @@ export default function ConvertLP({ userInfo, distance = 0 }: { userInfo: any; d
       .catch((err) => {
         console.error('err', err)
       })
-  }, [idoContract, getRealUserInfo])
+  }, [idoContract, getRealUserInfo, getLP])
   return (
     <>
       <TransactionConfirmationModal

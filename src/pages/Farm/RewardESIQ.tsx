@@ -52,7 +52,7 @@ export default function RewardESIQ() {
         The token will be claimable this epoch. The unclaimed token will be expired after epoch
       </Text>
 
-      <ButtonNormal mt={70} onClick={claim} disabled={isClaimd}>
+      <ButtonNormal mt={70} onClick={claim} disabled={isClaimd ?? true}>
         Claim All esIQ
       </ButtonNormal>
     </StairCard>

@@ -39,6 +39,15 @@ export default function Farm() {
     return
   }, [blockTimestamp])
 
+  const endTimestamp = useMemo(() => {
+    if (blockTimestamp && per) {
+      return per * towWeek + blockTimestamp.toNumber() - tradStartTime
+    }
+    return
+  }, [blockTimestamp, per])
+
+  console.log('endTimestamp:', endTimestamp)
+
   return (
     <ContentWrapper>
       <PrimaryTitle>Genesis Epoch ({per ?? '-'}) Trading Leaderboard</PrimaryTitle>
