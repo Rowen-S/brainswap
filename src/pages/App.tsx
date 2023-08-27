@@ -25,7 +25,7 @@ import { RedirectDuplicateTokenIdsV2 } from './AddLiquidityV2/redirects'
 import { ThemedBackground } from '../theme'
 import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
 import LaunchPad from './LaunchPad'
-import Farm from './Farm'
+import TradingRewards from './TradingRewards'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -104,7 +104,7 @@ export default function App() {
 
                 <Route exact strict path="/launchpad" component={LaunchPad} />
 
-                <Route exact strict path="/farm" component={Farm} />
+                <Route exact strict path="/farm" component={TradingRewards} />
 
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>

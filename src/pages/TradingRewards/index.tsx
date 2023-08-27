@@ -30,7 +30,7 @@ const SecondrayTitle = styled(Text)`
 `
 
 // now - tradStartTime / 2W
-export default function Farm() {
+export default function TradingRewards() {
   const blockTimestamp = useCurrentBlockTimestamp()
   const epoch = useMemo(() => {
     if (blockTimestamp && tradStartTime) {
