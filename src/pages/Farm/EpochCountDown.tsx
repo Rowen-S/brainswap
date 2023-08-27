@@ -1,18 +1,26 @@
 import { StairCard } from 'components/StairCard'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { Text } from 'rebass'
 import Countdown from 'react-countdown'
+import { towWeek, tradStartTime } from 'constants/misc'
+import { DateTime } from 'luxon'
 
-const endTimestamp = new Date().getTime() + 500000000
+export default function EpochCountDown({ epoch }: { epoch: number | undefined }) {
+  let endTimestamp: number | undefined
+  if (epoch) {
+    endTimestamp = (tradStartTime + epoch * towWeek) * 1000
+  }
 
-export default function EpochCountDown() {
+  const frommatTime = endTimestamp && DateTime.fromMillis(endTimestamp)
+
   const formatNumber = useCallback((num: number) => {
     return num.toLocaleString('en-US', {
       minimumIntegerDigits: 1,
       useGrouping: false,
     })
   }, [])
+
   const initRenderer = useCallback(
     ({
       days,
@@ -44,15 +52,13 @@ export default function EpochCountDown() {
           marginTop: '10px',
         }}
       >
-        <Countdown
-          now={() => new Date().getTime()}
-          date={endTimestamp}
-          renderer={initRenderer}
-          key={new Date().getTime()}
-        />
+        {endTimestamp && DateTime && (
+          <Countdown now={() => DateTime.now().toMillis()} date={endTimestamp} renderer={initRenderer} />
+        )}
       </div>
       <Text opacity={0.5} fontSize={14} mt={10}>
-        until the next epoch on May 22
+        until the next epoch on {frommatTime ? frommatTime.toFormat('LLLL') : '-'}{' '}
+        {frommatTime ? frommatTime.toFormat('d') : '-'}
       </Text>
     </StairCard>
   )

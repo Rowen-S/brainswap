@@ -9,6 +9,15 @@ import Rank0Image from '../../assets/images/rank_0.svg'
 import Rank1Image from '../../assets/images/rank_1.svg'
 import Rank2Image from '../../assets/images/rank_2.svg'
 import Pagination from 'components/Pagination'
+import { tradingClient } from 'lib/thegraph'
+import { GET_MINING_INFO, GET_MIN_INFOS } from 'lib/thegraph/gql/trading'
+import { useQuery } from '@apollo/client'
+import { formatToFixed, shortenAddress } from 'utils'
+import Loader from 'components/Loader'
+import { rewardsPool } from 'constants/misc'
+import { ExternalLink } from 'theme'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { useWeb3React } from '@web3-react/core'
 
 const TradingBoost = styled.span`
   border: 1px dashed #2cfff3;
@@ -22,7 +31,22 @@ const Sacrifice = styled.span`
   font-size: 12px;
   line-height: 12px;
 `
-export default function Leaderboard() {
+export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
+  const { chainId } = useWeb3React()
+  const { data } = useQuery<{
+    userMiningInfos: [
+      {
+        power: string
+        id: string
+        epoch: string
+        user: string
+        volumeUSD: string
+      }
+    ]
+  }>(GET_MIN_INFOS, {
+    client: tradingClient,
+  })
+
   return (
     <>
       <Text fontSize={28}>Genesis Epoch Trading Leaderboard</Text>
@@ -44,51 +68,31 @@ export default function Leaderboard() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <Image src={Rank0Image} />
-              </td>
-              <td>ERT67R</td>
-              <td>
-                <TradingBoost>x 3.0</TradingBoost>
-              </td>
-              <td>$98.35m</td>
-              <td>999</td>
-              <td>$10,456</td>
-              <td>
-                <Sacrifice>Comming soom</Sacrifice>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <Image src={Rank1Image} />
-              </td>
-              <td>ERT67R</td>
-              <td>
-                <TradingBoost>x 3.0</TradingBoost>
-              </td>
-              <td>$98.35m</td>
-              <td>999</td>
-              <td>$10,456</td>
-              <td>
-                <Sacrifice>Comming soom</Sacrifice>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <Image src={Rank2Image} />
-              </td>
-              <td>ERT67R</td>
-              <td>
-                <TradingBoost>x 3.0</TradingBoost>
-              </td>
-              <td>$98.35m</td>
-              <td>999</td>
-              <td>$10,456</td>
-              <td>
-                <Sacrifice>Comming soom</Sacrifice>
-              </td>
-            </tr>
+            {data?.userMiningInfos.length ? (
+              data?.userMiningInfos.map((x, i) => (
+                <tr key={x.id}>
+                  <td>
+                    <Image src={i === 0 ? Rank0Image : i === 1 ? Rank1Image : Rank2Image} />
+                  </td>
+                  <td>
+                    <ExternalLink href={getExplorerLink(chainId ?? 80001, x.user, ExplorerDataType.ADDRESS)}>
+                      {shortenAddress(x.user)}
+                    </ExternalLink>
+                  </td>
+                  <td>
+                    <TradingBoost>x 1.0</TradingBoost>
+                  </td>
+                  <td>{formatToFixed(x.volumeUSD)}</td>
+                  <td>-</td>
+                  <td>{epoch && <EstimatedRewards epoch={epoch} power={x.power} />}</td>
+                  <td>
+                    <Sacrifice>Comming soom</Sacrifice>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <Loader />
+            )}
           </tbody>
         </Table>
       </StairCard>
@@ -96,4 +100,23 @@ export default function Leaderboard() {
       <Pagination total={101} pageSize={50}></Pagination>
     </>
   )
+}
+
+function EstimatedRewards({ epoch, power }: { epoch: number; power: string }) {
+  const { loading, error, data } = useQuery(GET_MINING_INFO, {
+    client: tradingClient,
+    variables: { epoch: epoch - 1 + '' },
+  })
+
+  let content
+  if (loading) {
+    content = <Loader />
+  }
+  if (data && data.miningInfo) {
+    content = <div>{formatToFixed((parseFloat(power) / parseFloat(data.miningInfo.power)) * rewardsPool)}</div>
+  }
+  if (error) {
+    content = '-'
+  }
+  return <>{content}</>
 }

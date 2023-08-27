@@ -3,6 +3,7 @@ import React from 'react'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { Text } from 'rebass'
 import Row from 'components/Row'
+import { rewardsPool } from 'constants/misc'
 
 export default function RewardPool() {
   return (
@@ -12,7 +13,7 @@ export default function RewardPool() {
         minWidth: '380px',
       }}
     >
-      <Text fontSize={16}>Countdown</Text>
+      <Text fontSize={16}>The Rewards pool</Text>
 
       <Row
         style={{
@@ -20,7 +21,7 @@ export default function RewardPool() {
         }}
         align="flex-end"
       >
-        <Text fontSize={42}>40,000,000</Text>
+        <Text fontSize={42}>{rewardsPool.toLocaleString()}</Text>
         <Text
           opacity={0.5}
           fontSize={16}
@@ -34,7 +35,7 @@ export default function RewardPool() {
         </Text>
       </Row>
       <Text opacity={0.5} fontSize={14} mt={10}>
-        until the next epoch on May 22
+        will be distributed this epoch
       </Text>
     </StairCard>
   )

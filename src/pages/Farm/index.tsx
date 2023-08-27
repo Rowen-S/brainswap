@@ -32,25 +32,16 @@ const SecondrayTitle = styled(Text)`
 // now - tradStartTime / 2W
 export default function Farm() {
   const blockTimestamp = useCurrentBlockTimestamp()
-  const per = useMemo(() => {
+  const epoch = useMemo(() => {
     if (blockTimestamp && tradStartTime) {
       return Math.ceil((blockTimestamp.toNumber() - tradStartTime) / towWeek)
     }
     return
   }, [blockTimestamp])
 
-  const endTimestamp = useMemo(() => {
-    if (blockTimestamp && per) {
-      return per * towWeek + blockTimestamp.toNumber() - tradStartTime
-    }
-    return
-  }, [blockTimestamp, per])
-
-  console.log('endTimestamp:', endTimestamp)
-
   return (
     <ContentWrapper>
-      <PrimaryTitle>Genesis Epoch ({per ?? '-'}) Trading Leaderboard</PrimaryTitle>
+      <PrimaryTitle>Genesis Epoch ({epoch ?? '-'}) Trading Leaderboard</PrimaryTitle>
       <SecondrayTitle marginTop="20px">
         Get to the top of the leaderboard in GENESIS EPOCH to determine your NEXT EPOCH trading boost
       </SecondrayTitle>
@@ -59,7 +50,7 @@ export default function Farm() {
         <RewardESIQ />
         <div>
           <AutoColumn justify="space-between">
-            <EpochCountDown />
+            <EpochCountDown epoch={epoch} />
             <RewardPool />
           </AutoColumn>
         </div>
@@ -69,7 +60,7 @@ export default function Farm() {
 
       <VestingHistory />
 
-      <Leaderboard />
+      <Leaderboard epoch={epoch} />
     </ContentWrapper>
   )
 }

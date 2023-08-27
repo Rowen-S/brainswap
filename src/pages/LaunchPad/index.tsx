@@ -406,7 +406,7 @@ export default function LaunchPad() {
                 background: '#0A0C1B',
               }}
             >
-              <ConvertLP userInfo={userInfo} distance={claimLPPercent} />
+              <ConvertLP distance={claimLPPercent} />
             </StairCard>
           </OfferWrapper>
         </SectionWrapper>

@@ -23,3 +23,23 @@ export const GET_LP_TRAD_POWER = gql`
     }
   }
 `
+
+export const GET_MIN_INFOS = gql`
+  query {
+    userMiningInfos(orderBy: power, first: 3, orderDirection: desc) {
+      id
+      epoch
+      user
+      power
+      volumeUSD
+    }
+  }
+`
+export const GET_MINING_INFO = gql`
+  query GetMiningInfo($epoch: String!) {
+    miningInfo(id: $epoch) {
+      id
+      power
+    }
+  }
+`
