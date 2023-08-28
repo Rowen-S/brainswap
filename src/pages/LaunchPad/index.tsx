@@ -26,6 +26,7 @@ import { BigNumber } from 'ethers'
 import { uniClient } from 'lib/thegraph'
 import { gql, useQuery } from '@apollo/client'
 import Loader from 'components/Loader'
+import { formatWithMod } from 'utils'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -327,7 +328,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="Total Supply"
                 content={{
-                  value: totalSupply?.toSignificant(4),
+                  value: formatWithMod(Number(totalSupply?.toSignificant(4) || 0)),
                   suffix: 'IQ',
                 }}
                 desc=""
@@ -335,7 +336,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="IDO Supply"
                 content={{
-                  value: totalSupply?.multiply(IDO_RATIO)?.toSignificant(4),
+                  value: formatWithMod(Number(totalSupply?.multiply(IDO_RATIO)?.toSignificant(4) || 0)),
                   suffix: '[10%]',
                 }}
                 desc=""
@@ -358,7 +359,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="FDV"
                 content={{
-                  value: (valueAmountInWETH && valueAmountInWETH?.toSignificant(6, { groupSeparator: ',' })) ?? (
+                  value: `$${valueAmountInWETH && valueAmountInWETH?.toSignificant(6, { groupSeparator: ',' })}` ?? (
                     <Loader />
                   ),
                   suffix: 'USD',
@@ -376,10 +377,11 @@ export default function LaunchPad() {
             color="white"
             opacity="0.5"
           >
-            *There is no Hard Cap where the IQ price will continuously increase at every purchase. No matter when you
-            participate, everyone will get IQ tokens at the same final price. If Total Raised doesn’t meet the Soft Cap,
-            all the ETH raised will be refunded. The 10% IQ token will be airdropped to the participated address
-            according to the ETH share.
+            *There is no Hardcap where the IQ price will continuously increase at every purchase. No matter when you
+            participate, everyone will get IQ tokens at the same final price. The final IQ token you get will be: your
+            ETH shares in offering pool * 10,000,000,000. If Total Raised doesn’t reach the Softcap, all raised ETH will
+            be refunded. The ILO Supply IQ token will be claimable for all participated address according to the ETH
+            share.
           </Text>
 
           <OfferWrapper>
@@ -450,15 +452,15 @@ export default function LaunchPad() {
               background: '#0A0C1B',
             }}
           >
-            {`Please ensure you understand the public sale mechanics and terms before proceeding, deposited amounts CANNOT
-          be withdrawn.Initially, the auction will start with a fully diluted valuation (FDV) of $830k, fixing a $0.0083
-          floor price for $RDO, and will increase after the first $100k have been raised. Once those $100k are reached,
-          we'll enter a price-discovery phase, where the token price will continuously increase at every purchase. 
-          `}
+            {`Before participating in the launch,you must confirm that you are not located, incorporated, or a citizen or
+              resident of the United States of America,People's Republic of China, Bermuda, Burundi, Central African
+              Republic, Cuba, Democratic Republic of Congo, Eritrea, Guinea-Bissau, Iran, Libya, Mali, North Korea,
+              Palestine, Republic of Seychelles, Somalia, South Sudan, Sudan, Syria, Western Sahara,Yemen, Crimea and
+              Sevastopol, or any other state, country, or jurisdiction where participation in this launch would be illegal
+              according to applicable law. `}
             <br />
-            {`No matter when you participate, everyone will get $RDO tokens at the same final price. Your allocation will be
-          made up of $srRDO, a receipt token made up of 30% $RDO and 70% $xRDO. Please check the Rodeo dapp page for
-          $RDO claims and information.`}
+
+            {`Please ensure you understand the public sale mechanics and terms before proceeding, deposited amounts CANNOT be withdrawn.`}
           </StairCard>
         </SectionWrapper>
       </ContentWrapper>

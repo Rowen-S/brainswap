@@ -69,7 +69,7 @@ export default function RewardIQ() {
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Pill Boost</IQNumberTitle>
-          <IQNumber>Superman Pill</IQNumber>
+          <IQNumber>Coming Soon</IQNumber>
         </IQNumberWrapper>
       </RowBetween>
     </StairCard>
