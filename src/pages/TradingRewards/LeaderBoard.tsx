@@ -1,5 +1,5 @@
 import { StairCard } from 'components/StairCard'
-import React from 'react'
+import React, { useMemo } from 'react'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { Image, Text } from 'rebass'
 import { Table } from 'components/Table'
@@ -32,7 +32,7 @@ const Sacrifice = styled.span`
   line-height: 12px;
 `
 export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
-  const { chainId } = useWeb3React()
+  const { chainId, account } = useWeb3React()
   const { data } = useQuery<{
     userMiningInfos: [
       {
@@ -41,11 +41,25 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
         epoch: string
         user: string
         volumeUSD: string
+        rank?: number
       }
     ]
   }>(GET_MIN_INFOS, {
     client: tradingClient,
   })
+
+  const boardList = useMemo(() => {
+    if (data && data?.userMiningInfos && data?.userMiningInfos.length) {
+      const d = data.userMiningInfos
+      if (account) {
+        const myDate = d.find((x) => x.user.toLocaleLowerCase() === account.toLocaleLowerCase())
+        const myIndex = d.findIndex((x) => x.user.toLocaleLowerCase() === account.toLocaleLowerCase())
+        return myDate ? [{ ...myDate, rank: myIndex + 1 }, ...d] : d
+      }
+      return d
+    }
+    return null
+  }, [data, account])
 
   return (
     <>
@@ -68,23 +82,35 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
             </tr>
           </thead>
           <tbody>
-            {data?.userMiningInfos.length ? (
-              data?.userMiningInfos.map((x, i) => (
-                <tr key={x.id}>
+            {boardList ? (
+              boardList.map((x, i) => (
+                <tr key={x.id ? x.id + i : x.id}>
                   <td>
-                    <Image src={i === 0 ? Rank0Image : i === 1 ? Rank1Image : Rank2Image} />
+                    {account ? (
+                      i === 0 ? (
+                        x.rank
+                      ) : (
+                        <Image src={i === 1 ? Rank0Image : i === 2 ? Rank1Image : Rank2Image} />
+                      )
+                    ) : (
+                      <Image src={i === 0 ? Rank0Image : i === 1 ? Rank1Image : Rank2Image} />
+                    )}
                   </td>
                   <td>
-                    <ExternalLink href={getExplorerLink(chainId ?? 80001, x.user, ExplorerDataType.ADDRESS)}>
-                      {shortenAddress(x.user)}
-                    </ExternalLink>
+                    {x.user && (
+                      <ExternalLink href={getExplorerLink(chainId ?? 80001, x.user, ExplorerDataType.ADDRESS)}>
+                        {account && x.user.toLocaleLowerCase() === account.toLocaleLowerCase()
+                          ? 'You'
+                          : shortenAddress(x.user)}
+                      </ExternalLink>
+                    )}
                   </td>
                   <td>
                     <TradingBoost>x 1.0</TradingBoost>
                   </td>
-                  <td>{formatToFixed(x.volumeUSD)}</td>
+                  <td>{x.volumeUSD && formatToFixed(x.volumeUSD)}</td>
                   <td>-</td>
-                  <td>{epoch && <EstimatedRewards epoch={epoch} power={x.power} />}</td>
+                  <td>{epoch && x.power && <EstimatedRewards epoch={epoch} power={x.power} />}</td>
                   <td>
                     <Sacrifice>Comming soom</Sacrifice>
                   </td>

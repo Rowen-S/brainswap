@@ -5,18 +5,24 @@ import { Box, Text } from 'rebass'
 import { RowBetween } from 'components/Row'
 import Progress from 'components/Progress'
 import { ButtonNormal } from 'components/Button'
+import { useTokenBalance } from 'state/wallet/hooks'
+import { useWeb3React } from '@web3-react/core'
+import { formatTokenAmount } from 'utils/formatTokenAmount'
+import { IQ } from 'constants/tokens'
 
 export default function ConvertIQ() {
+  const { account, chainId } = useWeb3React()
+  const iqBalance = useTokenBalance(account ?? undefined, chainId ? IQ[chainId] : undefined)
+
   return (
     <StairCard bg={StairBgImage}>
       <Text fontSize={16}>Convert to IQ token</Text>
-
       <RowBetween mt={25}>
         <Text fontSize={12} opacity={0.5}>
           Select IQ Lock Times: 30 days
         </Text>
         <Text fontSize={12} opacity={0.5}>
-          Balance 63,456 esIQ200
+          Balance {formatTokenAmount(iqBalance, 4)} esIQ200
         </Text>
       </RowBetween>
       <Box mt={50}>

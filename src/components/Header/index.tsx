@@ -1,5 +1,5 @@
 import useScrollPosition from '@react-hook/window-scroll'
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
 import { darken } from 'polished'
@@ -32,8 +32,8 @@ import Web3Status from '../Web3Status'
 // import { useUserHasAvailableClaim } from '../../state/claim/hooks'
 // import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
 // import { Dots } from '../swap/styleds'
-import Modal from '../Modal'
-import UniBalanceContent from './UniBalanceContent'
+// import Modal from '../Modal'
+// import UniBalanceContent from './UniBalanceContent'
 // import ClaimModal from '../claim/ClaimModal'
 
 const HeaderFrame = styled.div<{ showBackground: boolean }>`
@@ -140,7 +140,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : 'transparent')};
+  background-color: ${({ theme, active }) => (!active ? theme.bg0 : 'transparent')};
   border: 1px solid ${({ theme }) => theme.bg6};
   border-radius: 12px;
   white-space: nowrap;
@@ -181,9 +181,9 @@ const HideSmall = styled.span`
   `};
 `
 
-const NetworkCard = styled(YellowCard)`
+const NetworkCard = styled(YellowCard)<{ active: boolean }>`
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: ${({ active }) => (active ? '0.597rem' : '0.5rem')};
   border: 1px solid ${({ theme }) => theme.error};
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0;
@@ -340,7 +340,7 @@ export default function Header() {
 
   // const { claimTxn } = useUserHasSubmittedClaim(account ?? undefined)
 
-  const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
+  // const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
   // const showClaimPopup = useShowClaimPopup()
 
   const scrollY = useScrollPosition()
@@ -348,9 +348,9 @@ export default function Header() {
   return (
     <HeaderFrame showBackground={scrollY > 45}>
       {/* <ClaimModal /> */}
-      <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
+      {/* <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
         <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
-      </Modal>
+      </Modal> */}
       <HeaderRow>
         <Title href=".">
           <BrainIcon>
@@ -380,7 +380,7 @@ export default function Header() {
         </StyledNavLink>
 
         <StyledNavLink id={`launchpad-nav-link`} to={'/farm'}>
-          TradingRewards
+          farm
         </StyledNavLink>
 
         <StyledNavLink id={`launchpad-nav-link`} to={'/launchpad'}>
@@ -397,7 +397,9 @@ export default function Header() {
         <HeaderElement>
           <HideSmall>
             {chainId && NETWORK_LABELS[chainId] && (
-              <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
+              <NetworkCard title={NETWORK_LABELS[chainId]} active={!!chainId}>
+                {NETWORK_LABELS[chainId]}
+              </NetworkCard>
             )}
           </HideSmall>
           {/* {availableClaim && !showClaimPopup && (
