@@ -1,5 +1,5 @@
 import { Token } from '@uniswap/sdk-core'
-import { UNI_ADDRESS, IQ_ADDRESS } from './addresses'
+import { UNI_ADDRESS, IQ_ADDRESS, ES_TOKEN_ADDRESS } from './addresses'
 
 export const AMPL = new Token(1, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 export const DAI_MAINNET = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
@@ -27,6 +27,10 @@ export const USDC_POLYGON_MUMBAI = new Token(80001, '0x0d26532fd3754b650cc303b22
 
 export const IQ: { [chainId: number]: Token } = {
   [80001]: new Token(80001, IQ_ADDRESS[80001], 18, 'IQ', 'Brainswap'),
+}
+
+export const ES_IQ: { [chainId: number]: Token } = {
+  [80001]: new Token(80001, ES_TOKEN_ADDRESS[80001], 18, 'IQ', 'Brainswap'),
 }
 
 export const UNI: { [chainId: number]: Token } = {

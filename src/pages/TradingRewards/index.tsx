@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { Text } from 'rebass'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import RewardIQ from './RewardIQ'
 import { RowBetween } from 'components/Row'
 import RewardESIQ from './RewardESIQ'
@@ -17,6 +17,7 @@ const ContentWrapper = styled.div`
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
+  color: ${({ theme }) => theme.text1};
 `
 
 const PrimaryTitle = styled(Text)`
