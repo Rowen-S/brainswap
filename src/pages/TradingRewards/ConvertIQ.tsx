@@ -21,7 +21,7 @@ export default function ConvertIQ() {
   const ratio = useMemo(() => (100 / 14) * day, [day])
 
   const balanceRatio = useMemo(
-    () => esIqBalance && ratio && esIqBalance.multiply(ratio.toFixed(0)),
+    () => esIqBalance && ratio && esIqBalance.multiply(Math.floor(ratio * 100)).divide(10000),
     [esIqBalance, ratio]
   )
 
@@ -33,10 +33,17 @@ export default function ConvertIQ() {
 
   const convert = useCallback(() => {
     if (balanceRatio) {
-      esTokenContract?.redeem(balanceRatio.quotient.toString(), day).catch((err) => console.log(err))
+      esTokenContract?.redeem(balanceRatio.toExact(), Math.floor(day * 24 * 3600)).catch((err) => console.log(err))
     }
   }, [balanceRatio, day, esTokenContract])
 
+  function convertToFormattedString(days: number) {
+    const totalHours = days * 24
+    const wholeDays = Math.floor(totalHours / 24)
+    const remainingHours = totalHours % 24
+
+    return `${wholeDays}D ${remainingHours.toFixed(1)}H`
+  }
   return (
     <StairCard bg={StairBgImage}>
       <Text fontSize={16}>Convert to IQ token</Text>
@@ -68,7 +75,7 @@ export default function ConvertIQ() {
           {`${balanceRatio && balanceRatio.toSignificant(4, { visualViewport: ',' })}   IQ200[${ratio.toFixed(2)}%]`}{' '}
         </Text>
         &#20;
-        <Text opacity={0.5}>in 3d 12h</Text>
+        <Text opacity={0.5}>in {convertToFormattedString(day)}</Text>
       </Box>
 
       <Text fontSize={12} opacity={0.5} mt={20}>

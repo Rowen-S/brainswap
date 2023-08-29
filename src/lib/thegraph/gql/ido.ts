@@ -11,3 +11,14 @@ export const GET_IDOHISTORYS = gql`
     }
   }
 `
+export const GET_VESINGS = gql`
+  query allVesings($user: String!) {
+    redeems(where: { user: $user }) {
+      id
+      iqAmount
+      ESIQAmount
+      duration
+      timestamp
+    }
+  }
+`

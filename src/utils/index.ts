@@ -30,11 +30,11 @@ export function shortenString(text: string, chars = 6): string {
   return `${text.substring(0, chars + 2)}...${text.substring(text.length - chars)}`
 }
 
-export function formatLuxonDateTime(timestampString: string, targetZone = 'UTC') {
+export function formatLuxonDateTime(timestampString: string) {
   const timestamp = parseInt(timestampString, 10)
   const dateTime = DateTime.fromSeconds(timestamp)
 
-  const formattedTime = dateTime.setZone(targetZone).toISO()
+  const formattedTime = dateTime.toFormat('M/d yyyy HH:mm:ss')
 
   return formattedTime
 }
