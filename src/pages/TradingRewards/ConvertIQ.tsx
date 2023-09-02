@@ -10,6 +10,7 @@ import { formatTokenAmount } from 'utils/formatTokenAmount'
 import { ES_IQ } from 'constants/tokens'
 import { ProgressSlider } from 'components/Slider'
 import { useEsTokenContract } from 'hooks/useContract'
+import { toHex } from '@uniswap/v3-sdk'
 
 export default function ConvertIQ() {
   const { account, chainId } = useWeb3React()
@@ -32,10 +33,10 @@ export default function ConvertIQ() {
   }
 
   const convert = useCallback(() => {
-    if (balanceRatio) {
-      esTokenContract?.redeem(balanceRatio.toExact(), Math.floor(day * 24 * 3600)).catch((err) => console.log(err))
+    if (esIqBalance) {
+      esTokenContract?.redeem(toHex(esIqBalance.quotient), Math.floor(day * 24 * 3600)).catch((err) => console.log(err))
     }
-  }, [balanceRatio, day, esTokenContract])
+  }, [day, esIqBalance, esTokenContract])
 
   function convertToFormattedString(days: number) {
     const totalHours = days * 24
