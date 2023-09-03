@@ -111,9 +111,22 @@ export default function VestingHistory() {
             )}
           </tbody>
         </Table>
-        <ButtonNormal m={'auto'} mt={10} maxWidth={558} disabled={!isRedeem} onClick={redeemAll}>
-          Redeem all token
-        </ButtonNormal>
+        {!loading && data && data.redeems && data && data.redeems.length === 0 ? (
+          <div
+            style={{
+              textAlign: 'center',
+              fontSize: '18px',
+              marginTop: '30px',
+              color: 'rgba(255, 255, 255, 0.5)',
+            }}
+          >
+            No vesting history
+          </div>
+        ) : (
+          <ButtonNormal m={'auto'} mt={10} maxWidth={558} disabled={!isRedeem} onClick={redeemAll}>
+            Redeem all token
+          </ButtonNormal>
+        )}
       </StairCard>
     </>
   )

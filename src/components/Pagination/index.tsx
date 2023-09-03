@@ -38,7 +38,7 @@ export default function Pagination({ pageSize, total, onPrevPageClick, onNextPag
   const onNextPage = () => {
     if (currentPage >= pageCount - 1) return
     setCurrentPage(currentPage + 1)
-    onNextPageClick && onNextPageClick(currentPage - 1)
+    onNextPageClick && onNextPageClick(currentPage + 1)
   }
   return (
     <RowBetween>

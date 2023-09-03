@@ -63,9 +63,12 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
 
   return (
     <>
-      <Text fontSize={28}>Genesis Epoch Trading Leaderboard</Text>
-      <Text fontSize={14} mt={20} opacity={0.5}>
-        Get to the top of the leaderboard in GENESIS EPOCH to determine your NEXT EPOCH trading boost
+      <Text fontSize={28} textAlign="center" mt={30}>
+        Genesis Epoch Trading Leaderboard
+      </Text>
+      <Text fontSize={14} mt={20} opacity={0.5} textAlign="center">
+        Get to the top of the leaderboard to boost your power. The top 100 trading volume on the epoch determines your
+        rank and NEXT EPOCH boost!
       </Text>
 
       <StairCard bg={StairBgImage}>
@@ -76,9 +79,9 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
               <th>Address</th>
               <th>Trading Boost</th>
               <th>Volume</th>
-              <th>Trading PTS</th>
+              <th>Trading Power</th>
               <th>Estimated rewards</th>
-              <th>Sacrifice</th>
+              <th>Red bull</th>
             </tr>
           </thead>
           <tbody>

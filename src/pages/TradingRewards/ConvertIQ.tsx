@@ -50,17 +50,17 @@ export default function ConvertIQ() {
       <Text fontSize={16}>Convert to IQ token</Text>
       <RowBetween mt={25}>
         <Text fontSize={12} opacity={0.5}>
-          Select IQ Lock Times: 30 days
+          Select IQ Lock Times: 14 days
         </Text>
         <Text fontSize={12} opacity={0.5}>
-          Balance {formatTokenAmount(esIqBalance, 4)} esIQ200
+          Balance {formatTokenAmount(esIqBalance, 4)} esIQ
         </Text>
       </RowBetween>
       <Box mt={20}>
         <ProgressSlider min={3} max={14} value={day} size={40} step={0.1} onChange={setDay} />
       </Box>
 
-      <RowBetween mt={30}>
+      <RowBetween mt={10}>
         <Text fontSize={12} opacity={0.5}>
           3 Days
         </Text>
@@ -73,14 +73,14 @@ export default function ConvertIQ() {
         <Text opacity={0.5}>You will receive </Text>
         &#20;
         <Text>
-          {`${balanceRatio && balanceRatio.toSignificant(4, { visualViewport: ',' })}   IQ200[${ratio.toFixed(2)}%]`}{' '}
+          {`${balanceRatio && balanceRatio.toSignificant(4, { visualViewport: ',' })}   IQ [${ratio.toFixed(2)}%]`}{' '}
         </Text>
         &#20;
         <Text opacity={0.5}>in {convertToFormattedString(day)}</Text>
       </Box>
 
       <Text fontSize={12} opacity={0.5} mt={20}>
-        And the remainning token will be transferred to Treasure
+        And the remainning token will be burnt out
       </Text>
 
       <ButtonNormal m={'auto'} mt={30} maxWidth={558} disabled={!isconvert} onClick={convert}>

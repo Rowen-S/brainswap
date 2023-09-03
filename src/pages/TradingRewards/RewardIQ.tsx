@@ -27,6 +27,7 @@ const IQNumber = styled(Text)`
   font-size: 28px;
   margin-top: 22px !important;
 `
+
 export default function RewardIQ() {
   const { account } = useWeb3React()
   const { loading, error, data } = useQuery<PowerProps>(GET_LP_TRAD_POWER, {
@@ -66,11 +67,11 @@ export default function RewardIQ() {
       <RowBetween>
         <IQNumberWrapper>
           <IQNumberTitle>My Total Power</IQNumberTitle>
-          <IQNumber>{loading ? <Loader /> : formatToFixed(myTotalPower, 4) ?? '-'}</IQNumber>
+          <IQNumber>{loading ? <Loader /> : formatToFixed(myTotalPower, 4) ?? '0'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Trading Power</IQNumberTitle>
-          <IQNumber>{loading ? <Loader /> : formatToFixed(myTradPower, 4) ?? '-'}</IQNumber>
+          <IQNumber>{loading ? <Loader /> : formatToFixed(myTradPower, 4) ?? '0'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>LP Power</IQNumberTitle>
@@ -78,17 +79,15 @@ export default function RewardIQ() {
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Referral Power</IQNumberTitle>
-          <IQNumber>Coming Soon</IQNumber>
+          <IQNumber fontSize={20}>Coming Soon</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Red bull Power</IQNumberTitle>
-          <IQNumber fontSize="18px" color="#2CFFF3">
-            Drink to increase IQ
-          </IQNumber>
+          <IQNumber fontSize={20}>Coming Soon</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Pill Boost</IQNumberTitle>
-          <IQNumber>Coming Soon</IQNumber>
+          <IQNumber fontSize={20}>Coming Soon</IQNumber>
         </IQNumberWrapper>
       </RowBetween>
     </StairCard>

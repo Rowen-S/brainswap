@@ -23,11 +23,13 @@ const ContentWrapper = styled.div`
 const PrimaryTitle = styled(Text)`
   color: ${({ theme }) => theme.text1};
   font-size: 28px;
+  text-align: center;
 `
 const SecondrayTitle = styled(Text)`
   color: ${({ theme }) => theme.text1};
   opacity: 0.5;
   font-size: 14px;
+  text-align: center;
 `
 
 // now - tradStartTime / 2W
@@ -42,10 +44,8 @@ export default function TradingRewards() {
 
   return (
     <ContentWrapper>
-      <PrimaryTitle>Genesis Epoch ({epoch ?? '-'}) Trading Leaderboard</PrimaryTitle>
-      <SecondrayTitle marginTop="20px">
-        Get to the top of the leaderboard in GENESIS EPOCH to determine your NEXT EPOCH trading boost
-      </SecondrayTitle>
+      <PrimaryTitle>My Brain Power ({epoch ?? '-'}) Trading Leaderboard</PrimaryTitle>
+      <SecondrayTitle marginTop="20px">Earn rewards for trading on the BRAINSWAP</SecondrayTitle>
       <RewardIQ />
       <RowBetween>
         <RewardESIQ />
