@@ -66,15 +66,15 @@ export default function RewardIQ() {
       <RowBetween>
         <IQNumberWrapper>
           <IQNumberTitle>My Total Power</IQNumberTitle>
-          <IQNumber>{loading ? <Loader /> : formatToFixed(myTotalPower) ?? '-'}</IQNumber>
+          <IQNumber>{loading ? <Loader /> : formatToFixed(myTotalPower, 4) ?? '-'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Trading Power</IQNumberTitle>
-          <IQNumber>{loading ? <Loader /> : formatToFixed(myTradPower) ?? '-'}</IQNumber>
+          <IQNumber>{loading ? <Loader /> : formatToFixed(myTradPower, 4) ?? '-'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>LP Power</IQNumberTitle>
-          <IQNumber>{loading ? <Loader /> : formatToFixed(myLpPower) ?? '-'}</IQNumber>
+          <IQNumber>{loading ? <Loader /> : formatToFixed(myLpPower, 4) ?? '-'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Referral Power</IQNumberTitle>
