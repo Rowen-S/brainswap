@@ -23,6 +23,13 @@ export const ETH2X_FLI = new Token(
 export const UST = new Token(1, '0xa47c8bf37f92abed4a126bda807a7b7498661acd', 18, 'UST', 'Wrapped UST')
 export const MIR = new Token(1, '0x09a3ecafa817268f77be1283176b946c4ff2e608', 18, 'MIR', 'Wrapped MIR')
 
+export const DAI_POLYGON_MUMBAI = new Token(
+  80001,
+  '0xb94564bbA4A018223474dC4a9A0884B15352406c',
+  6,
+  'DAI',
+  'Dai Stablecoin'
+)
 export const USDC_POLYGON_MUMBAI = new Token(80001, '0x0d26532fd3754b650cc303b227d8414ea7de5e8d', 6, 'USDC', 'USD//C')
 
 export const IQ: { [chainId: number]: Token } = {
@@ -53,5 +60,6 @@ export const USDT: { [chainId: number]: Token } = {
 // Mod
 export const DAI: { [chainId: number]: Token } = {
   [1]: DAI_MAINNET,
+  [80001]: DAI_POLYGON_MUMBAI,
   [84531]: new Token(84531, '0xE1afBC03310eb7076e8f81f11f4Af14c76A26056', 18, 'DAI', 'Dai Stablecoin'),
 }

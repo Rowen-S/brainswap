@@ -41,6 +41,10 @@ const PERMITTABLE_TOKENS: {
     [USDT[84531].address]: { type: PermitType.AMOUNT, name: 'USDT Coin', version: '2' },
     [DAI[84531].address]: { type: PermitType.ALLOWED, name: 'Dai Stablecoin', version: '1' },
   },
+  [80001]: {
+    [USDC[80001].address]: { type: PermitType.AMOUNT, name: 'USD Coin', version: '2' },
+    [DAI[80001].address]: { type: PermitType.ALLOWED, name: 'Dai Stablecoin', version: '1' },
+  },
 }
 
 export enum UseERC20PermitState {
