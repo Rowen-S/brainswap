@@ -32,7 +32,7 @@ export default function RewardIQ() {
   const { loading, error, data } = useQuery<PowerProps>(GET_LP_TRAD_POWER, {
     client: tradingClient,
     variables: { user: account },
-    pollInterval: 1000 * 60,
+    pollInterval: 1000 * 15,
     notifyOnNetworkStatusChange: true,
   })
 
