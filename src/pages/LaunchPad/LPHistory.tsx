@@ -53,7 +53,7 @@ export default function LPHistory() {
                 </ExternalLink>
               </td>
               <td>{x.amount ? formatEther(x.amount) : '-'}</td>
-              <td>confirm</td>
+              <td>Confirmed</td>
               <td>{x.timestamp ? formatLuxonDateTime(x.timestamp) : '-'}</td>
             </tr>
           ))

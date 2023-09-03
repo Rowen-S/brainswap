@@ -166,14 +166,14 @@ export default function ConvertLP({ distance = 0 }: { distance: number }) {
             textAlign: 'center',
           }}
         >
-          14Days (50%)
+          14 Days (50%)
         </ILOCardSimpleText>
         <ILOCardSimpleText
           style={{
             textAlign: 'right',
           }}
         >
-          28Days (100%)
+          28 Days (100%)
         </ILOCardSimpleText>
       </div>
 
@@ -201,8 +201,7 @@ export default function ConvertLP({ distance = 0 }: { distance: number }) {
           </ILOCardSmallTitle>
         </Row>
 
-        <Row mt={10}>
-          {/* <LockIcon src={LockSvg} /> */}
+        {/* <Row mt={10}>
           <ILOCardSmallTitle>
             Your total LP:{' '}
             {parseFloat(formatEther(totalReverses[1]))
@@ -214,7 +213,7 @@ export default function ConvertLP({ distance = 0 }: { distance: number }) {
               .replace(/\.?0+$/, '')}{' '}
             ETH
           </ILOCardSmallTitle>
-        </Row>
+        </Row> */}
 
         <Row
           style={{

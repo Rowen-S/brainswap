@@ -47,6 +47,8 @@ const LightQuestionWrapper = styled.div`
 
 const QuestionMark = styled.span`
   font-size: 14px;
+  color: black;
+  font-weight: 600;
 `
 
 export default function QuestionHelper({ text }: { text: string; size?: number }) {
@@ -56,7 +58,15 @@ export default function QuestionHelper({ text }: { text: string; size?: number }
   const close = useCallback(() => setShow(false), [setShow])
 
   return (
-    <span style={{ marginLeft: 4, display: 'flex', alignItems: 'center' }}>
+    <span
+      style={{
+        marginLeft: 4,
+        display: 'flex',
+        alignItems: 'center',
+        background: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: '50%',
+      }}
+    >
       <Tooltip text={text} show={show}>
         <QuestionWrapper onClick={open} onMouseEnter={open} onMouseLeave={close}>
           <QuestionMark>?</QuestionMark>

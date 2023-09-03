@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import Row, { RowBetween, RowFixed } from 'components/Row'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ButtonNormal } from 'components/Button'
 import Input from 'components/NumericalInput'
 import { AutoColumn } from 'components/Column'
@@ -126,6 +126,14 @@ export default function AddLP({
 
   // console.log(isRefund, !Boolean(userInfo?.totalInvestedETH > 0))
 
+  const percentInPool = useMemo(() => {
+    if (userInfo && userInfo.totalInvestedETH && investedEth) {
+      return Math.floor(userInfo.totalInvestedETH.div(investedEth) * 100)
+    }
+
+    return 0
+  }, [userInfo, investedEth])
+
   return (
     <>
       <TransactionConfirmationModal
@@ -149,7 +157,7 @@ export default function AddLP({
           marginTop: '20px',
         }}
       >
-        <ILOCardText fontSize={16}>50% buy IQ + 50% ETH = IQ LP Half money, full token</ILOCardText>
+        <ILOCardText fontSize={16}>50% buy IQ + 50% ETH = IQ LP</ILOCardText>
       </RowFixed>
       <AutoColumn gap="40px" justify="center">
         <RowBetween
@@ -159,7 +167,8 @@ export default function AddLP({
         >
           <ILOCardText fontSize={14}>Balance: {userEthBalance?.toSignificant(4)} ETH</ILOCardText>
           <ILOCardText fontSize={14}>
-            Allocation: {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH) : '-'} ETH
+            Allocation: {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH) : '-'} ETH{' '}
+            {`[${percentInPool}% in pool]`}
           </ILOCardText>
         </RowBetween>
 
@@ -181,11 +190,16 @@ export default function AddLP({
             <IDDWrapper gap="md">
               <IDOInput value={idoValue} onUserInput={(val) => setIdoValue(val)} disabled={isExpired} />
               <ILOCardText as={Row} fontSize={12}>
-                Your initial LP
-                <QuestionHelper text="The final IQ you purchased will be confirmed when the launchpad is finished." />:
-                &nbsp;
-                {initIQAmount?.toFixed(2)} IQ +{' '}
-                {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '0'} ETH LP
+                Your initial LP:{' '}
+                {isExpired ? (
+                  initIQAmount?.toFixed(2)
+                ) : (
+                  <>
+                    <QuestionHelper text="The final IQ you purchased will be confirmed when the launchpad is finished." />
+                    &nbsp;
+                  </>
+                )}
+                IQ + {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '0'} ETH LP
               </ILOCardText>
             </IDDWrapper>
             <ButtonNormal disabled={(!idoValue && !isbuy) || isExpired} onClick={buyIDO}>

@@ -1,4 +1,5 @@
 import { ColumnCenter } from 'components/Column'
+import Row from 'components/Row'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components/macro'
 
@@ -8,10 +9,11 @@ interface ISupplyItemProps {
     value: string | ReactNode
     suffix: string
   }
+  append?: ReactNode
   desc?: string
 }
 
-const SupplyItemTitle = styled.div`
+const SupplyItemTitle = styled(Row)`
   color: #ffffff;
   text-align: center;
   font-size: 12px;
@@ -39,10 +41,21 @@ const SupplyItemValue = styled.div`
 
 const SupplyItemWrapper = styled(ColumnCenter)``
 
-export default function SupplyItem({ title, content }: ISupplyItemProps) {
+export default function SupplyItem({ title, content, append }: ISupplyItemProps) {
   return (
     <SupplyItemWrapper>
-      <SupplyItemTitle>{title}</SupplyItemTitle>
+      <SupplyItemTitle justify="center">
+        {title}
+        {append && (
+          <span
+            style={{
+              marginLeft: '5px',
+            }}
+          >
+            {append}
+          </span>
+        )}
+      </SupplyItemTitle>
       <SupplyItemValue>
         {content?.value} {content.suffix}
       </SupplyItemValue>

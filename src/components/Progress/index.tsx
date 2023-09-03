@@ -15,6 +15,7 @@ const ProgressTotal = styled.div<{ distance: number }>`
   width: ${(props) => props.distance}%;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+  border-radius: 8px;
 `
 
 const ProgressCircle = styled.div<{ distance: number }>`
@@ -29,11 +30,11 @@ const ProgressCircle = styled.div<{ distance: number }>`
   transform: translateY(-50%);
 `
 
-export default function Progress({ progress }: { progress: number }) {
+export default function Progress({ progress, slideable = false }: { progress: number; slideable?: boolean }) {
   return (
     <ProgressWrapper>
       <ProgressTotal distance={progress}></ProgressTotal>
-      <ProgressCircle distance={progress}></ProgressCircle>
+      {slideable && <ProgressCircle distance={progress}></ProgressCircle>}
     </ProgressWrapper>
   )
 }

@@ -27,6 +27,7 @@ import { uniClient } from 'lib/thegraph'
 import { gql, useQuery } from '@apollo/client'
 import Loader from 'components/Loader'
 import { formatWithMod } from 'utils'
+import QuestionHelper from 'components/QuestionHelper'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -334,11 +335,12 @@ export default function LaunchPad() {
                 desc=""
               />
               <SupplyItem
-                title="IDO Supply"
+                title="ILO Supply"
                 content={{
                   value: formatWithMod(Number(totalSupply?.multiply(IDO_RATIO)?.toSignificant(4) || 0)),
                   suffix: '[10%]',
                 }}
+                append={<QuestionHelper text="Initial LP Offering" />}
                 desc=""
               />
               <SupplyItem
@@ -370,7 +372,7 @@ export default function LaunchPad() {
 
           <Text
             fontSize={14}
-            maxWidth={['90%', '65%']}
+            maxWidth="80%"
             margin="0px auto"
             lineHeight={'24px'}
             textAlign={'center'}

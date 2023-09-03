@@ -380,7 +380,7 @@ export default function Header() {
         </StyledNavLink>
 
         <StyledNavLink id={`launchpad-nav-link`} to={'/farm'}>
-          farm
+          Farm
         </StyledNavLink>
 
         <StyledNavLink id={`launchpad-nav-link`} to={'/launchpad'}>
