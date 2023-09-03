@@ -89,7 +89,7 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
               boardList.map((x, i) => (
                 <tr key={x.id ? x.id + i : x.id}>
                   <td>
-                    {account ? (
+                    {account && account.toLocaleLowerCase() == x.user.toLocaleLowerCase() ? (
                       i === 0 ? (
                         x.rank
                       ) : (

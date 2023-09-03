@@ -13,6 +13,7 @@ import { formatToFixed } from 'utils'
 import { DateTime } from 'luxon'
 import { towWeek } from 'constants/misc'
 import Loader from 'components/Loader'
+// import NumberAnimation from 'components/NumberAnimation'
 
 const IQNumberWrapper = styled(ColumnCenter)``
 
@@ -33,19 +34,29 @@ export default function RewardIQ() {
   const { loading, error, data } = useQuery<PowerProps>(GET_LP_TRAD_POWER, {
     client: tradingClient,
     variables: { user: account },
-    pollInterval: 1000 * 15,
+    pollInterval: 1000 * 10,
     notifyOnNetworkStatusChange: true,
   })
 
   const myLpPower = useMemo(() => {
     if (!loading && !error && data && data.lpinfos.length) {
-      const liquidityStartDateTime = DateTime.fromSeconds(Number(data.lpinfos[0].liquidityStart))
-      const timeDifferenceInSeconds = DateTime.now().diff(liquidityStartDateTime).as('seconds')
-      const amountTotalUSD =
-        parseFloat(data.lpinfos[0].amountTotalUSD) < 0 ? 0 : parseFloat(data.lpinfos[0].amountTotalUSD)
-      const countLpPower = (timeDifferenceInSeconds * Math.pow(amountTotalUSD, 0.5)) / towWeek
-      const lpPower = countLpPower + parseFloat(data.lpinfos[0].power ?? '0')
-      return lpPower
+      let count = 0
+      data.lpinfos.map((lp) => {
+        const liquidityStartDateTime = DateTime.fromSeconds(Number(lp.liquidityStart))
+        const timeDifferenceInSeconds = DateTime.now().diff(liquidityStartDateTime).as('seconds')
+        const amountTotalUSD = parseFloat(lp.amountTotalUSD) < 0 ? 0 : parseFloat(lp.amountTotalUSD)
+        const countLpPower = (timeDifferenceInSeconds * Math.pow(amountTotalUSD, 0.5)) / towWeek
+        const lpPower = countLpPower + parseFloat(lp.power ?? '0')
+        count += lpPower
+      })
+      return count
+      // const liquidityStartDateTime = DateTime.fromSeconds(Number(data.lpinfos[0].liquidityStart))
+      // const timeDifferenceInSeconds = DateTime.now().diff(liquidityStartDateTime).as('seconds')
+      // const amountTotalUSD =
+      //   parseFloat(data.lpinfos[0].amountTotalUSD) < 0 ? 0 : parseFloat(data.lpinfos[0].amountTotalUSD)
+      // const countLpPower = (timeDifferenceInSeconds * Math.pow(amountTotalUSD, 0.5)) / towWeek
+      // const lpPower = countLpPower + parseFloat(data.lpinfos[0].power ?? '0')
+      // return lpPower
     }
     return 0
   }, [data, error, loading])
@@ -58,9 +69,7 @@ export default function RewardIQ() {
     return 0
   }, [data, error, loading])
 
-  const myTotalPower = useMemo(() => {
-    return myLpPower + myTradPower
-  }, [myLpPower, myTradPower])
+  const myTotalPower = useMemo(() => myTradPower + myLpPower, [myLpPower, myTradPower])
 
   return (
     <StairCard bg={StairBgImage}>

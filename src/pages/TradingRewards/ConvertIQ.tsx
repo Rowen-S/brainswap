@@ -57,7 +57,7 @@ export default function ConvertIQ() {
         </Text>
       </RowBetween>
       <Box mt={20}>
-        <ProgressSlider min={3} max={14} value={day} size={40} step={0.1} onChange={setDay} />
+        <ProgressSlider min={3} max={14} value={day} size={40} step={0.5} onChange={setDay} />
       </Box>
 
       <RowBetween mt={10}>
