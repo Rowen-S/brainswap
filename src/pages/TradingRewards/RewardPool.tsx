@@ -31,7 +31,7 @@ export default function RewardPool() {
             top: '-6px',
           }}
         >
-          IQ200
+          IQ
         </Text>
       </Row>
       <Text opacity={0.5} fontSize={14} mt={10}>
