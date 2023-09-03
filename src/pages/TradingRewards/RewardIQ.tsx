@@ -40,8 +40,9 @@ export default function RewardIQ() {
     if (!loading && !error && data && data.lpinfos.length) {
       const liquidityStartDateTime = DateTime.fromSeconds(Number(data.lpinfos[0].liquidityStart))
       const timeDifferenceInSeconds = DateTime.now().diff(liquidityStartDateTime).as('seconds')
-      const countLpPower =
-        (timeDifferenceInSeconds * Math.pow(parseFloat(data.lpinfos[0].amountTotalUSD), 0.5)) / towWeek
+      const amountTotalUSD =
+        parseFloat(data.lpinfos[0].amountTotalUSD) < 0 ? 0 : parseFloat(data.lpinfos[0].amountTotalUSD)
+      const countLpPower = (timeDifferenceInSeconds * Math.pow(amountTotalUSD, 0.5)) / towWeek
       const lpPower = countLpPower + parseFloat(data.lpinfos[0].power ?? '0')
       return lpPower
     }
