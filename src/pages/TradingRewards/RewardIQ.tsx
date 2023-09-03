@@ -10,6 +10,8 @@ import { GET_LP_TRAD_POWER, PowerProps } from 'lib/thegraph/gql/trading'
 import { tradingClient } from 'lib/thegraph'
 import { useWeb3React } from '@web3-react/core'
 import { formatToFixed } from 'utils'
+import { DateTime } from 'luxon'
+import { towWeek } from 'constants/misc'
 
 const IQNumberWrapper = styled(ColumnCenter)``
 
@@ -33,7 +35,11 @@ export default function RewardIQ() {
 
   const myTotalPower = useMemo(() => {
     if (!loading && !error && data && data.lpinfos.length && data.userMiningInfos.length) {
-      const lpPower = parseFloat(data.lpinfos[0].power ?? '0')
+      const liquidityStartDateTime = DateTime.fromSeconds(Number(data.lpinfos[0].liquidityStart))
+      const timeDifferenceInSeconds = DateTime.now().diff(liquidityStartDateTime).as('seconds')
+      const countPower =
+        (timeDifferenceInSeconds * Math.pow(parseFloat(data.lpinfos[0].amountTotalUSD), 0.7) * 10) / towWeek
+      const lpPower = countPower + parseFloat(data.lpinfos[0].power ?? '0')
       const tradPower = parseFloat(data.userMiningInfos[0].power ?? '0')
       return lpPower + tradPower
     }

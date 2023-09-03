@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export interface PowerProps {
-  lpinfos: [{ power: string }]
+  lpinfos: [{ power: string; liquidityStart: string; amountTotalUSD: string }]
   userMiningInfos: [{ power: string }]
 }
 export const GET_LP_TRAD_POWER = gql`
