@@ -12,6 +12,7 @@ import { useWeb3React } from '@web3-react/core'
 import { formatToFixed } from 'utils'
 import { DateTime } from 'luxon'
 import { towWeek } from 'constants/misc'
+import Loader from 'components/Loader'
 
 const IQNumberWrapper = styled(ColumnCenter)``
 
@@ -31,7 +32,7 @@ export default function RewardIQ() {
   const { loading, error, data } = useQuery<PowerProps>(GET_LP_TRAD_POWER, {
     client: tradingClient,
     variables: { user: account },
-    pollInterval: 5000,
+    pollInterval: 10000,
     notifyOnNetworkStatusChange: true,
   })
 
@@ -64,15 +65,15 @@ export default function RewardIQ() {
       <RowBetween>
         <IQNumberWrapper>
           <IQNumberTitle>My Total Power</IQNumberTitle>
-          <IQNumber>{formatToFixed(myTotalPower) ?? '-'}</IQNumber>
+          <IQNumber>{loading ? <Loader /> : formatToFixed(myTotalPower) ?? '-'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Trading Power</IQNumberTitle>
-          <IQNumber>{formatToFixed(myTradPower) ?? '-'}</IQNumber>
+          <IQNumber>{loading ? <Loader /> : formatToFixed(myTradPower) ?? '-'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>LP Power</IQNumberTitle>
-          <IQNumber>{formatToFixed(myLpPower) ?? '-'}</IQNumber>
+          <IQNumber>{loading ? <Loader /> : formatToFixed(myLpPower) ?? '-'}</IQNumber>
         </IQNumberWrapper>
         <IQNumberWrapper>
           <IQNumberTitle>Referral Power</IQNumberTitle>
