@@ -329,7 +329,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="Total Supply"
                 content={{
-                  value: formatWithMod(Number(totalSupply?.toSignificant(4) || 0)),
+                  value: formatWithMod(totalSupply?.toSignificant(4) || 0),
                   suffix: 'IQ',
                 }}
                 desc=""
@@ -337,7 +337,7 @@ export default function LaunchPad() {
               <SupplyItem
                 title="ILO Supply"
                 content={{
-                  value: formatWithMod(Number(totalSupply?.multiply(IDO_RATIO)?.toSignificant(4) || 0)),
+                  value: formatWithMod(totalSupply?.multiply(IDO_RATIO)?.toSignificant(4) || 0),
                   suffix: '[10%]',
                 }}
                 append={<QuestionHelper text="Initial LP Offering" />}

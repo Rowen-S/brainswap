@@ -71,14 +71,21 @@ export function formattedFeeAmount(feeAmount: FeeAmount): number {
 }
 
 export function formatToFixed(amount: string | number, place = 2): string {
-  let num = amount
-  if (typeof num == 'string') {
-    num = parseFloat(num)
+  let num = typeof amount === 'string' ? parseFloat(amount) : amount
+  if (isNaN(num)) {
+    throw new Error('Invalid number')
   }
-  return formatWithMod(parseFloat(num.toFixed(place)))
+  let formattedNumber = num.toFixed(place)
+
+  formattedNumber = formattedNumber.replace(/\.?0+$/, '')
+
+  return formatWithMod(formattedNumber)
 }
-export function formatWithMod(amount: number): string {
-  let n = amount
+export function formatWithMod(amount: number | string): string {
+  let n = typeof amount === 'string' ? parseFloat(amount) : amount
+  if (isNaN(n)) {
+    throw new Error('Invalid number')
+  }
   let r = ''
   let temp = ''
   let mod: number

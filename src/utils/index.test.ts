@@ -1,4 +1,4 @@
-import { isAddress, shortenAddress } from '.'
+import { isAddress, shortenAddress, formatToFixed, formatWithMod } from '.'
 
 describe('utils', () => {
   describe('#isAddress', () => {
@@ -38,6 +38,34 @@ describe('utils', () => {
 
     it('renders checksummed address', () => {
       expect(shortenAddress('0x2E1b342132A67Ea578e4E3B814bae2107dc254CC'.toLowerCase())).toBe('0x2E1b...54CC')
+    })
+  })
+
+  describe('#formatWithMod', () => {
+    it('throws on invalid number', () => {
+      expect(() => formatWithMod('abc')).toThrow('Invalid number')
+    })
+
+    it('correct thousandth', () => {
+      expect(formatWithMod(1000)).toBe('1,000')
+    })
+
+    it('no more zeros are added', () => {
+      expect(formatWithMod(1000.1)).not.toBe('1,000.10')
+    })
+  })
+
+  describe('#formatToFixed', () => {
+    it('throws on invalid number', () => {
+      expect(() => formatToFixed('abc')).toThrow('Invalid number')
+    })
+
+    it('specify 5 bits', () => {
+      expect(formatToFixed(1000.001, 5)).toBe('1,000.001')
+    })
+
+    it('no more zeros are added', () => {
+      expect(formatToFixed(1000, 4)).not.toBe('1,000.0000')
     })
   })
 })
