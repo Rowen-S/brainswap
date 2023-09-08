@@ -71,7 +71,7 @@ export function formattedFeeAmount(feeAmount: FeeAmount): number {
 }
 
 export function formatToFixed(amount: string | number, place = 2): string {
-  let num = typeof amount === 'string' ? parseFloat(amount) : amount
+  const num = typeof amount === 'string' ? parseFloat(amount) : amount
   if (isNaN(num)) {
     throw new Error('Invalid number')
   }
