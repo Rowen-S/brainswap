@@ -151,7 +151,7 @@
     "@rtk-query/graphql-request-base-query": "^2.2.0",
     "graphql": "^16.8.0",
     "graphql-request": "^6.1.0",
-    "patch-package": "^7.0.0",
+    "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "react-countdown": "^2.3.5"
   }
