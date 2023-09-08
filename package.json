@@ -71,7 +71,7 @@
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
     "inter-ui": "^3.13.1",
-    "lightweight-charts": "^3.3.0",
+    "lightweight-charts": "^4.0.1",
     "lodash.flatmap": "^4.5.0",
     "luxon": "^3.4.2",
     "multicodec": "^3.0.1",
