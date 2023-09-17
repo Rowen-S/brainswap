@@ -26,14 +26,20 @@ const InteractiveTR = styled.tr`
   }
 `
 
+const BoostWrapper = styled.div`
+  width: fit-content;
+  padding: 6px 20px;
+  border: 1px dashed ${({ theme }) => theme.bg6};
+  border-radius: 2px;
+  margin: 0px auto;
+`
+
 export default function RewardPools() {
   const { loading, error, data } = useQuery<RewardPairs>(GET_REWARD_POOLS, {
     client: tradingClient,
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
   })
-
-  console.log(loading, error, data)
 
   return (
     <AutoColumn gap="md" style={{ width: '100%' }}>
@@ -54,7 +60,7 @@ export default function RewardPools() {
             <th>Volume 24H</th>
             <th>Volume 7D</th>
             <th>APR 24h</th>
-            <th>Trading Boost</th>
+            <th>Pair Boost</th>
           </tr>
         </thead>
         <tbody>
@@ -101,7 +107,7 @@ function PairRow({ reward, index }: { reward: RewardPair; index: number }) {
         )}
       </td>
       <td>
-        <AutoRow gap="8px" style={{ marginLeft: '8px' }}>
+        <AutoRow gap="8px" style={{ marginLeft: '10px' }}>
           {currency0 && currency1 && <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />}
           <TYPE.body fontWeight={500} fontSize={20}>
             {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}
@@ -111,7 +117,9 @@ function PairRow({ reward, index }: { reward: RewardPair; index: number }) {
       <td>0.3%</td>
       <td>{dayVolumeReference == reward.pair.day ? reward.pair.dailyVolumeUSD : 0}</td>
       <td>{weekVolumeReference == reward.pair.week ? reward.pair.weeklyVolumeUSD : 0}</td>
-      <td>-</td>
+      <td>
+        <BoostWrapper>{reward.weight ? `x ${reward.weight / 100}` : '-'}</BoostWrapper>
+      </td>
       <td>{formatToFixed(reward.pair.reserveUSD, 4)}</td>
     </InteractiveTR>
   )
