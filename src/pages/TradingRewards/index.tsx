@@ -45,7 +45,7 @@ export default function TradingRewards() {
   return (
     <ContentWrapper>
       <PrimaryTitle>
-        My Brain Power Epoch(
+        My Brain Power Epoch (
         <span
           style={{
             color: '#2CFFF3',

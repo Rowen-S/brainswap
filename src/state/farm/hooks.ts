@@ -23,10 +23,21 @@ function fetchClaim(account: string): Promise<UserProofData | null> {
   return (MINT_PROMISES[key] =
     MINT_PROMISES[key] ??
     new Promise((resolve) =>
-      resolve({
-        proofs: ['0x6dcdb1e6bc704c351a550d7063f870a66823ddb9d3da4094c41aa7dd0664e557'],
-        amount: '3205804928762930256623',
-      })
+      resolve(
+        // {
+        // proofs: ['0x6dcdb1e6bc704c351a550d7063f870a66823ddb9d3da4094c41aa7dd0664e557'],
+        // amount: '3205804928762930256623',
+        // }
+
+        {
+          proofs: [
+            '0x8bc2540f24f0784abda1e0f5c9ed0d5a57d0aa94b05e9cb69996a8328dcac352',
+            '0xe8c74d9fec4f6a041a27c7cbf290c0835df018e216140e368329b9b507e0f96b',
+            '0x985537a0d85206ce9c5727ce10553f95eeb97004c827b28de0a1ed74243b393e',
+          ],
+          amount: '266409009281017724318',
+        }
+      )
     ))
 }
 

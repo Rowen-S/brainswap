@@ -15,7 +15,7 @@ import { useQuery } from '@apollo/client'
 import { formatToFixed, shortenAddress } from 'utils'
 import Loader from 'components/Loader'
 import { rewardsPool } from 'constants/misc'
-import { ExternalLink } from 'theme'
+import { ExternalLink, TYPE } from 'theme'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { useWeb3React } from '@web3-react/core'
 
@@ -41,10 +41,11 @@ interface MiningInfo {
 }
 export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
   const { chainId, account } = useWeb3React()
-  const { data } = useQuery<{
+  const { loading, error, data } = useQuery<{
     userMiningInfos: MiningInfo[]
   }>(GET_MIN_INFOS, {
     client: tradingClient,
+    variables: { user: account, epoch: epoch ? epoch - 1 : epoch },
   })
 
   const boardList = useMemo(() => {
@@ -89,7 +90,15 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
   return (
     <>
       <Text fontSize={28} textAlign="center" mt={30}>
-        Genesis Epoch Trading Leaderboard
+        Genesis Epoch (
+        <span
+          style={{
+            color: '#2CFFF3',
+          }}
+        >
+          {epoch ?? '-'}
+        </span>
+        ) Trading Leaderboard
       </Text>
       <Text fontSize={14} mt={20} opacity={0.5} textAlign="center">
         Get to the top of the leaderboard to boost your power. The top 100 trading volume on the epoch determines your
@@ -110,7 +119,11 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
             </tr>
           </thead>
           <tbody>
-            {boardList ? (
+            {loading ? (
+              <Loader />
+            ) : error ? (
+              <TYPE.error error>Err: {error.message} </TYPE.error>
+            ) : (
               boardList &&
               boardList.map((x) => (
                 <tr key={x.rank}>
@@ -150,8 +163,6 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
                   </td>
                 </tr>
               ))
-            ) : (
-              <Loader />
             )}
           </tbody>
         </Table>

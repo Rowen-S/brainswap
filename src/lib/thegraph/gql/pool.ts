@@ -76,8 +76,8 @@ export const GET_ALL_POOLS = gql`
 `
 
 export const GET_REWARD_POOLS = gql`
-  query RewardsPools {
-    miningPairs(orderBy: volumeUSD) {
+  query RewardsPools($epoch: String) {
+    miningPairs(where: { epoch: $epoch }, orderBy: volumeUSD) {
       id
       epoch {
         id

@@ -36,7 +36,7 @@ export default function RewardIQ({ epoch }: { epoch: number | undefined }) {
   const { account } = useWeb3React()
   const { loading, error, data } = useQuery<PowerProps>(GET_LP_TRAD_POWER, {
     client: tradingClient,
-    variables: { user: account, epoch: epoch },
+    variables: { user: account, epoch: epoch ? epoch - 1 : epoch },
     fetchPolicy: 'network-only',
     pollInterval: 1000 * 10,
     notifyOnNetworkStatusChange: true,

@@ -14,6 +14,7 @@ import { Duration, DateTime } from 'luxon'
 import { formatLuxonDateTime } from 'utils'
 import { useSingleContractMultipleData, useSingleCallResult } from 'state/multicall/hooks'
 import Loader from 'components/Loader'
+import { BigNumber } from 'ethers'
 
 export default function VestingHistory() {
   const { account } = useWeb3React()
@@ -50,7 +51,7 @@ export default function VestingHistory() {
     let isRedeem = false
     if (isValid && isResult) {
       allUserRedeems.map(({ result }) => {
-        totalIqAmount += result?.iqAmount.toNumber()
+        totalIqAmount += parseFloat(result?.iqAmount.toString())
         const timestamp = DateTime.fromSeconds(result?.endTime.toNumber())
         isRedeem = timestamp <= DateTime.now()
         // console.log(result?.endTime, timestamp, timestamp <= DateTime.now())

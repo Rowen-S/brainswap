@@ -25,8 +25,8 @@ export const GET_LP_TRAD_POWER = gql`
 `
 
 export const GET_MIN_INFOS = gql`
-  query {
-    userMiningInfos(orderBy: power, first: 3, orderDirection: desc) {
+  query ($epoch: Int) {
+    userMiningInfos(where: { epoch: $epoch }, orderBy: power, orderDirection: desc) {
       id
       epoch
       user
