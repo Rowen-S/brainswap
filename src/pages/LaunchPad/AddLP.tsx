@@ -191,15 +191,20 @@ export default function AddLP({
               <IDOInput value={idoValue} onUserInput={(val) => setIdoValue(val)} disabled={isExpired} />
               <ILOCardText as={Row} fontSize={12}>
                 Your initial LP:{' '}
-                {isExpired ? (
+                {/* {isExpired ? (
                   initIQAmount?.toFixed(2)
                 ) : (
                   <>
                     <QuestionHelper text="The final IQ you purchased will be confirmed when the launchpad is finished." />
                     &nbsp;
                   </>
-                )}
-                IQ + {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '0'} ETH LP
+                )} */}
+                {initIQAmount?.toFixed(2) + 'IQ'}
+                <QuestionHelper
+                  text="The final IQ you purchased will be confirmed when the launchpad is finished."
+                  size={10}
+                />
+                &nbsp;+ {userInfo?.totalInvestedETH ? formatEther(userInfo?.totalInvestedETH.div(2)) : '0'} ETH LP
               </ILOCardText>
             </IDDWrapper>
             <ButtonNormal disabled={(!idoValue && !isbuy) || isExpired} onClick={buyIDO}>
