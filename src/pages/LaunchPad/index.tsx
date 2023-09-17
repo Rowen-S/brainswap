@@ -318,7 +318,7 @@ export default function LaunchPad() {
           </div>
         }
         <SectionWrapper>
-          <ILOTitle>IQ Initial Launchpad Offerings</ILOTitle>
+          <ILOTitle ml={15}>IQ Initial Launchpad Offerings</ILOTitle>
           <StairCard
             bg={StairBgImage}
             style={{
@@ -416,7 +416,7 @@ export default function LaunchPad() {
         </SectionWrapper>
 
         <SectionWrapper>
-          <ILOTitle>Buy History</ILOTitle>
+          <ILOTitle ml={15}>Buy History</ILOTitle>
 
           <StairCard
             bg={StairBgImage}
@@ -429,7 +429,7 @@ export default function LaunchPad() {
         </SectionWrapper>
 
         <SectionWrapper>
-          <ILOTitle>Token Distribution</ILOTitle>
+          <ILOTitle ml={15}>Token Distribution</ILOTitle>
 
           <StairCard
             bg={StairBgImage}

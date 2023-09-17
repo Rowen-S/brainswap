@@ -71,8 +71,12 @@ export default function VestingHistory() {
   return (
     <>
       <RowBetween>
-        <Text fontSize={28}>Vesting in progress</Text>
-        <Text fontSize={20}>Available {anyLoading ? <Loader /> : totalIqAmount?.toLocaleString()} IQ</Text>
+        <Text fontSize={28} ml={15}>
+          Vesting In Progress
+        </Text>
+        <Text fontSize={20} mr={15}>
+          Available {anyLoading ? <Loader /> : totalIqAmount?.toLocaleString()} IQ
+        </Text>
       </RowBetween>
       <StairCard bg={StairBgImage}>
         <Table>

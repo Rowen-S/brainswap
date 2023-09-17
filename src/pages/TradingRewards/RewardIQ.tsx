@@ -15,7 +15,10 @@ import { towWeek } from 'constants/misc'
 import Loader from 'components/Loader'
 // import NumberAnimation from 'components/NumberAnimation'
 
-const IQNumberWrapper = styled(ColumnCenter)``
+const IQNumberWrapper = styled(ColumnCenter)`
+  justify-content: space-between;
+  height: 62px;
+`
 
 const IQNumberTitle = styled(Text)`
   color: #ffffff;

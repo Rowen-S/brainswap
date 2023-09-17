@@ -44,8 +44,18 @@ export default function TradingRewards() {
 
   return (
     <ContentWrapper>
-      <PrimaryTitle>My Brain Power ({epoch ?? '-'}) Trading Leaderboard</PrimaryTitle>
-      <SecondrayTitle marginTop="20px">Earn rewards for trading on the BRAINSWAP</SecondrayTitle>
+      <PrimaryTitle>
+        My Brain Power Epoch(
+        <span
+          style={{
+            color: '#2CFFF3',
+          }}
+        >
+          {epoch ?? '-'}
+        </span>
+        ) Trading Leaderboard
+      </PrimaryTitle>
+      <SecondrayTitle marginTop="20px">Earn Rewards For Trading On The BRAINSWAP</SecondrayTitle>
       <RewardIQ epoch={epoch} />
       <RowBetween>
         <RewardESIQ />

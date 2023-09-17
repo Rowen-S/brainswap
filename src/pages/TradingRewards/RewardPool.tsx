@@ -13,7 +13,7 @@ export default function RewardPool() {
         minWidth: '380px',
       }}
     >
-      <Text fontSize={16}>The Rewards pool</Text>
+      <Text fontSize={16}>The Rewards Pool</Text>
 
       <Row
         style={{

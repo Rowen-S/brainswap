@@ -39,7 +39,10 @@ const SupplyItemValue = styled.div`
 //   opacity: 0.5;
 // `
 
-const SupplyItemWrapper = styled(ColumnCenter)``
+const SupplyItemWrapper = styled(ColumnCenter)`
+  justify-content: space-between;
+  height: 58px;
+`
 
 export default function SupplyItem({ title, content, append }: ISupplyItemProps) {
   return (

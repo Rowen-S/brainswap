@@ -32,7 +32,7 @@ export default function RewardESIQ() {
         flexGrow: 1,
       }}
     >
-      <Text fontSize={16}>My Trading rewards</Text>
+      <Text fontSize={16}>My Trading Rewards</Text>
       <Row align="flex-end" mt={40}>
         <Text fontSize={42}>{(rewards?.amount && formatToFixed(formatEther(rewards?.amount))) ?? '-'}</Text>
         <Text

@@ -47,7 +47,7 @@ export default function ConvertIQ() {
   }
   return (
     <StairCard bg={StairBgImage}>
-      <Text fontSize={16}>Convert to IQ token</Text>
+      <Text fontSize={16}>Convert To IQ Token</Text>
       <RowBetween mt={25}>
         <Text fontSize={12} opacity={0.5}>
           Select IQ Lock Times: 14 days

@@ -151,7 +151,7 @@ export default function AddLP({
         )}
         pendingText={''}
       />
-      <ILOCardTitle>Add IQ LP offering</ILOCardTitle>
+      <ILOCardTitle>Add IQ LP Offering</ILOCardTitle>
       <RowFixed
         style={{
           marginTop: '20px',

@@ -31,7 +31,7 @@ const ILOCardSimpleText = styled.div`
 `
 
 const LockWrapper = styled.div`
-  margin-top: 50px;
+  margin-top: 26px;
 `
 
 export default function ConvertLP({ distance = 0 }: { distance: number }) {
@@ -143,7 +143,7 @@ export default function ConvertLP({ distance = 0 }: { distance: number }) {
           marginTop: '20px',
         }}
       >
-        <ILOCardMidTitle>50% LP will be unlocked in 7 days, 100% will be unlocked in 14 days</ILOCardMidTitle>
+        <ILOCardMidTitle>50% LP will be unlocked in 14 days, 100% will be unlocked in 28 days</ILOCardMidTitle>
       </RowFixed>
 
       <div
@@ -232,7 +232,7 @@ export default function ConvertLP({ distance = 0 }: { distance: number }) {
         </Row>
       </LockWrapper>
 
-      <ButtonNormal width={'400px'} margin={'25px auto 0 auto'} disabled={!isInvested} onClick={claimLp}>
+      <ButtonNormal margin={'25px auto 0 auto'} disabled={!isInvested} onClick={claimLp}>
         Claim unlocked LP
       </ButtonNormal>
     </>
