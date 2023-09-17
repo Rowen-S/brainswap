@@ -87,7 +87,7 @@ function PairRow({ pair, index }: { pair: Pair; index: number }) {
         )}
       </td>
       <td>
-        <AutoRow gap="8px" style={{ marginLeft: '8px' }}>
+        <AutoRow gap="8px" style={{ marginLeft: '10px' }}>
           {currency0 && currency1 && <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />}
           <TYPE.body fontWeight={500} fontSize={20}>
             {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}
