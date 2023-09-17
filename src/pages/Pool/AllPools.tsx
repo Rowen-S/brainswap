@@ -105,8 +105,8 @@ function PairRow({ pair, index }: { pair: Pair; index: number }) {
         </AutoRow>
       </td>
       <td>0.3%</td>
-      <td>{dayVolumeReference == pair.day ? pair.dailyVolumeUSD : 0}</td>
-      <td>{weekVolumeReference == pair.week ? pair.weeklyVolumeUSD : 0}</td>
+      <td>{dayVolumeReference == pair.day ? formatToFixed(pair.dailyVolumeUSD) : 0}</td>
+      <td>{weekVolumeReference == pair.week ? formatToFixed(pair.weeklyVolumeUSD) : 0}</td>
       <td>-</td>
       <td>{formatToFixed(pair.reserveUSD, 4)}</td>
     </InteractiveTR>

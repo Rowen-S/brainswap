@@ -115,12 +115,12 @@ function PairRow({ reward, index }: { reward: RewardPair; index: number }) {
         </AutoRow>
       </td>
       <td>0.3%</td>
-      <td>{dayVolumeReference == reward.pair.day ? reward.pair.dailyVolumeUSD : 0}</td>
-      <td>{weekVolumeReference == reward.pair.week ? reward.pair.weeklyVolumeUSD : 0}</td>
+      <td>{dayVolumeReference == reward.pair.day ? formatToFixed(reward.pair.dailyVolumeUSD) : 0}</td>
+      <td>{weekVolumeReference == reward.pair.week ? formatToFixed(reward.pair.weeklyVolumeUSD) : 0}</td>
+      <td>-</td>
       <td>
         <BoostWrapper>{reward.weight ? `x ${reward.weight / 100}` : '-'}</BoostWrapper>
       </td>
-      <td>{formatToFixed(reward.pair.reserveUSD, 4)}</td>
     </InteractiveTR>
   )
 }

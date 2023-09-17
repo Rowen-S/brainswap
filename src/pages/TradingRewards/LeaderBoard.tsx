@@ -1,5 +1,5 @@
 import { StairCard } from 'components/StairCard'
-import React, { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { Image, Text } from 'rebass'
 import { Table } from 'components/Table'
@@ -37,11 +37,11 @@ interface MiningInfo {
   epoch: string
   user: string
   volumeUSD: string
-  rank?: number
+  rank: number
 }
 export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
   const { chainId, account } = useWeb3React()
-  const { data, client } = useQuery<{
+  const { data } = useQuery<{
     userMiningInfos: MiningInfo[]
   }>(GET_MIN_INFOS, {
     client: tradingClient,
@@ -86,10 +86,6 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
     return null
   }, [data, account])
 
-  useEffect(() => {
-    console.log(boardList)
-  }, [boardList])
-
   return (
     <>
       <Text fontSize={28} textAlign="center" mt={30}>
@@ -115,7 +111,8 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
           </thead>
           <tbody>
             {boardList ? (
-              boardList.map((x, i) => (
+              boardList &&
+              boardList.map((x) => (
                 <tr key={x.rank}>
                   <td>
                     {/* {account && account.toLocaleLowerCase() == x.user.toLocaleLowerCase() ? (
@@ -127,8 +124,8 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
                     ) : (
                       <Image src={i === 0 ? Rank0Image : i === 1 ? Rank1Image : Rank2Image} />
                     )} */}
-                    {x.rank! === 1 || x.rank! === 2 || x.rank! === 3 ? (
-                      <Image src={x.rank! === 1 ? Rank0Image : x.rank! === 2 ? Rank1Image : Rank2Image} />
+                    {x.rank === 1 || x.rank === 2 || x.rank === 3 ? (
+                      <Image src={x.rank === 1 ? Rank0Image : x.rank === 2 ? Rank1Image : Rank2Image} />
                     ) : (
                       x.rank
                     )}
@@ -149,7 +146,7 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
                   <td>-</td>
                   <td>{epoch && x.power && <EstimatedRewards epoch={epoch} power={x.power} />}</td>
                   <td>
-                    <Sacrifice>Comming soon</Sacrifice>
+                    <Sacrifice>Coming soon</Sacrifice>
                   </td>
                 </tr>
               ))
