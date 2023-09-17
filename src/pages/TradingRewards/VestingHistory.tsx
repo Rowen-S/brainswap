@@ -39,8 +39,6 @@ export default function VestingHistory() {
 
   const allUserRedeems = useSingleContractMultipleData(esTokenContract, 'getUserRedeem', redeemIndexArg)
 
-  console.log('allUserRedeems:', allUserRedeems)
-
   const anyLoading: boolean = useMemo(() => allUserRedeems.some(({ loading }) => loading), [allUserRedeems])
   const isValid = useMemo(() => allUserRedeems.some(({ valid }) => valid), [allUserRedeems])
   const isResult = useMemo(() => allUserRedeems.some(({ result }) => result), [allUserRedeems])
@@ -75,7 +73,7 @@ export default function VestingHistory() {
           Vesting In Progress
         </Text>
         <Text fontSize={20} mr={15}>
-          Available {anyLoading ? <Loader /> : formatToFixed(totalIqAmount / Math.pow(10, 18))} IQ
+          Redeemable: {anyLoading ? <Loader /> : !isRedeem ? 0 : formatToFixed(totalIqAmount / Math.pow(10, 18))} IQ
         </Text>
       </RowBetween>
       <StairCard bg={StairBgImage}>
