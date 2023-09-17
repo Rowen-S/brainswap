@@ -18,6 +18,13 @@ import { formatToFixed } from 'utils'
 import Loader from 'components/Loader'
 import { useHistory } from 'react-router-dom'
 import { currencyId } from 'utils/currencyId'
+import styled from 'styled-components'
+
+const InteractiveTR = styled.tr`
+  &:hover {
+    background: #201e2b !important;
+  }
+`
 
 export default function RewardPools() {
   const { loading, error, data } = useQuery<RewardPairs>(GET_REWARD_POOLS, {
@@ -33,7 +40,7 @@ export default function RewardPools() {
       <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
         <HideSmall>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
-            Rewards pools
+            Rewards Pools
           </TYPE.mediumHeader>
         </HideSmall>
       </TitleRow>
@@ -77,8 +84,11 @@ function PairRow({ reward, index }: { reward: RewardPair; index: number }) {
   const weekVolumeReference = Math.floor(DateTime.now().toSeconds()) / secondsInWeek
 
   return (
-    <tr
+    <InteractiveTR
       onClick={() => currency0 && currency1 && history.push(`/add/${currencyId(currency0)}/${currencyId(currency1)}`)}
+      style={{
+        cursor: 'pointer',
+      }}
     >
       <td>
         {index < 3 ? (
@@ -103,6 +113,6 @@ function PairRow({ reward, index }: { reward: RewardPair; index: number }) {
       <td>{weekVolumeReference == reward.pair.week ? reward.pair.weeklyVolumeUSD : 0}</td>
       <td>-</td>
       <td>{formatToFixed(reward.pair.reserveUSD, 4)}</td>
-    </tr>
+    </InteractiveTR>
   )
 }

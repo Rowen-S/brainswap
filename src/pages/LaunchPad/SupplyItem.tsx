@@ -19,6 +19,8 @@ const SupplyItemTitle = styled(Row)`
   font-size: 12px;
   font-weight: 500;
   opacity: 0.5;
+  align-items: center;
+  height: 13px;
 `
 
 const SupplyItemValue = styled.div`

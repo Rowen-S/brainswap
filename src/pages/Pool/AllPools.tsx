@@ -18,6 +18,13 @@ import { formatToFixed } from 'utils'
 import Loader from 'components/Loader'
 import { useHistory } from 'react-router-dom'
 import { currencyId } from 'utils/currencyId'
+import styled from 'styled-components'
+
+const InteractiveTR = styled.tr`
+  &:hover {
+    background: #201e2b !important;
+  }
+`
 
 export default function AllPools() {
   const { loading, error, data } = useQuery<AllPairs>(GET_ALL_POOLS, {
@@ -30,7 +37,7 @@ export default function AllPools() {
     <AutoColumn gap="md" style={{ width: '100%' }}>
       <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
         <HideSmall>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>All pools</TYPE.mediumHeader>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>All Pools</TYPE.mediumHeader>
         </HideSmall>
       </TitleRow>
 
@@ -73,8 +80,11 @@ function PairRow({ pair, index }: { pair: Pair; index: number }) {
   const weekVolumeReference = Math.floor(DateTime.now().toSeconds()) / secondsInWeek
 
   return (
-    <tr
+    <InteractiveTR
       onClick={() => currency0 && currency1 && history.push(`/add/${currencyId(currency0)}/${currencyId(currency1)}`)}
+      style={{
+        cursor: 'pointer',
+      }}
     >
       <td>
         {index < 3 ? (
@@ -99,6 +109,6 @@ function PairRow({ pair, index }: { pair: Pair; index: number }) {
       <td>{weekVolumeReference == pair.week ? pair.weeklyVolumeUSD : 0}</td>
       <td>-</td>
       <td>{formatToFixed(pair.reserveUSD, 4)}</td>
-    </tr>
+    </InteractiveTR>
   )
 }
