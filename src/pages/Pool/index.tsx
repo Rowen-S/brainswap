@@ -22,6 +22,7 @@ import { useStakingInfo } from '../../state/stake/hooks'
 import { BIG_INT_ZERO } from '../../constants/misc'
 import { Pair } from '@uniswap/v2-sdk'
 import AllPools from './AllPools'
+import RewardPools from './RewardPools'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 870px;
@@ -218,6 +219,8 @@ export default function Pool() {
             )}
           </AutoColumn>
         </AutoColumn>
+
+        <RewardPools />
 
         <AllPools />
       </PageWrapper>
