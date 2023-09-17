@@ -80,7 +80,7 @@ export default function ConvertIQ() {
       </Box>
 
       <Text fontSize={12} opacity={0.5} mt={20}>
-        And the remainning token will be burnt out
+        And the remainning token will be burnt
       </Text>
 
       <ButtonNormal m={'auto'} mt={30} maxWidth={558} disabled={!isconvert} onClick={convert}>

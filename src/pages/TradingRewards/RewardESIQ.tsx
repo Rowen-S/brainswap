@@ -50,7 +50,7 @@ export default function RewardESIQ() {
 
       <Text fontSize={14} opacity={0.5} mt={36}>
         You can check the last epoch rewards here. Claim all the esIQ before the next epoch rewards distributed. Every
-        epoch rewards will not be accumulated. The unclaimed token will be burnt out.
+        epoch rewards will not be accumulated. The unclaimed token will be burnt.
       </Text>
 
       <ButtonNormal mt={70} onClick={claim} disabled={isClaimd ?? true}>
