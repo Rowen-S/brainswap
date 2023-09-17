@@ -59,11 +59,15 @@ export default function TradingRewards() {
       <RewardIQ epoch={epoch} />
       <RowBetween>
         <RewardESIQ />
-        <div>
-          <AutoColumn justify="space-between">
-            <EpochCountDown epoch={epoch} />
-            <RewardPool />
-          </AutoColumn>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          <EpochCountDown epoch={epoch} />
+          <RewardPool />
         </div>
       </RowBetween>
 

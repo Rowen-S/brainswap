@@ -11,6 +11,8 @@ export default function RewardPool() {
       bg={StairBgImage}
       style={{
         minWidth: '380px',
+        position: 'relative',
+        top: '6px',
       }}
     >
       <Text fontSize={16}>The Rewards Pool</Text>
