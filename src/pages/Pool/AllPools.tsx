@@ -44,7 +44,6 @@ export default function AllPools() {
             <th>Volume 7D</th>
             <th>APR 24h</th>
             <th>TVL</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
