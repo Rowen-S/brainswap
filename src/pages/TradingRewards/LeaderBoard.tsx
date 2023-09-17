@@ -1,5 +1,5 @@
 import { StairCard } from 'components/StairCard'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { Image, Text } from 'rebass'
 import { Table } from 'components/Table'
@@ -31,35 +31,64 @@ const Sacrifice = styled.span`
   font-size: 12px;
   line-height: 12px;
 `
+interface MiningInfo {
+  power: string
+  id: string
+  epoch: string
+  user: string
+  volumeUSD: string
+  rank?: number
+}
 export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
   const { chainId, account } = useWeb3React()
-  const { data } = useQuery<{
-    userMiningInfos: [
-      {
-        power: string
-        id: string
-        epoch: string
-        user: string
-        volumeUSD: string
-        rank?: number
-      }
-    ]
+  const { data, client } = useQuery<{
+    userMiningInfos: MiningInfo[]
   }>(GET_MIN_INFOS, {
     client: tradingClient,
   })
 
   const boardList = useMemo(() => {
     if (data && data?.userMiningInfos && data?.userMiningInfos.length) {
-      const d = data.userMiningInfos
+      const d: MiningInfo[] = data.userMiningInfos.slice()
+
       if (account) {
-        const myDate = d.find((x) => x.user.toLocaleLowerCase() === account.toLocaleLowerCase())
         const myIndex = d.findIndex((x) => x.user.toLocaleLowerCase() === account.toLocaleLowerCase())
-        return myDate ? [{ ...myDate, rank: myIndex + 1 }, ...d] : d
+        if (myIndex >= 0) {
+          const dataWithRank = d.map((item, index) => {
+            return {
+              ...item,
+              rank: index + 1,
+            }
+          })
+          const myVote = dataWithRank[myIndex]
+          dataWithRank.splice(myIndex, 1)
+          dataWithRank.unshift(myVote)
+          return dataWithRank
+        } else {
+          console.log('0099---')
+          const dataWithRank = d.map((item, index) => {
+            return {
+              ...item,
+              rank: index + 1,
+            }
+          })
+          console.log(dataWithRank)
+          return dataWithRank
+        }
       }
-      return d
+      return d.map((item, index) => {
+        return {
+          ...item,
+          rank: index + 1,
+        }
+      })
     }
     return null
   }, [data, account])
+
+  useEffect(() => {
+    console.log(boardList)
+  }, [boardList])
 
   return (
     <>
@@ -87,9 +116,9 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
           <tbody>
             {boardList ? (
               boardList.map((x, i) => (
-                <tr key={x.id ? x.id + i : x.id}>
+                <tr key={x.rank}>
                   <td>
-                    {account && account.toLocaleLowerCase() == x.user.toLocaleLowerCase() ? (
+                    {/* {account && account.toLocaleLowerCase() == x.user.toLocaleLowerCase() ? (
                       i === 0 ? (
                         x.rank
                       ) : (
@@ -97,6 +126,11 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
                       )
                     ) : (
                       <Image src={i === 0 ? Rank0Image : i === 1 ? Rank1Image : Rank2Image} />
+                    )} */}
+                    {x.rank! === 1 || x.rank! === 2 || x.rank! === 3 ? (
+                      <Image src={x.rank! === 1 ? Rank0Image : x.rank! === 2 ? Rank1Image : Rank2Image} />
+                    ) : (
+                      x.rank
                     )}
                   </td>
                   <td>
@@ -115,7 +149,7 @@ export default function Leaderboard({ epoch }: { epoch: number | undefined }) {
                   <td>-</td>
                   <td>{epoch && x.power && <EstimatedRewards epoch={epoch} power={x.power} />}</td>
                   <td>
-                    <Sacrifice>Comming soom</Sacrifice>
+                    <Sacrifice>Comming soon</Sacrifice>
                   </td>
                 </tr>
               ))
