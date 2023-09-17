@@ -5,8 +5,8 @@ export interface PowerProps {
   userMiningInfos: [{ power: string }]
 }
 export const GET_LP_TRAD_POWER = gql`
-  query AllTradandlp($user: String!) {
-    lpinfos(where: { user: $user }) {
+  query AllTradandlp($user: String!, $epoch: Int) {
+    lpinfos(where: { user: $user, epoch: $epoch }) {
       id
       user
       power
@@ -15,7 +15,7 @@ export const GET_LP_TRAD_POWER = gql`
       amountTotalUSD
       epoch
     }
-    userMiningInfos(where: { user: $user }) {
+    userMiningInfos(where: { user: $user, epoch: $epoch }) {
       id
       epoch
       user

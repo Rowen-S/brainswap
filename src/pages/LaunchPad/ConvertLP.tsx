@@ -83,7 +83,7 @@ export default function ConvertLP({ distance = 0 }: { distance: number }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, idoContract, getRealUserInfo])
 
-  const [totalReverses, setTotalReverses] = useState<[BigNumber, BigNumber]>([BigNumber.from(0), BigNumber.from(0)])
+  const [, setTotalReverses] = useState<[BigNumber, BigNumber]>([BigNumber.from(0), BigNumber.from(0)])
 
   const [unLockedReverses, setUnLockedReverses] = useState<[BigNumber, BigNumber]>([
     BigNumber.from(0),

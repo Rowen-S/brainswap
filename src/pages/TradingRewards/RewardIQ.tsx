@@ -29,11 +29,12 @@ const IQNumber = styled(Text)`
   margin-top: 22px !important;
 `
 
-export default function RewardIQ() {
+export default function RewardIQ({ epoch }: { epoch: number | undefined }) {
   const { account } = useWeb3React()
   const { loading, error, data } = useQuery<PowerProps>(GET_LP_TRAD_POWER, {
     client: tradingClient,
-    variables: { user: account },
+    variables: { user: account, epoch: epoch },
+    fetchPolicy: 'network-only',
     pollInterval: 1000 * 10,
     notifyOnNetworkStatusChange: true,
   })

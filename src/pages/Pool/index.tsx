@@ -21,14 +21,14 @@ import { Dots } from '../../components/swap/styleds'
 import { useStakingInfo } from '../../state/stake/hooks'
 import { BIG_INT_ZERO } from '../../constants/misc'
 import { Pair } from '@uniswap/v2-sdk'
-import { Table } from 'components/Table'
+import AllPools from './AllPools'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 870px;
   width: 100%;
 `
 
-const TitleRow = styled(RowBetween)`
+export const TitleRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-wrap: wrap;
     gap: 12px;
@@ -217,39 +217,9 @@ export default function Pool() {
               </EmptyProposals>
             )}
           </AutoColumn>
-          <AutoColumn gap="md" style={{ width: '100%' }}>
-            <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
-              <HideSmall>
-                <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
-                  Rewards pools
-                </TYPE.mediumHeader>
-              </HideSmall>
-            </TitleRow>
-
-            <Table>
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Type</th>
-                  <th>Hash</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </Table>
-          </AutoColumn>
         </AutoColumn>
+
+        <AllPools />
       </PageWrapper>
     </>
   )

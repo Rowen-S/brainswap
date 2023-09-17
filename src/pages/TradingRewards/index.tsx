@@ -46,7 +46,7 @@ export default function TradingRewards() {
     <ContentWrapper>
       <PrimaryTitle>My Brain Power ({epoch ?? '-'}) Trading Leaderboard</PrimaryTitle>
       <SecondrayTitle marginTop="20px">Earn rewards for trading on the BRAINSWAP</SecondrayTitle>
-      <RewardIQ />
+      <RewardIQ epoch={epoch} />
       <RowBetween>
         <RewardESIQ />
         <div>
