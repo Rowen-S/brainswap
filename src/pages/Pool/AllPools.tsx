@@ -16,6 +16,8 @@ import Rank3Image from '../../assets/images/rank_2.svg'
 import { DateTime } from 'luxon'
 import { formatToFixed } from 'utils'
 import Loader from 'components/Loader'
+import { useHistory } from 'react-router-dom'
+import { currencyId } from 'utils/currencyId'
 
 export default function AllPools() {
   const { loading, error, data } = useQuery<AllPairs>(GET_ALL_POOLS, {
@@ -23,8 +25,6 @@ export default function AllPools() {
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
   })
-
-  console.log(loading, error, data)
 
   return (
     <AutoColumn gap="md" style={{ width: '100%' }}>
@@ -44,15 +44,26 @@ export default function AllPools() {
             <th>Volume 7D</th>
             <th>APR 24h</th>
             <th>TVL</th>
+            <th></th>
           </tr>
         </thead>
-        <tbody>{loading ? <Loader /> : data?.pairs.map((p, i) => <PairRow key={p.id} index={i} pair={p} />)}</tbody>
+        <tbody>
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <>Err: {error.message}</>
+          ) : (
+            data?.pairs.map((p, i) => <PairRow key={p.id} index={i} pair={p} />)
+          )}
+        </tbody>
       </Table>
     </AutoColumn>
   )
 }
 
 function PairRow({ pair, index }: { pair: Pair; index: number }) {
+  const history = useHistory()
+
   const currency0 = useCurrency(pair.token0.id)
   const currency1 = useCurrency(pair.token1.id)
 
@@ -63,7 +74,9 @@ function PairRow({ pair, index }: { pair: Pair; index: number }) {
   const weekVolumeReference = Math.floor(DateTime.now().toSeconds()) / secondsInWeek
 
   return (
-    <tr>
+    <tr
+      onClick={() => currency0 && currency1 && history.push(`/add/${currencyId(currency0)}/${currencyId(currency1)}`)}
+    >
       <td>
         {index < 3 ? (
           <img

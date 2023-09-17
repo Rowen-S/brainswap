@@ -16,6 +16,8 @@ import Rank3Image from '../../assets/images/rank_2.svg'
 import { DateTime } from 'luxon'
 import { formatToFixed } from 'utils'
 import Loader from 'components/Loader'
+import { useHistory } from 'react-router-dom'
+import { currencyId } from 'utils/currencyId'
 
 export default function RewardPools() {
   const { loading, error, data } = useQuery<RewardPairs>(GET_REWARD_POOLS, {
@@ -49,7 +51,13 @@ export default function RewardPools() {
           </tr>
         </thead>
         <tbody>
-          {loading ? <Loader /> : data?.miningPairs.map((r, i) => <PairRow key={r.id} index={i} reward={r} />)}
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <>Err: {error.message}</>
+          ) : (
+            data?.miningPairs.map((r, i) => <PairRow key={r.id} index={i} reward={r} />)
+          )}
         </tbody>
       </Table>
     </AutoColumn>
@@ -57,6 +65,8 @@ export default function RewardPools() {
 }
 
 function PairRow({ reward, index }: { reward: RewardPair; index: number }) {
+  const history = useHistory()
+
   const currency0 = useCurrency(reward.pair.token0.id)
   const currency1 = useCurrency(reward.pair.token1.id)
 
@@ -67,7 +77,9 @@ function PairRow({ reward, index }: { reward: RewardPair; index: number }) {
   const weekVolumeReference = Math.floor(DateTime.now().toSeconds()) / secondsInWeek
 
   return (
-    <tr>
+    <tr
+      onClick={() => currency0 && currency1 && history.push(`/add/${currencyId(currency0)}/${currencyId(currency1)}`)}
+    >
       <td>
         {index < 3 ? (
           <img
