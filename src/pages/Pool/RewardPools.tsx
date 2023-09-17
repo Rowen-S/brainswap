@@ -4,7 +4,7 @@ import { TitleRow } from '.'
 import { Table } from 'components/Table'
 import { useQuery } from '@apollo/client'
 import { tradingClient } from 'lib/thegraph'
-import { GET_ALL_POOLS, AllPairs, Pair } from 'lib/thegraph/gql/pool'
+import { GET_REWARD_POOLS, RewardPairs, RewardPair } from 'lib/thegraph/gql/pool'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
 import { useCurrency } from 'hooks/Tokens'
 import { AutoRow } from 'components/Row'
@@ -17,8 +17,8 @@ import { DateTime } from 'luxon'
 import { formatToFixed } from 'utils'
 import Loader from 'components/Loader'
 
-export default function AllPools() {
-  const { loading, error, data } = useQuery<AllPairs>(GET_ALL_POOLS, {
+export default function RewardPools() {
+  const { loading, error, data } = useQuery<RewardPairs>(GET_REWARD_POOLS, {
     client: tradingClient,
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
@@ -30,7 +30,9 @@ export default function AllPools() {
     <AutoColumn gap="md" style={{ width: '100%' }}>
       <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
         <HideSmall>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>All pools</TYPE.mediumHeader>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
+            Rewards pools
+          </TYPE.mediumHeader>
         </HideSmall>
       </TitleRow>
 
@@ -43,18 +45,20 @@ export default function AllPools() {
             <th>Volume 24H</th>
             <th>Volume 7D</th>
             <th>APR 24h</th>
-            <th>TVL</th>
+            <th>Trading Boost</th>
           </tr>
         </thead>
-        <tbody>{loading ? <Loader /> : data?.pairs.map((p, i) => <PairRow key={p.id} index={i} pair={p} />)}</tbody>
+        <tbody>
+          {loading ? <Loader /> : data?.miningPairs.map((r, i) => <PairRow key={r.id} index={i} reward={r} />)}
+        </tbody>
       </Table>
     </AutoColumn>
   )
 }
 
-function PairRow({ pair, index }: { pair: Pair; index: number }) {
-  const currency0 = useCurrency(pair.token0.id)
-  const currency1 = useCurrency(pair.token1.id)
+function PairRow({ reward, index }: { reward: RewardPair; index: number }) {
+  const currency0 = useCurrency(reward.pair.token0.id)
+  const currency1 = useCurrency(reward.pair.token1.id)
 
   const secondsInDay = 24 * 60 * 60
   const dayVolumeReference = Math.floor(DateTime.now().toSeconds()) / secondsInDay
@@ -83,10 +87,10 @@ function PairRow({ pair, index }: { pair: Pair; index: number }) {
         </AutoRow>
       </td>
       <td>0.3%</td>
-      <td>{dayVolumeReference == pair.day ? pair.dailyVolumeUSD : 0}</td>
-      <td>{weekVolumeReference == pair.week ? pair.weeklyVolumeUSD : 0}</td>
+      <td>{dayVolumeReference == reward.pair.day ? reward.pair.dailyVolumeUSD : 0}</td>
+      <td>{weekVolumeReference == reward.pair.week ? reward.pair.weeklyVolumeUSD : 0}</td>
       <td>-</td>
-      <td>{formatToFixed(pair.reserveUSD, 4)}</td>
+      <td>{formatToFixed(reward.pair.reserveUSD, 4)}</td>
     </tr>
   )
 }
