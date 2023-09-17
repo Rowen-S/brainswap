@@ -11,10 +11,9 @@ import { useQuery } from '@apollo/client'
 import { GET_VESINGS } from 'lib/thegraph/gql/ido'
 import { useWeb3React } from '@web3-react/core'
 import { Duration, DateTime } from 'luxon'
-import { formatLuxonDateTime } from 'utils'
+import { formatLuxonDateTime, formatToFixed } from 'utils'
 import { useSingleContractMultipleData, useSingleCallResult } from 'state/multicall/hooks'
 import Loader from 'components/Loader'
-import { BigNumber } from 'ethers'
 
 export default function VestingHistory() {
   const { account } = useWeb3React()
@@ -76,7 +75,7 @@ export default function VestingHistory() {
           Vesting In Progress
         </Text>
         <Text fontSize={20} mr={15}>
-          Available {anyLoading ? <Loader /> : totalIqAmount?.toLocaleString()} IQ
+          Available {anyLoading ? <Loader /> : formatToFixed(totalIqAmount / Math.pow(10, 18))} IQ
         </Text>
       </RowBetween>
       <StairCard bg={StairBgImage}>
