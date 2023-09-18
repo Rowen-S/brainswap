@@ -37,7 +37,9 @@ export default function AllPools() {
     <AutoColumn gap="md" style={{ width: '100%' }}>
       <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
         <HideSmall>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>All Pools</TYPE.mediumHeader>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }} color={'text1'}>
+            All Pools
+          </TYPE.mediumHeader>
         </HideSmall>
       </TitleRow>
 

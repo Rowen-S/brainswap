@@ -11,7 +11,7 @@ import { useQuery } from '@apollo/client'
 import { GET_VESINGS } from 'lib/thegraph/gql/ido'
 import { useWeb3React } from '@web3-react/core'
 import { Duration, DateTime } from 'luxon'
-import { formatLuxonDateTime } from 'utils'
+import { formatLuxonDateTime, formatToFixed } from 'utils'
 import { useSingleContractMultipleData, useSingleCallResult } from 'state/multicall/hooks'
 import Loader from 'components/Loader'
 
@@ -39,8 +39,6 @@ export default function VestingHistory() {
 
   const allUserRedeems = useSingleContractMultipleData(esTokenContract, 'getUserRedeem', redeemIndexArg)
 
-  console.log('allUserRedeems:', allUserRedeems)
-
   const anyLoading: boolean = useMemo(() => allUserRedeems.some(({ loading }) => loading), [allUserRedeems])
   const isValid = useMemo(() => allUserRedeems.some(({ valid }) => valid), [allUserRedeems])
   const isResult = useMemo(() => allUserRedeems.some(({ result }) => result), [allUserRedeems])
@@ -50,7 +48,7 @@ export default function VestingHistory() {
     let isRedeem = false
     if (isValid && isResult) {
       allUserRedeems.map(({ result }) => {
-        totalIqAmount += result?.iqAmount.toNumber()
+        totalIqAmount += parseFloat(result?.iqAmount.toString())
         const timestamp = DateTime.fromSeconds(result?.endTime.toNumber())
         isRedeem = timestamp <= DateTime.now()
         // console.log(result?.endTime, timestamp, timestamp <= DateTime.now())
@@ -75,7 +73,7 @@ export default function VestingHistory() {
           Vesting In Progress
         </Text>
         <Text fontSize={20} mr={15}>
-          Available {anyLoading ? <Loader /> : totalIqAmount?.toLocaleString()} IQ
+          Redeemable: {anyLoading ? <Loader /> : !isRedeem ? 0 : formatToFixed(totalIqAmount / Math.pow(10, 18))} IQ
         </Text>
       </RowBetween>
       <StairCard bg={StairBgImage}>

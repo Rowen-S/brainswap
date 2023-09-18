@@ -19,6 +19,9 @@ import Loader from 'components/Loader'
 import { useHistory } from 'react-router-dom'
 import { currencyId } from 'utils/currencyId'
 import styled from 'styled-components'
+import { useMemo } from 'react'
+import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
+import { towWeek, tradStartTime } from 'constants/misc'
 
 const InteractiveTR = styled.tr`
   &:hover {
@@ -35,8 +38,17 @@ const BoostWrapper = styled.div`
 `
 
 export default function RewardPools() {
+  const blockTimestamp = useCurrentBlockTimestamp()
+  const epoch = useMemo(() => {
+    if (blockTimestamp && tradStartTime) {
+      return Math.ceil((blockTimestamp.toNumber() - tradStartTime) / towWeek)
+    }
+    return
+  }, [blockTimestamp])
+
   const { loading, error, data } = useQuery<RewardPairs>(GET_REWARD_POOLS, {
     client: tradingClient,
+    variables: { epoch: epoch ? String(epoch - 1) : epoch },
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
   })
@@ -45,7 +57,7 @@ export default function RewardPools() {
     <AutoColumn gap="md" style={{ width: '100%' }}>
       <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
         <HideSmall>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }} color={'text1'}>
             Rewards Pools
           </TYPE.mediumHeader>
         </HideSmall>
@@ -67,7 +79,7 @@ export default function RewardPools() {
           {loading ? (
             <Loader />
           ) : error ? (
-            <>Err: {error.message}</>
+            <TYPE.error error>Err: {error.message}</TYPE.error>
           ) : (
             data?.miningPairs.map((r, i) => <PairRow key={r.id} index={i} reward={r} />)
           )}

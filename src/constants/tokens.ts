@@ -37,7 +37,7 @@ export const IQ: { [chainId: number]: Token } = {
 }
 
 export const ES_IQ: { [chainId: number]: Token } = {
-  [80001]: new Token(80001, ES_TOKEN_ADDRESS[80001], 18, 'IQ', 'Brainswap'),
+  [80001]: new Token(80001, ES_TOKEN_ADDRESS[80001], 18, 'esIQ', 'Brainswap'),
 }
 
 export const UNI: { [chainId: number]: Token } = {

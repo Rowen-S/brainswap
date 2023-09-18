@@ -4,7 +4,6 @@ import styled from 'styled-components/macro'
 import RewardIQ from './RewardIQ'
 import { RowBetween } from 'components/Row'
 import RewardESIQ from './RewardESIQ'
-import { AutoColumn } from 'components/Column'
 import EpochCountDown from './EpochCountDown'
 import RewardPool from './RewardPool'
 import ConvertIQ from './ConvertIQ'
@@ -45,7 +44,7 @@ export default function TradingRewards() {
   return (
     <ContentWrapper>
       <PrimaryTitle>
-        My Brain Power Epoch(
+        My Brain Power Epoch (
         <span
           style={{
             color: '#2CFFF3',

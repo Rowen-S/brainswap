@@ -8,6 +8,7 @@ export const StyledTable = styled.table`
   border-spacing: 0px 10px;
 
   & > thead {
+    font-weight: 400;
     th {
       font-size: 12px;
       color: ${({ theme }) => theme.bg6};

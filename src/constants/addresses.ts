@@ -31,13 +31,13 @@ export const SOCKS_CONTROLLER_ADDRESSES: AddressMap = {
   [1]: '0x65770b5283117639760beA3F867b69b3697a91dd',
 }
 export const IDO_ADDRESS: AddressMap = {
-  [80001]: '0x2CDC113BC5d17f9DAA0e61e6F7DACc25A4a5299e',
+  [80001]: '0x91BfB3b898a73C6942CB55195B49C7FC4dC44986',
 }
 
-export const IQ_ADDRESS = constructSameAddressMap('0x62F3c82a4E76C0512ecd6a1405363E25Ce0ce05B')
+export const IQ_ADDRESS = constructSameAddressMap('0xa6A8e3ed7981D0AbF1796AA5685F274022fF7f4B')
 
 export const ES_TOKEN_ADDRESS: AddressMap = {
-  ...constructSameAddressMap('0x1429526A3a1336d999055fE0C398A2Fea648a205'),
+  ...constructSameAddressMap('0x6e7a65b8cA6e07d36Eed1F782a5961cdc7b6522a'),
 }
 
-export const DROP_ADDRESS: AddressMap = constructSameAddressMap('0xb19EA693C1A977fbc17e95dd5cEFC6b926514F63')
+export const DROP_ADDRESS: AddressMap = constructSameAddressMap('0x1295D381DF3C923EDfE87aA75B6ad90d0628468e')

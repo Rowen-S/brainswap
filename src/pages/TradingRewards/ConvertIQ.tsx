@@ -2,18 +2,31 @@ import { StairCard } from 'components/StairCard'
 import { useCallback, useMemo, useState } from 'react'
 import StairBgImage from '../../assets/svg/stair_bg.svg'
 import { Box, Text } from 'rebass'
-import { RowBetween } from 'components/Row'
-import { ButtonNormal } from 'components/Button'
+import { RowBetween, RowFixed } from 'components/Row'
+import { ButtonNormal, ButtonOutlined } from 'components/Button'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { useWeb3React } from '@web3-react/core'
 import { formatTokenAmount } from 'utils/formatTokenAmount'
-import { ES_IQ } from 'constants/tokens'
+import { ES_IQ, IQ } from 'constants/tokens'
 import { ProgressSlider } from 'components/Slider'
 import { useEsTokenContract } from 'hooks/useContract'
 import { toHex } from '@uniswap/v3-sdk'
+import useTheme from 'hooks/useTheme'
+import { unwrappedToken } from 'utils/unwrappedToken'
+import useAddTokenToMetamask from 'hooks/useAddTokenToMetamask'
+import { StyledLogo } from './RewardESIQ'
+import { CheckCircle } from 'react-feather'
+import MetaMaskLogo from '../../assets/images/metamask.png'
 
 export default function ConvertIQ() {
+  const theme = useTheme()
+
   const { account, chainId } = useWeb3React()
+
+  const currencyIQ = unwrappedToken(IQ[chainId ?? 80001])
+
+  const { addToken, success } = useAddTokenToMetamask(currencyIQ)
+
   const esIqBalance = useTokenBalance(account ?? undefined, chainId ? ES_IQ[chainId] : undefined)
 
   const esTokenContract = useEsTokenContract()
@@ -69,12 +82,21 @@ export default function ConvertIQ() {
         </Text>
       </RowBetween>
 
-      <Box fontSize={12} mt={20} display="flex">
+      <Box fontSize={12} mt={20} display="flex" alignItems={'center'}>
         <Text opacity={0.5}>You will receive </Text>
         &#20;
-        <Text>
+        <Text fontSize={16} color={theme.bg6}>
           {`${balanceRatio && balanceRatio.toSignificant(4, { visualViewport: ',' })}   IQ [${ratio.toFixed(2)}%]`}{' '}
         </Text>
+        <ButtonOutlined padding="6px" width="fit-content" onClick={addToken} style={{ marginLeft: '6px' }}>
+          {!success ? (
+            <StyledLogo src={MetaMaskLogo} />
+          ) : (
+            <RowFixed>
+              <CheckCircle size={'16px'} stroke={'#2CFFF3'} />
+            </RowFixed>
+          )}
+        </ButtonOutlined>
         &#20;
         <Text opacity={0.5}>in {convertToFormattedString(day)}</Text>
       </Box>
