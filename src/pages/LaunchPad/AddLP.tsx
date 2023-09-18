@@ -127,7 +127,7 @@ export default function AddLP({
   // console.log(isRefund, !Boolean(userInfo?.totalInvestedETH > 0))
 
   const percentInPool = useMemo(() => {
-    if (userInfo && userInfo.totalInvestedETH && investedEth) {
+    if (userInfo && userInfo.totalInvestedETH && investedEth.gt(BigNumber.from(0))) {
       return Math.floor(userInfo.totalInvestedETH.div(investedEth) * 100)
     }
 
