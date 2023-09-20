@@ -8,10 +8,7 @@
   },
   "tags": {},
   "logoURI": "ipfs://QmNa8mQkrNKp1WEEeGjFezDmDeodkWRevGFN8JCV7b4Xir",
-  "keywords": [
-    "uniswap",
-    "unsupported"
-  ],
+  "keywords": ["uniswap", "unsupported"],
   "tokens": [
     {
       "name": "Gold Tether",
