@@ -1,4 +1,4 @@
-# Uniswap Interface
+# Brainswap Interface
 
 [![Unit Tests](https://github.com/Uniswap/uniswap-interface/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/Uniswap/uniswap-interface/actions/workflows/unit-tests.yaml)
 [![Integration Tests](https://github.com/Uniswap/uniswap-interface/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/Uniswap/uniswap-interface/actions/workflows/integration-tests.yaml)
@@ -19,7 +19,7 @@ An open source interface for Uniswap -- a protocol for decentralized exchange of
   - [V2](https://uniswap.org/whitepaper.pdf)
   - [V3](https://uniswap.org/whitepaper-v3.pdf)
 
-## Accessing the Uniswap Interface
+## Accessing the Brainswap Interface
 
 To access the Uniswap Interface, use an IPFS gateway link from the
 [latest release](https://github.com/Uniswap/uniswap-interface/releases/latest),
